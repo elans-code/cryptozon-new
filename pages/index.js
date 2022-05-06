@@ -1,19 +1,22 @@
-import { useAddress, useDisconnect, useMetamask } from '@thirdweb-dev/react';
+import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
+import { Fragment as Fr } from "react";
+import { Box, Button, Text } from "@chakra-ui/react";
 
 export default function Home() {
   const address = useAddress();
   const connectWithMetamask = useMetamask();
   const disconnectWallet = useDisconnect();
+
   return (
-    <div>
+    <Box p={12}>
       {address ? (
-        <>
-          <button onClick={disconnectWallet}>Disconnect Wallet</button>
-          <p>Your address: {address}</p>
-        </>
+        <Fr>
+          <Button onClick={disconnectWallet}>Disconnect Wallet</Button>
+          <Text>Your address: {address}</Text>
+        </Fr>
       ) : (
-        <button onClick={connectWithMetamask}>Connect with Metamask</button>
+        <Button onClick={connectWithMetamask}>Connect with Metamask</Button>
       )}
-    </div>
+    </Box>
   );
 }
