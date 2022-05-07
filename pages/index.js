@@ -1,6 +1,6 @@
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 import { Fragment as Fr } from "react";
-import { Box, Button, Text, useColorMode } from "@chakra-ui/react";
+import { Box, Button, StackDivider, Text, useColorMode, VStack, Flex, Link } from "@chakra-ui/react";
 import { BsSun, BsMoonStarsFill } from 'react-icons/bs';
 
 
@@ -13,25 +13,44 @@ export default function Home() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
-    <Box>
+    <VStack>
+      <Flex
+        top="1rem"
+        right="1rem"
+        align="center"
+        >
 
-      <Box p={8}>
-        {address ? (
-          <Fr>
-            <Button onClick={disconnectWallet}>Disconnect Wallet</Button>
-            <Text>Your address: {address}</Text>
-          </Fr>
-        ) : (
-          <Button onClick={connectWithMetamask}>Connect with Metamask</Button>
-        )}
+        <Box >Logo</Box>
+          <Link to="/discovery">Discovery</Link>
+          <Link to="/shop">Shop</Link>
+          <Link>
+            <Button onClick={toggleColorMode}>
+              {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun /> }
+            </Button>
+          </Link>
+          <Link>
+            {address ? (
+              <Fr>
+                <Button onClick={disconnectWallet}>Disconnect Wallet</Button>
+              </Fr>
+            ) : (
+              <Button onClick={connectWithMetamask}>Connect with Metamask</Button>
+            )}
+          </Link>
+        </Flex>
 
-        <Button onClick={toggleColorMode}>
-          {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun /> }
-        </Button>
-      </Box>
-      <Box pl={8}>
-        Main Content Area
-      </Box>
-    </Box>
+        <Box>
+          { address ?
+            <Fr>
+              <Text>Your address: {address}</Text>
+            </Fr>
+            : null
+          }
+        </Box>
+
+        <Box>
+          Main Content Area
+        </Box>
+    </VStack>
   );
 }
