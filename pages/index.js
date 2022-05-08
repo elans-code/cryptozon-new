@@ -3,6 +3,7 @@ import { Fragment as Fr } from "react";
 import Link from "next/link";
 import { Box, Button, StackDivider, Text, useColorMode, VStack, Flex, Link as ChakraLink} from "@chakra-ui/react";
 import { BsSun, BsMoonStarsFill } from 'react-icons/bs';
+import Navbar from "../components/Navbar";
 
 
 
@@ -10,10 +11,11 @@ export default function Home() {
   const address = useAddress();
   const connectWithMetamask = useMetamask();
   const disconnectWallet = useDisconnect();
-  const { colorMode, toggleColorMode } = useColorMode();
+  // const { colorMode, toggleColorMode } = useColorMode();
 
   return (
     <VStack>
+      <Navbar />
       <Flex
         top="1rem"
         right="1rem"
@@ -23,11 +25,7 @@ export default function Home() {
         <Box >Logo</Box>
           <ChakraLink to="/discovery">Discovery</ChakraLink>
           <ChakraLink to="/shop">Shop</ChakraLink>
-          <ChakraLink>
-            <Button onClick={toggleColorMode}>
-              {colorMode === "light" ? <BsMoonStarsFill /> : <BsSun /> }
-            </Button>
-          </ChakraLink>
+
           <ChakraLink>
             {address ? (
               <Fr>
