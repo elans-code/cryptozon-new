@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 // might not need this rn actually
 import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
 import Link from 'next/link';
+import Navbar from '../components/Navbar';
 
 // dummy data
 const user = {
@@ -70,6 +71,7 @@ const nfts = [
 export default function Profile() {
   return (
     <>
+    <Navbar />
     <Container>
       <Box margin={10} padding={10} display='flex' width={600}>
         <Image
