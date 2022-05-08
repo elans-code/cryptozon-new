@@ -1,5 +1,5 @@
 {
-  "name": "next-javascript-starter",
+  "name": "cryptozon",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,14 +13,17 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@reduxjs/toolkit": "^1.8.1",
     "@thirdweb-dev/react": "^2",
     "@thirdweb-dev/sdk": "^2",
+    "axios": "^0.27.2",
     "ethers": "^5.6.1",
     "framer-motion": "^6.3.3",
     "next": "12.1.0",
     "pg": "^8.7.3",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-redux": "^8.0.1",
     "react-icons": "^4.3.1",
     "sequelize": "^6.19.0"
   },

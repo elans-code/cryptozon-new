@@ -1,4 +1,6 @@
 import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
+import store from "../store";
+import { Provider } from "react-redux";
 import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react"; // for chakra;
 // This is the chainId your dApp will work on.
 const activeChainId = ChainId.Mainnet;
@@ -13,12 +15,14 @@ const theme = extendTheme({ config })
 
 function MyApp({ Component, pageProps }) {
   return (
+   <Provider store={store}>
     <ThirdwebProvider desiredChainId={activeChainId}>
      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
       </ChakraProvider>
     </ThirdwebProvider>
+   </Provider>
   );
 }
 

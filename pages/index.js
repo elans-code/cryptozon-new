@@ -1,9 +1,8 @@
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 import { Fragment as Fr } from "react";
+import Link from "next/link";
 import { Box, Button, StackDivider, Text, useColorMode, VStack, Flex, Link } from "@chakra-ui/react";
 import { BsSun, BsMoonStarsFill } from 'react-icons/bs';
-
-
 
 
 export default function Home() {
