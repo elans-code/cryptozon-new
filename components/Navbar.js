@@ -5,8 +5,7 @@ import DarkModeSwitch from './DarkModeSwitch';
 
 const Navbar = () => {
   return (
-    <Flex as="header" position="fixed" backdropFilter="saturate(180%) blur(5px)"
-      w="100%">
+    <Flex>
       <DarkModeSwitch />
     </Flex>
   )
