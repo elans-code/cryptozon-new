@@ -12,8 +12,9 @@ export const fetchUser = createAsyncThunk(
   async (wallet) => {
     try {
       // pass in the wallet to get the user associated to that wallet
-      const {data} = await axios.get('http://localhost:3000/api/profile', {params: {wallet}})
-      return data
+      const {data: user} = await axios.get('/api/profile', {params: {wallet}})
+      // const {data: user} = await axios.get('/api/profile', wallet)
+      return user
     } catch (err) {
       console.log(err)
     }

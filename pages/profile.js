@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
 import Navbar from '../components/Navbar';
+import { fetchUser } from '../store/userSlice';
+import { useAddress } from "@thirdweb-dev/react";
+import { useSelector, useDispatch } from 'react-redux';
 
 // dummy data
-const user = {
-  username: 'beksin',
-  bio: 'nft degen / blockchain dev straight outta fullstack. here r some of my nfts, hope you like ;)',
-  imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgSmojUgwjIB87c4Q0hLCAyl__oiTySWGWJUZtUNHlHjBALLzTsu_vMHYMaEwLts4QEoo&usqp=CAU'
-}
+// const user = {
+//   username: 'beksin',
+//   bio: 'nft degen / blockchain dev straight outta fullstack. here r some of my nfts, hope you like ;)',
+//   imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgSmojUgwjIB87c4Q0hLCAyl__oiTySWGWJUZtUNHlHjBALLzTsu_vMHYMaEwLts4QEoo&usqp=CAU'
+// }
 
 const nfts = [
   {
@@ -78,6 +81,13 @@ const nfts = [
 export default function Profile() {
   // gonna use this when switching between which nft's user wants to display
   const [visibility, setVisibility] = useState('owned');
+  const dispatch = useDispatch();
+  const address = useAddress();
+  const {user} = useSelector(state => state.user)
+
+  useEffect(() => {
+    dispatch(fetchUser(address))
+  }, [])
 
   return (
     <>
