@@ -12,11 +12,11 @@ export const SocialCard = (props) => {
     },[])
     return (
     <div>
-        {post ? post.map(singlePostData=>{
+        {!!post? post.map(singlePostData=>{
             return (<div key={singlePostData.id}>
                 <div>Verified tag</div>
                 <div>SocialCard</div>
-                {/* <div><Image src={singlePostData.imgUrl} alt=''>post img</Image></div> */}
+                {/* <div><Image src={singlePostData.imageUrl} alt=''>post img</Image></div> */}
                 <div>{singlePostData.content}</div>
                 <div>
                     <div>likes: {singlePostData.likes}</div>
