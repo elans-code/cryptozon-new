@@ -1,13 +1,13 @@
 "use strict";
 
-const {db, User, Post} = require('../db');
+const {db, User, Post, Comments} = require('../db');
 
 const me = {
   username: 'bek',
   wallet: '0x83f2dbfa576bdba1C148484B43d07354A1fbed77',
   bio: 'yerrrrr',
 }
-const post = [
+const _post = [
   {
     content: 'this is some quality content',
     likes: 54,
@@ -32,6 +32,64 @@ const post = [
     userId: 1,
   },
 ]
+
+const _comments = [
+  {
+    content: 'Wow so nice!',
+    likes: 2,
+    userId: 1,
+    postId: 1
+  },
+  {
+    content: 'YO THIS IS GOING TO THE MOON!',
+    likes: 541,
+    userId: 1,
+    postId: 1
+  },,
+  {
+    content: 'This is trash..',
+    likes: 60,
+    userId: 1,
+    postId: 1
+  },,
+  {
+    content: 'BUY THE DIP!',
+    likes: 9,
+    userId: 1,
+    postId: 2
+  },,
+  {
+    content: 'First!',
+    likes: 46581,
+    userId: 1,
+    postId: 2
+  },,
+  {
+    content: 'Reminder that its just money',
+    likes: -5,
+    userId: 1,
+    postId: 2
+  },,
+  {
+    content: 'Seems legit',
+    likes: 0,
+    userId: 1,
+    postId: 3
+  },,
+  {
+    content: 'Were giving you a final coutesy call to extend your cars extended warranty',
+    likes: 12,
+    userId: 1,
+    postId: 3
+  },,
+  {
+    content: 'I drained my mom\'s credit card to buy this NFT ^.^',
+    likes: 9000,
+    userId: 1,
+    postId: 3
+  },
+]
+
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
@@ -44,8 +102,11 @@ const post = [
   await User.create(me);
 
   //adding posts
-  await Promise.all(post.map((p)=>{
+  await Promise.all(_post.map((p)=>{
     return Post.create(p)
+  }))
+  await Promise.all(_comments.map((c)=>{
+    return Comments.create(c)
   }))
 
   console.log(`seeded 1 user`);

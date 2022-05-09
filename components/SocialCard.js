@@ -13,18 +13,33 @@ export const SocialCard = (props) => {
     return (
     <div>
         {!!post? post.map(singlePostData=>{
-            return (<div key={singlePostData.id}>
+            const {id,postImage,imageUrl,content,likes,comments} = singlePostData
+            return (<div key={id}>
                 <div>Verified tag</div>
-                <div>SocialCard</div>
-                {post.postImage?
-                <div><Image src={singlePostData.imageUrl} alt=''>post img</Image></div>:
+                {postImage?
+                <div><Image src={imageUrl} alt=''/></div>:
                 null}
-                <div>{singlePostData.content}</div>
+                <div>{content}</div>
                 <div>
-                    <div>likes: {singlePostData.likes}</div>
+                    <div>likes: {likes}</div>
                     <Button>like</Button>
                     <Button>Share</Button>
                     <Button>Comment</Button>
+                </div>
+                <div>
+                    {comments.map(c =>{
+                        const {content,likes, user, id} = c;
+                        const {username} = user;
+                        return(
+                            <div key={id}>
+                                <div>{username}: {content}</div>
+                                <div>
+                                    <div>{likes}</div>
+                                    <Button>like</Button>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>)
         })
