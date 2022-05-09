@@ -16,7 +16,9 @@ export const SocialCard = (props) => {
             return (<div key={singlePostData.id}>
                 <div>Verified tag</div>
                 <div>SocialCard</div>
-                {/* <div><Image src={singlePostData.imageUrl} alt=''>post img</Image></div> */}
+                {post.postImage?
+                <div><Image src={singlePostData.imageUrl} alt=''>post img</Image></div>:
+                null}
                 <div>{singlePostData.content}</div>
                 <div>
                     <div>likes: {singlePostData.likes}</div>
