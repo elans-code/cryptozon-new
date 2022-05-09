@@ -8,6 +8,15 @@ const Post = db.define('post', {
   },
   likes: {
     type: Sequelize.INTEGER
+  },
+  postImage: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
+  imageUrl:{
+    type: Sequelize.TEXT,
+    defaultValue: '/assets/question.jpeg'
   }
 })
 
