@@ -1,7 +1,5 @@
 import React, {useState} from 'react'
-// might not need this rn actually
 import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
-import Link from 'next/link';
 import Navbar from '../components/Navbar';
 
 // dummy data
@@ -78,9 +76,9 @@ const nfts = [
 ];
 
 export default function Profile() {
+  // gonna use this when switching between which nft's user wants to display
   const [visibility, setVisibility] = useState('owned');
-  const owned = nfts.filter(nft => nft.hidden === false)
-  const hidden = nfts.filter(nft => nft.hidden === true)
+
   return (
     <>
     <Navbar />
@@ -100,7 +98,6 @@ export default function Profile() {
           <Text fontSize={12}>~ other social accounts ~</Text>
         </Flex>
       </Box>
-      {/* <Link href="/">Go Back Home</Link> */}
     </Container>
     <Divider />
     <Container maxW={1000} display='flex' justifyContent='space-between' alignItems='center'>
@@ -113,9 +110,7 @@ export default function Profile() {
         {nfts.map(nft => (
         <Box _hover={{border: '1px solid black'}} key={nft.id} borderWidth='1px' borderRadius='lg' overflow='hidden' m='10px' maxW='250px' >
           <Image src={nft.imageUrl} alt="Bored Ape" />
-
           <Box p='6'>
-
             <Box
               mt='1'
               fontWeight='semibold'
