@@ -5,7 +5,6 @@ import { Box, Button, StackDivider, Text, VStack, Flex, Link as ChakraLink} from
 import Navbar from "../components/Navbar";
 
 
-
 export default function Home() {
   const address = useAddress();
 

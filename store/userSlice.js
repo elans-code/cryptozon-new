@@ -8,7 +8,7 @@ const initialState = {
 }
 
 export const fetchUser = createAsyncThunk(
-  'user/fetchProfile',
+  'user/fetchUser',
   async (wallet) => {
     try {
       // pass in the wallet to get the user associated to that wallet
