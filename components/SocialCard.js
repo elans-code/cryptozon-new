@@ -5,7 +5,7 @@ import { fetchAllPost } from '../store/post';
 
 //to be styled later
 export const SocialCard = (props) => {
-    const post = useSelector((state)=> state.post);
+    const {AllPost:post} = useSelector((state)=> state.socialPost);
     const dispatch = useDispatch();
     useEffect(()=>{
         dispatch(fetchAllPost());
@@ -13,28 +13,22 @@ export const SocialCard = (props) => {
     return (
     <div>
         {post ? post.map(singlePostData=>{
-            <div>
+            return (<div key={singlePostData.id}>
                 <div>Verified tag</div>
                 <div>SocialCard</div>
-                <div><Image alt=''>post img</Image></div>
+                {/* <div><Image src={singlePostData.imgUrl} alt=''>post img</Image></div> */}
+                <div>{singlePostData.content}</div>
                 <div>
-                    <div>likes</div>
+                    <div>likes: {singlePostData.likes}</div>
+                    <Button>like</Button>
                     <Button>Share</Button>
                     <Button>Comment</Button>
                 </div>
-            </div>
+            </div>)
         })
         : 'There are no post'}
     </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    post: state.post
-})
-
-const mapDispatchToProps = {
-    
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SocialCard)
+export default SocialCard

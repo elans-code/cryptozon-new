@@ -9,7 +9,7 @@ export const fetchAllPost = createAsyncThunk(
     'post/fetchPost',
     async () => {
         try {
-            const {postData} = axios.get('/api/post');
+            const {data:postData} = await axios.get('/api/post');
             return postData;
         } catch (error) {
             console.log(error)
@@ -35,3 +35,5 @@ export const postSlice = createSlice({
         }
       }
 })
+
+export const postReducer = postSlice.reducer;
