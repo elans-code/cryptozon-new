@@ -3,9 +3,16 @@ const User = require("./models/User");
 const Post = require("./models/Post");
 const Comments = require("./models/Comments");
 const Collections = require("./models/Collections");
+const NFTs = require("./models/NFTs");
 
 User.hasMany(Collections);
 Collections.belongsTo(User);
+
+User.hasMany(NFTs);
+NFTs.belongsTo(User);
+
+Collections.hasMany(NFTs, { onDelete: "cascade" });
+NFTs.belongsTo(Collections);
 
 User.hasMany(Post);
 Post.belongsTo(User);
