@@ -18,7 +18,7 @@ export default async function handler(req,res){
         case 'PUT':
             //add post to db
             await Post.upsert(postInfo);
-            res.status(200).send();
+            res.status(200).end();
             break;
         default:
             break;
