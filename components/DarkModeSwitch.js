@@ -32,6 +32,11 @@ const DarkModeSwitch = () => {
               Shop
             </Button>
           </Link>
+          <Link href="/post" passHref>
+            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+              Post
+            </Button>
+          </Link>
           <Link href="/profile" passHref>
             <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
               Profile
@@ -85,7 +90,7 @@ const DarkModeSwitch = () => {
       <Flex
         w="100vw"
         bgColor={colorMode === "light" ? "gray.50" : "gray.900"}
-        zIndez={20}
+        zIndex={20}
         h="100vh"
         pos="fixed"
         top="0"
