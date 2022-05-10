@@ -90,7 +90,7 @@ const DarkModeSwitch = () => {
       <Flex
         w="100vw"
         bgColor={colorMode === "light" ? "gray.50" : "gray.900"}
-        zIndez={20}
+        zIndex={20}
         h="100vh"
         pos="fixed"
         top="0"
