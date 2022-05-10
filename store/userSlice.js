@@ -12,8 +12,21 @@ export const fetchUser = createAsyncThunk(
   async (wallet) => {
     try {
       // pass in the wallet to get the user associated to that wallet
-      const {data} = await axios.get('http://localhost:3000/api/profile', {params: {wallet}})
-      return data
+      const {data: user} = await axios.get('/api/profile', {params: {wallet}})
+      return user
+    } catch (err) {
+      console.log(err)
+    }
+  }
+)
+
+export const editUser = createAsyncThunk(
+  'user/editUser',
+  async (info) => {
+    try {
+      const {userInfo, wallet} = info
+      const {data: user} = await axios.put('/api/profile', userInfo, {params: {wallet}})
+      return user
     } catch (err) {
       console.log(err)
     }
@@ -35,7 +48,18 @@ export const userSlice = createSlice({
     [fetchUser.rejected]: (state, action) => {
       state.status = "rejected";
       state.error = action.payload;
-    }
+    },
+    [editUser.pending]: (state) => {
+      state.status = "loading";
+    },
+    [editUser.fulfilled]: (state, action) => {
+      state.user = action.payload;
+      state.status = "success";
+    },
+    [editUser.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    },
   }
 })
 
