@@ -16,9 +16,20 @@ const createCollection = wrapAsync(async (req, res) => {
   res.status(201).json({ status: "success", data: newCollection });
 });
 
-const getAllCollections = wrapAsync(async (req, res) => {});
+const getAllCollections = wrapAsync(async (req, res) => {
+  const collections = await Collections.findAll();
+  res.status(200).json({ status: "success", data: collections });
+});
 
 export default async function handler(req, res) {
   try {
-  } catch (err) {}
+    switch (req.method) {
+      case "GET":
+        getAllCollections(req, res);
+      case "POST":
+        createCollection(req, res);
+    }
+  } catch (err) {
+    res.status(400).json({ status: "error", message: err.message });
+  }
 }
