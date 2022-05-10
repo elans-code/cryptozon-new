@@ -1,9 +1,14 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react';
 import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
-import { fetchUser } from '../store/userSlice';
-import { useAddress } from "@thirdweb-dev/react";
-import { useSelector, useDispatch } from 'react-redux';
-import EditProfile from './EditProfile';
+
+/*
+  this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
+  functionality and display are a bit different, you can't edit their pg and you can't view their hidden nfts
+
+  when visiting this pg, we'll have to use the username to get their wallet, and from there we can grab their nfts based on their wallet
+
+  do we need to include users in our state?
+*/
 
 const nfts = [
   {
@@ -71,26 +76,7 @@ const nfts = [
   },
 ];
 
-export default function UserProfile() {
-  const dispatch = useDispatch();
-  const address = useAddress();
-  const {user} = useSelector(state => state.user);
-  const [userInfo, setUserInfo] = useState({
-    imageUrl: user.imageUrl,
-    username: user.username,
-    bio: user.bio,
-  })
-  const [visibility, setVisibility] = useState('owned');
-
-  useEffect(() => {
-    dispatch(fetchUser(address))
-    // setUserInfo({
-    //   username: user.username,
-    //   imageUrl: user.imageUrl,
-    //   bio: user.bio
-    // })
-  }, [])
-
+export default function Users({user}) {
   return (
     <>
       <Container>
@@ -118,11 +104,6 @@ export default function UserProfile() {
               Following 32 - Followers 56
             </Text>
             <Text fontSize={12}>~ other social accounts ~</Text>
-            <EditProfile
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-              wallet={address}
-            />
           </Flex>
         </Box>
       </Container>
@@ -133,11 +114,11 @@ export default function UserProfile() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
+        {/* <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
           <Button>Owned</Button>
           <Divider m="5px" />
           <Button>Hidden</Button>
-        </Box>
+        </Box> */}
         <Box
           flex={1}
           display="flex"
@@ -173,5 +154,5 @@ export default function UserProfile() {
         </Box>
       </Container>
     </>
-  );
+  )
 }
