@@ -5,8 +5,8 @@ import { userReducer } from "./userSlice";
 const reducer = {
   user: userReducer,
   socialPost: postReducer,
-}
+};
 
-const store = configureStore({reducer});
+const store = configureStore({ reducer });
 
-export default store
+export default store;
