@@ -32,6 +32,11 @@ const DarkModeSwitch = () => {
               Shop
             </Button>
           </Link>
+          <Link href="/post" passHref>
+            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+              Post
+            </Button>
+          </Link>
           <Link href="/profile" passHref>
             <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
               Profile
