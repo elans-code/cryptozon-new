@@ -81,9 +81,6 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const {user} = useSelector(state => state.user);
-  // console.log('user is', user)
-  // const [username, setUsername] = useState(user.username);
-  // const [bio, setBio] = useState(user.bio);
   const [userInfo, setUserInfo] = useState({
     imageUrl: user.imageUrl,
     username: user.username,
@@ -93,11 +90,11 @@ export default function UserProfile() {
 
   useEffect(() => {
     dispatch(fetchUser(address))
-    setUserInfo({
-      username: user.username,
-      imageUrl: user.imageUrl,
-      bio: user.bio
-    })
+    // setUserInfo({
+    //   username: user.username,
+    //   imageUrl: user.imageUrl,
+    //   bio: user.bio
+    // })
   }, [])
 
   return (

@@ -10,8 +10,6 @@ export default function EditProfile({userInfo, setUserInfo, wallet}) {
   const finalRef = React.useRef();
   const {username, bio, imageUrl} = userInfo;
 
-  console.log('username is', username)
-
   function handleSubmit(wallet, userInfo) {
     dispatch(editUser({wallet, userInfo}))
     onClose()
@@ -31,7 +29,7 @@ export default function EditProfile({userInfo, setUserInfo, wallet}) {
           <ModalCloseButton />
           <ModalBody>
             <Image alt="profile" src={imageUrl} w={100} h={100} borderRadius={100} mb={5} />
-            <Input type='file' />
+            <Input type='file' w={200} onChange={(e) => setUserInfo({...userInfo, imageUrl: e.target.value})}/>
             <FormControl>
               <FormLabel>Username</FormLabel>
               <Input value={username} onChange={(e) => setUserInfo({...userInfo, username: e.target.value})}/>

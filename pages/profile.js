@@ -8,3 +8,7 @@ export default function Profile() {
     </>
   )
 }
+
+// export const getStaticProps = async (context) => {
+//   const
+// }

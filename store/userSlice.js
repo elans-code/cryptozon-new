@@ -13,7 +13,6 @@ export const fetchUser = createAsyncThunk(
     try {
       // pass in the wallet to get the user associated to that wallet
       const {data: user} = await axios.get('/api/profile', {params: {wallet}})
-      // const {data: user} = await axios.get('/api/profile', wallet)
       return user
     } catch (err) {
       console.log(err)
@@ -25,13 +24,8 @@ export const editUser = createAsyncThunk(
   'user/editUser',
   async (info) => {
     try {
-      console.log('info is', info)
       const {userInfo, wallet} = info
-      // pass in wallet w req.body
-      // {userInfo, wallet}
-      // const {data: user} = await axios.put('/api/profile', info)
       const {data: user} = await axios.put('/api/profile', userInfo, {params: {wallet}})
-
       return user
     } catch (err) {
       console.log(err)
