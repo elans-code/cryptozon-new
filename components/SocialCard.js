@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { Box, Button, Text, Image, Container, Flex, Divider, useDisclosure} from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spacer} from "@chakra-ui/react";
 import { fetchAllPost, likeComment, likePost, commentPost } from '../store/post';
 import CommentModal from './CommentModal';
 
@@ -43,41 +43,43 @@ export const SocialCard = (props) => {
         setData({})
     }
     return (
-    <div>
+    <Box display='flex' flexDirection='column' align='center'>
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
         {!!post? post.map(singlePostData=>{
-            const {id,postImage,imageUrl,content,likes,comments} = singlePostData
-            return (<div key={id}>
-                <div>Verified tag</div>
-                {postImage?
-                <div><Image src={imageUrl} alt=''/></div>:
+            const {id,postImage,imageUrl,content,likes,comments, user} = singlePostData
+            console.log(singlePostData)
+            return (
+            <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>
+                <Box display='flex' alignItems='center'><Image padding='2px' margin='2px' borderRadius='full' boxSize='50px' alt='' src={user.imageUrl}/><Box>{user.username}</Box><Spacer/><Box>verified tag</Box></Box>
+                {postImage ?
+                <Box><Image src={imageUrl} alt=''/></Box>:
                 null}
-                <div>{content}</div>
-                <div>
-                    <div>likes: {likes}</div>
+                <Box alignSelf='flex-start' marginLeft='5px'>{content}</Box>
+                <Box>
+                    <Box>likes: {likes}</Box>
                     <Button onClick={()=>lPost(id)}>like</Button>
                     <Button>Share</Button>
                     <Button onClick={()=>{openModal(singlePostData)}} value={id}>Comment</Button>
-                </div>
-                <div>
+                </Box>
+                <Box>
                     {comments.map(c =>{
                         const {content,likes, user, id} = c;
                         const {username} = user;
                         return(
-                            <div key={id}>
-                                <div>{username}: {content}</div>
-                                <div>
-                                    <div>likes: {likes}</div>
+                            <Box border='1px' borderRadius='lg' key={id}>
+                                <Box>{username}: {content}</Box>
+                                <Box>
+                                    <Box>likes: {likes}</Box>
                                     <Button onClick={()=>lComment(id)}>like</Button>
-                                </div>
-                            </div>
+                                </Box>
+                            </Box>
                         )
                     })}
-                </div>
-            </div>)
+                </Box>
+            </Box>)
         })
         : 'There are no post'}
-    </div>
+    </Box>
     )
 }
 
