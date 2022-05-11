@@ -3,21 +3,20 @@ import axios from 'axios'
 import Users from '../components/Users'
 import { useAddress } from "@thirdweb-dev/react";
 import { useRouter } from 'next/router';
+import UserProfile from '../components/UserProfile';
 
 export default function User({user}) {
-  console.log('wallet', user.wallet)
-  const address = useAddress;
-  console.log('address', address)
+  const address = useAddress();
   const router = useRouter();
   if (user.wallet == address) {
-    router.push('/')
-  } else {
+    router.push('/profile')
+    return (<UserProfile />)
+  }
   return (
     <>
       <Users user={user} />
     </>
   )
-  }
 }
 
 export async function getStaticProps({params}) {
@@ -26,7 +25,7 @@ export async function getStaticProps({params}) {
   const res = await axios.get(`http://localhost:3000/api/users/${username}`)
   const user = await res.data
   return {
-    props: {user} //data, prob user
+    props: {user}
   }
 }
 
