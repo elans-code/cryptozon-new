@@ -1,4 +1,4 @@
-const { Collections } = require("../../../db");
+const { Collections, User } = require("../../../db");
 
 const wrapAsync = (fn) => (req, res) =>
   fn(req, res).catch((err) => {
@@ -6,7 +6,8 @@ const wrapAsync = (fn) => (req, res) =>
   });
 
 const createCollection = wrapAsync(async (req, res) => {
-  const { name, profileImg, bannerImg, description = "" } = req.body;
+  const { name, profileImg, bannerImg, description = "", address } = req.body;
+  // address
   const newCollection = await Collections.create({
     name,
     profileImg,
