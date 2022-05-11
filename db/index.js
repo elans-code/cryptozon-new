@@ -11,7 +11,6 @@ Post.hasMany(Comments);
 User.hasMany(Comments);
 Comments.belongsTo(User)
 
-// followers through table?
 User.belongsToMany(User, {through: Follows, as: 'following'})
 
 module.exports = {
