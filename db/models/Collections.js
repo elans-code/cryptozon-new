@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
 const slugify = require("slugify");
+
 const Collection = db.define("collection", {
   name: {
     type: Sequelize.STRING,
@@ -21,7 +22,6 @@ const Collection = db.define("collection", {
     type: Sequelize.STRING,
   },
 });
-
 Collection.beforeCreate(async (collection) => {
   collection.slug = slugify(collection.name, { replacement: "_", lower: true });
 });
