@@ -97,7 +97,7 @@ export default function Users({user}) {
             mr={10}
           />
           <Flex direction="column" w={500} mt="15px">
-            <Stack direction='row' spacing={240}>
+            <Stack direction='row' spacing={220}>
               <Text fontWeight="bold" fontSize={26}>
                 @{user.username}
               </Text>

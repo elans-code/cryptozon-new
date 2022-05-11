@@ -10,7 +10,7 @@ export default function User({user}) {
   const router = useRouter();
   if (user.wallet == address) {
     router.push('/profile')
-    return (<UserProfile />)
+    // return (<UserProfile />)
   }
   return (
     <>
