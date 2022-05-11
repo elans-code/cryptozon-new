@@ -1,25 +1,37 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box, Button, Modal, Image, ModalOverlay, ModalFooter, ModalHeader, ModalCloseButton, ModalBody, ModalContent, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { useDisclosure } from '@chakra-ui/react'
 import { editUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
 
-export default function EditProfile({userInfo, setUserInfo, wallet}) {
+export default function EditProfile({user, wallet}) {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = React.useRef();
+  const [userInfo, setUserInfo] = useState({
+    username: '',
+    imageUrl: '',
+    bio: ''
+  })
   const {username, bio, imageUrl} = userInfo;
 
   function handleSubmit(wallet, userInfo) {
     dispatch(editUser({wallet, userInfo}))
     onClose()
-    // dispatch edit thunk
-    // onClose()
+  }
+
+  function open() {
+    setUserInfo({
+      username: user.username,
+      imageUrl: user.imageUrl,
+      bio: user.bio
+    })
+    onOpen()
   }
 
   return (
     <>
-      <Button mt={4} onClick={onOpen} w={120} >
+      <Button mt={4} onClick={open} w={120} >
         Edit Profile
       </Button>
       <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose} isCentered>

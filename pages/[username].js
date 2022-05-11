@@ -21,7 +21,6 @@ export default function User({user}) {
 
 export async function getStaticProps({params}) {
   const username = params.username
-  console.log(username)
   const res = await axios.get(`http://localhost:3000/api/users/${username}`)
   const user = await res.data
   return {

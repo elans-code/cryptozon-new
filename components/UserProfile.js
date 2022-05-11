@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
 import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
@@ -75,20 +75,10 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const {user} = useSelector(state => state.user);
-  const [userInfo, setUserInfo] = useState({
-    imageUrl: user.imageUrl,
-    username: user.username,
-    bio: user.bio,
-  })
-  const [visibility, setVisibility] = useState('owned');
+  // const [visibility, setVisibility] = useState('all');
 
   useEffect(() => {
     dispatch(fetchUser(address))
-    // setUserInfo({
-    //   username: user.username,
-    //   imageUrl: user.imageUrl,
-    //   bio: user.bio
-    // })
   }, [])
 
   return (
@@ -117,12 +107,13 @@ export default function UserProfile() {
             <Text fontSize={12} mt={10}>
               Following 32 - Followers 56
             </Text>
-            <Text fontSize={12}>~ other social accounts ~</Text>
-            <EditProfile
-              userInfo={userInfo}
-              setUserInfo={setUserInfo}
-              wallet={address}
-            />
+            <Stack direction='row' spacing={200}>
+              <Text fontSize={12}>~ other social accounts ~</Text>
+              <EditProfile
+                user={user}
+                wallet={address}
+              />
+            </Stack>
           </Flex>
         </Box>
       </Container>

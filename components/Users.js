@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Button, Text, Image, Container, Flex, Divider } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
+import {ChatIcon} from "@chakra-ui/icons";
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
@@ -32,48 +33,48 @@ const nfts = [
     projectName: "BAYC",
     hidden: false,
   },
-  {
-    id: 4,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 5,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 6,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 7,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
-  {
-    id: 8,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 9,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
+  // {
+  //   id: 4,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: false,
+  // },
+  // {
+  //   id: 5,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: false,
+  // },
+  // {
+  //   id: 6,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: false,
+  // },
+  // {
+  //   id: 7,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: true,
+  // },
+  // {
+  //   id: 8,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: false,
+  // },
+  // {
+  //   id: 9,
+  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+  //   token: 783,
+  //   projectName: "BAYC",
+  //   hidden: true,
+  // },
 ];
 
 export default function Users({user}) {
@@ -96,10 +97,16 @@ export default function Users({user}) {
             mr={10}
           />
           <Flex direction="column" w={500} mt="15px">
-            <Text fontWeight="bold" fontSize={26}>
-              @{user.username}
-            </Text>
-            <Text mt={2}>{user.bio}</Text>
+            <Stack direction='row' spacing={240}>
+              <Text fontWeight="bold" fontSize={26}>
+                @{user.username}
+              </Text>
+              <Box>
+              <ChatIcon mr={4} _hover={{cursor: 'pointer', opacity: '0.8'}}/>
+              <Button w={100} borderRadius={50}>Follow</Button>
+              </Box>
+            </Stack>
+            <Text mt={5}>{user.bio}</Text>
             <Text fontSize={12} mt={10}>
               Following 32 - Followers 56
             </Text>
