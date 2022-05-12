@@ -87,10 +87,13 @@ export const SocialCard = (props) => {
                         return(
                             <Box key={id}>
                                 <Divider margin='2px' />
-                                <Box align='start' margin='2px'>{username}: {content}</Box>
-                                <Box>
-                                    <Box>{likes} likes</Box>
-                                    <FcLike onClick={()=>lComment(id)} />
+                                <Box display='flex'  >
+                                    <Box align='start' margin='2px'>{username}: {content}</Box>
+                                    <Spacer />
+                                    <Box display='flex' flexDirection='row' margin='3px'>
+                                        <Box marginRight='3px'>{likes} likes</Box>
+                                        <FcLike onClick={()=>lComment(id)} margin='5px' />
+                                    </Box>
                                 </Box>
                             </Box>
                         )
