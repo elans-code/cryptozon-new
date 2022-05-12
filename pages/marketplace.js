@@ -4,10 +4,12 @@ import NFTList from "../components/marketplace/NFTList";
 
 export default function marketplace() {
   return (
-    <Box p="12">
+    <Box px="12">
       <Heading textAlign="center" mb="8">
         Cryptozon Market
       </Heading>
+      <NFTList />
+      <NFTList />
       <NFTList />
     </Box>
   );
