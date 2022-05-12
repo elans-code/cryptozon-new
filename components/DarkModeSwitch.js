@@ -26,14 +26,11 @@ const DarkModeSwitch = () => {
   useEffect(() => {
     if (address) {
       dispatch(fetchUser(address));
-      console.log("address", address);
       router.replace("/marketplace");
+    } else {
+      router.replace("/");
     }
   } , [address]);
-
-  // useEffect(() => {
-
-  // },[])
 
   return (
     <Flex>
