@@ -2,7 +2,10 @@ import React from "react";
 import { Box, Image, Grid, GridItem as Gi, Text, Button } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
 
-const NFTItem = ({name, description, image, price, id}) => {
+const NFTItem = (props) => {
+  console.log("props", props);
+  const {name, description, image, price, id, tokenId } = props;
+
   const marketplace = useMarketplace(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS);
 
   const buyNFT = async () => {
@@ -13,6 +16,7 @@ const NFTItem = ({name, description, image, price, id}) => {
     } catch (error) {
       console.log(error);
       alert("Error buying NFT");
+    }
   }
 
   return (
@@ -43,12 +47,16 @@ const NFTItem = ({name, description, image, price, id}) => {
             {price}
           </Text>
         </Gi>
+        <Gi>
+          <Button onClick={buyNFT}>Buy Now!</Button>
+        </Gi>
         <Gi gridColumn="span 2" justifySelf="end">
           <Text>1 day left</Text>
         </Gi>
       </Grid>
     </Box>
-  )}
+  )
 }
+
 
 export default NFTItem
