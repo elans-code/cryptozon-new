@@ -13,6 +13,7 @@ const NFT = db.define("nft", {
   tokenId: strOp(false),
   image: strOp(false),
   uri: strOp(false),
+  assetContractAddress: strOp(false),
   listingId: {
     type: Sequelize.INTEGER,
   },
