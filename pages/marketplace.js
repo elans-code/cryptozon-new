@@ -17,7 +17,7 @@ const Marketplace = () => {
 
   // redirect to home if no address
   useEffect(() => {
-    if (!address) router.replace("/");
+    // if (!address) router.replace("/");
   }, [address]);
 
   // fetch nft listings
@@ -36,7 +36,7 @@ const Marketplace = () => {
       setNftListings(nftList);
     } catch (error) {
       console.log(error);
-      alert("Error fetching NFT listings");
+      // alert("Error fetching NFT listings");
     }
   };
 

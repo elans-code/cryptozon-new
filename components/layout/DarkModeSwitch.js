@@ -12,7 +12,7 @@ import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { fetchUser } from "../store/userSlice";
+import { fetchUser } from "../../store/userSlice";
 
 const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -26,11 +26,8 @@ const DarkModeSwitch = () => {
   useEffect(() => {
     if (address) {
       dispatch(fetchUser(address));
-      router.replace("/marketplace");
-    } else {
-      router.replace("/");
     }
-  }, [address]);
+  }, [address, dispatch]);
 
   return (
     <Flex w="100%">
