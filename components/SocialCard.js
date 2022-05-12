@@ -13,7 +13,7 @@ export const SocialCard = (props) => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if(status!='success'){ 
+        if(status!='success'){
             dispatch(fetchAllPost());
         }
     },[status])
@@ -47,7 +47,7 @@ export const SocialCard = (props) => {
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
         {!!post? post.map(singlePostData=>{
             const {id,postImage,imageUrl,content,likes,comments, user} = singlePostData
-            console.log(singlePostData)
+            // console.log(singlePostData)
             return (
             <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>
                 <Box display='flex' alignItems='center'><Image padding='2px' margin='2px' borderRadius='full' boxSize='50px' alt='' src={user.imageUrl}/><Box>{user.username}</Box><Spacer/><Box>verified tag</Box></Box>
