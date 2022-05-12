@@ -1,6 +1,7 @@
 const {User} = require('../../../db')
 
 export default async function handler(req, res) {
+  console.log("HELLLLLOOOOOOOO")
   const {method, query: {username}} = req
   switch (method) {
     case 'GET':
@@ -16,3 +17,4 @@ export default async function handler(req, res) {
       break
   }
 }
+

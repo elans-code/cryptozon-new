@@ -105,7 +105,7 @@ export default function UserProfile() {
             </Text>
             <Text mt={2}>{user.bio}</Text>
             <Text fontSize={12} mt={10}>
-              Following 32 - Followers 56
+              Following {user.following} - Followers {user.followers}
             </Text>
             <Stack direction='row' spacing={200}>
               <Text fontSize={12}>~ other social accounts ~</Text>
