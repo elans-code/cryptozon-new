@@ -1,17 +1,30 @@
 import React from "react";
-import { Box, Image, Grid, GridItem as Gi, Text } from "@chakra-ui/react";
+import { Box, Image, Grid, GridItem as Gi, Text, Button } from "@chakra-ui/react";
+import { useMarketplace } from "@thirdweb-dev/react";
 
-export default function NFTItem() {
+const NFTItem = ({name, description, image, price, id}) => {
+  const marketplace = useMarketplace(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS);
+
+  const buyNFT = async () => {
+    try {
+      await marketplace.buyoutListing(id, 1);
+      alert("NFT purchased");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      alert("Error buying NFT");
+  }
+
   return (
     <Box boxShadow="lg" borderRadius="10px" overflow="hidden" cursor="pointer">
       <Image
-        src="https://img.seadn.io/files/732d02d5def11a4f1b3b19386514227b.png?auto=format&h=720&w=720"
+        src={image}
         alt="nft pic"
         boxSize="300px"
       />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
-          <Text color="gray.500">BEANIES</Text>
+          <Text color="gray.500">{name}</Text>
         </Gi>
         <Gi justifySelf="end">
           <Text color="gray.500">Price</Text>
@@ -27,7 +40,7 @@ export default function NFTItem() {
               boxSize="12.5px"
               display="inline-block"
             />{" "}
-            2.99
+            {price}
           </Text>
         </Gi>
         <Gi gridColumn="span 2" justifySelf="end">
@@ -35,5 +48,7 @@ export default function NFTItem() {
         </Gi>
       </Grid>
     </Box>
-  );
+  )}
 }
+
+export default NFTItem
