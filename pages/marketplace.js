@@ -4,6 +4,7 @@ import NFTList from "../components/marketplace/NFTList";
 import NFTItem from "../components/marketplace/NFTItem";
 import { useAddress, useMarketplace } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
+import { Flex } from "@chakra-ui/react";
 
 const Marketplace = () => {
   const [nftListings, setNftListings] = useState([]);
@@ -44,20 +45,19 @@ const Marketplace = () => {
       <Heading textAlign="center" mb="8">
         Cryptozon Market
       </Heading>
-      {isLoading ? <div>Loading</div> : <Box>
+      {isLoading ? <div>Loading</div> : <Flex gap="8" wrap="wrap" justifyContent={"center"}>
         {nftListings.length > 0 ? nftListings.map(nft => {
             console.log("nft", nft);
             const { name, description, image } = nft.asset;
             const { id, buyoutPrice, tokenId } = nft
             const price = buyoutPrice / 1e18;
 
-            return (<NFTItem key={tokenId} name={name} description={description} image={image} price={price} id={id} />
-            )
+            return (<NFTItem key={tokenId} name={name} description={description} image={image} price={price} id={id} />);
           })
           :
           <div>No listings</div>
         }
-        </Box>
+        </Flex>
       }
     </Box>
   );
