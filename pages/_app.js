@@ -5,7 +5,7 @@ import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 
 // This is the chainId your dApp will work on.
-const activeChainId = ChainId.Mainnet;
+const activeChainId = ChainId.Rinkeby;
 
 const config = {
   initialColorMode: "light",

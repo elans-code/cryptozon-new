@@ -2,11 +2,28 @@
 
 const {db, User, Post, Comments} = require('../db');
 
-const me = {
-  username: 'bek',
-  wallet: '0x83f2dbfa576bdba1C148484B43d07354A1fbed77',
-  bio: 'yerrrrr',
-}
+const _users = [
+  {
+    username: 'bek',
+    wallet: '0x83f2dbfa576bdba1C148484B43d07354A1fbed77',
+    bio: 'nft degen',
+  },
+  {
+    username: 'teman',
+    wallet: '0xa05749a1A58E379A29ac0C5B8273cD0c2B662d93',
+    bio: 'i was in the military. please don\'t tell me what to do.',
+  },
+  {
+    username: 'elonmusk',
+    wallet: '0x1AC1f0C79A9Bf849b7E038362ffa5351A922E52d',
+    bio: 'tesla / spaceX / twitter / memes',
+  },
+  {
+    username: 'france',
+    wallet: '0x1362C69834d5B19ECbfBC6a643375394a4228D32',
+    bio: 'i am satoshi',
+  }
+]
 const _post = [
   {
     content: 'this is some quality content',
@@ -98,8 +115,10 @@ const _comments = [
   await db.sync({ force: true }); // clears db and matches models to tables
   console.log("db synced!");
 
-  // Creating User
-  await User.create(me);
+  // adding users
+  await Promise.all(_users.map((u) => {
+    return User.create(u)
+  }))
 
   //adding posts
   await Promise.all(_post.map((p)=>{
@@ -109,7 +128,7 @@ const _comments = [
     return Comments.create(c)
   }))
 
-  console.log(`seeded 1 user`);
+  console.log(`seeded some users`);
   console.log(`seeded successfully`);
 }
 
