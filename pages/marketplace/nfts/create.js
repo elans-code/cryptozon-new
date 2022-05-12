@@ -1,4 +1,5 @@
 import React, { useState, useRef, Fragment as Fr } from "react";
+import axios from "axios";
 import {
   Container,
   Box,
@@ -13,6 +14,8 @@ import {
   Button,
   CloseButton,
   useColorModeValue,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
@@ -20,13 +23,21 @@ import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
 export default function CreateNFTPage() {
   const fileRef = useRef();
   const formRef = useRef();
+  const toast = useToast();
+
   const [image, setImage] = useState();
+  const [mintStatus, setMintStatus] = useState("idle");
+
   const btnColor = useColorModeValue("white", "black");
   const [fileError, setFileError] = useState(false);
+
   const nftCollection = useNFTCollection(
-    "0xFe1d218b269D5f202961d1C6F72C0101ad10848c"
+    process.env.NFT_COLECTION_CONTRACT_ADDRESS ||
+      "0xFe1d218b269D5f202961d1C6F72C0101ad10848c"
   );
-  const address = useAddress();
+
+  const address = useAddress(); // replace with user's state
+
   const handleFileChange = (e) => {
     const fileInp = e.target.files[0];
 
@@ -59,6 +70,7 @@ export default function CreateNFTPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEl = formRef.current;
+
     const {
       description = "",
       file,
@@ -75,13 +87,50 @@ export default function CreateNFTPage() {
       description,
       image: file,
     };
-    const tx = await nftCollection.mintTo(address, metadata);
-    const receipt = tx.receipt;
-    const tokenId = tx.id;
-    const nft = await tx.data();
-    console.log("NFT DATA", nft);
-    console.log("NFT TOKEN ID", tokenId);
-    console.log("NFT RECEIPT", receipt);
+    try {
+      setMintStatus("loading");
+      const tx = await nftCollection.mintTo(address, metadata);
+      // const receipt = tx.receipt;
+      const tokenId = tx.id;
+      const {
+        owner,
+        metadata: { description, image, name, uri },
+      } = await tx.data();
+      // console.log("NFT DATA", nft);
+      // console.log("NFT TOKEN ID", tokenId);
+      const newNFT = await axios.post("/api/nfts", {
+        owner,
+        tokenId: tokenId._hex,
+        description,
+        image,
+        name,
+        uri,
+      });
+
+      setMintStatus("success");
+      toast({
+        title: "Successfully Minted!",
+        description: "You can now view your NFT in your profile.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      formEl.elements.description.value = "";
+      formEl.elements.name.value = "";
+      onClose();
+    } catch (e) {
+      setMintStatus("idle");
+      let description = "Something went wrong";
+      if (e.message.includes("denied"))
+        description = "You denied the transaction request.";
+      toast({
+        title: "Minting Failed",
+        description,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -135,8 +184,11 @@ export default function CreateNFTPage() {
                   top="10px"
                   right="10px"
                   zIndex="10"
-                  bgColor="rgba(0,0,0,0.1)"
+                  bgColor="rgba(0,0,0,0.4)"
+                  _hover={{ bgColor: "rgba(0,0,0,0.3)" }}
+                  color="white"
                   onClick={onClose}
+                  boxShadow="md"
                 />
               </Fr>
             )}
@@ -166,8 +218,9 @@ export default function CreateNFTPage() {
           color={btnColor}
           alignSelf="flex-start"
           type="submit"
+          isDisabled={mintStatus === "loading"}
         >
-          Create!
+          {mintStatus === "loading" ? <Spinner /> : "Create"}
         </Button>
       </VStack>
     </Container>

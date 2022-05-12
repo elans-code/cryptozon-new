@@ -28,4 +28,5 @@ module.exports = {
   Comments,
   Collections,
   Follows,
+  NFTs,
 };
