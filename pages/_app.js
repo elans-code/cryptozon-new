@@ -2,7 +2,7 @@ import { ChainId, ThirdwebProvider } from "@thirdweb-dev/react";
 import store from "../store";
 import { Provider } from "react-redux";
 import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react"; // for chakra;
-import Navbar from "../components/Navbar";
+import Layout from "../components/layout";
 
 // This is the chainId your dApp will work on.
 const activeChainId = ChainId.Rinkeby;
@@ -21,8 +21,9 @@ function MyApp({ Component, pageProps }) {
       <ThirdwebProvider desiredChainId={activeChainId}>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <ChakraProvider theme={theme}>
-          <Navbar />
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </ChakraProvider>
       </ThirdwebProvider>
     </Provider>
