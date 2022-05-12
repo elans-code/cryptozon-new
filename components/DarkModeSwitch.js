@@ -11,6 +11,8 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from 'react-redux'
+import { fetchUser } from '../store/userSlice';
 
 const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -19,12 +21,19 @@ const DarkModeSwitch = () => {
   const connectWithMetamask = useMetamask();
   const disconnectWallet = useDisconnect();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (address) {
+      dispatch(fetchUser(address));
+      console.log("address", address);
       router.replace("/marketplace");
     }
   } , [address]);
+
+  // useEffect(() => {
+
+  // },[])
 
   return (
     <Flex>
