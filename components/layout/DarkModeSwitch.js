@@ -1,4 +1,4 @@
-import React, { useState, Fragment as Fr } from "react";
+import React, { useEffect, useState, Fragment as Fr } from "react";
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 import { BsSun, BsMoonStarsFill } from "react-icons/bs";
 import {
@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../../store/userSlice";
 
 const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -17,28 +20,60 @@ const DarkModeSwitch = () => {
   const address = useAddress();
   const connectWithMetamask = useMetamask();
   const disconnectWallet = useDisconnect();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (address) {
+      dispatch(fetchUser(address));
+    }
+  }, [address, dispatch]);
 
   return (
-    <Flex>
-      <Flex pos="fixed" top="1rem" right="1rem" align="center">
-        <Flex display={["none", "none", "flex", "flex"]}>
+    <Flex w="100%">
+      <Flex align="center" width="100%" justifyContent="flex-end" px="8">
+        <Flex display={["none", "none", "flex"]}>
           <Link href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Discovery
             </Button>
           </Link>
           <Link href="/marketplace" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Shop
             </Button>
           </Link>
           <Link href="/post" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Post
             </Button>
           </Link>
           <Link href="/profile" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Profile
             </Button>
           </Link>
@@ -46,7 +81,6 @@ const DarkModeSwitch = () => {
             {address ? (
               <Fr>
                 <Button
-                  as="a"
                   variant="ghost"
                   aria-label="Contact"
                   my={5}
@@ -59,7 +93,6 @@ const DarkModeSwitch = () => {
             ) : (
               <Fr>
                 <Button
-                  as="a"
                   variant="ghost"
                   aria-label="Contact"
                   my={5}
@@ -111,17 +144,35 @@ const DarkModeSwitch = () => {
         </Flex>
         <Flex flexDir="column" align="center">
           <Link href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Discovery
             </Button>
           </Link>
           <Link href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Shop
             </Button>
           </Link>
           <Link href="/profile" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
+            <Button
+              as={ChakraLink}
+              variant="ghost"
+              aria-label="Contact"
+              my={5}
+              w="100%"
+            >
               Profile
             </Button>
           </Link>
@@ -129,7 +180,6 @@ const DarkModeSwitch = () => {
             {address ? (
               <Fr>
                 <Button
-                  as="a"
                   variant="ghost"
                   aria-label="Contact"
                   my={5}
@@ -142,7 +192,6 @@ const DarkModeSwitch = () => {
             ) : (
               <Fr>
                 <Button
-                  as="a"
                   variant="ghost"
                   aria-label="Contact"
                   my={5}
