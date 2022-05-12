@@ -81,6 +81,13 @@ export default function UserProfile() {
     dispatch(fetchUser(address))
   }, [])
 
+  // make loading icon here
+  if (!user) {
+    return (
+      <Text>Loading</Text>
+    )
+  }
+
   return (
     <>
       <Container>
