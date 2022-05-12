@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux'
-import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spacer} from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spacer, Divider} from "@chakra-ui/react";
 import { fetchAllPost, likeComment, likePost, commentPost } from '../store/post';
 import CommentModal from './CommentModal';
 import {FcLike, FcApproval} from 'react-icons/fc';
@@ -85,7 +85,8 @@ export const SocialCard = (props) => {
                         const {content,likes, user, id} = c;
                         const {username} = user;
                         return(
-                            <Box border='1px' borderRadius='lg' key={id}>
+                            <Box key={id}>
+                                <Divider margin='2px' />
                                 <Box align='start' margin='2px'>{username}: {content}</Box>
                                 <Box>
                                     <Box>{likes} likes</Box>

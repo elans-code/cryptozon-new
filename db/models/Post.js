@@ -16,7 +16,7 @@ const Post = db.define('post', {
   },
   imageUrl:{
     type: Sequelize.TEXT,
-    defaultValue: '/assets/question.jpeg'
+    defaultValue: '/assets/question.png'
   }
 })
 
