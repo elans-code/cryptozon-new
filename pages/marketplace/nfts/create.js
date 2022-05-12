@@ -12,11 +12,13 @@ import {
   VStack,
   Button,
   CloseButton,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 export default function CreateNFTPage() {
   const fileRef = useRef();
   const [image, setImage] = useState();
+  const btnColor = useColorModeValue("white", "black");
   const [fileError, setFileError] = useState(false);
   const handleFileChange = (e) => {
     const fileInp = e.target.files[0];
@@ -119,7 +121,7 @@ export default function CreateNFTPage() {
           />
         </FormControl>
         <Box alignSelf={"flex-start"}>Collection Input Soon</Box>
-        <Button colorScheme="cyan" color="white" alignSelf="flex-start">
+        <Button colorScheme="cyan" color={btnColor} alignSelf="flex-start">
           Create!
         </Button>
       </VStack>

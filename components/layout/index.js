@@ -14,7 +14,7 @@ export default function Layout({ children }) {
   return (
     <Fr>
       <Navbar intersects={intersected} />
-      <Box>{children}</Box>
+      <Box pb={16}>{children}</Box>
     </Fr>
   );
 }
