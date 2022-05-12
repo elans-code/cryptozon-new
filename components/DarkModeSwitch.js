@@ -129,7 +129,7 @@ const DarkModeSwitch = () => {
               Discovery
             </Button>
           </Link>
-          <Link href="/" passHref>
+          <Link href="/marketplace" passHref>
             <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
               Shop
             </Button>

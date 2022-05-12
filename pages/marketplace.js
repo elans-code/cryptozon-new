@@ -25,13 +25,14 @@ const Marketplace = () => {
 
   const getNftListings = async () => {
     try {
-      if (!address) {
-        return null;
-      }
+      // if (!address) {
+      //   return null;
+      // }
       const nftList = await marketplace.getActiveListings();
       console.log(nftList);
+      setIsLoading(false);
       setNftListings(nftList);
-      // setIsLoading(false);
+
     } catch (error) {
       console.log(error);
       alert("Error fetching NFT listings");
@@ -49,16 +50,17 @@ const Marketplace = () => {
             const { name, description, image } = nft.asset;
             const { id, buyoutPrice, } = nft
             const price = buyoutPrice / 1e18;
-            return (
-              <NFTItem key={id} name={name} description={description} image={image} price={price} id={id} />
-              )
+
+            <NFTItem key={id} name={name} description={description} image={image} price={price} id={id} />
+
 
           })
 
           : (
           <div>No listings</div>)
         }
-        </Box> }
+        </Box>
+      }
     </Box>
   );
 }
