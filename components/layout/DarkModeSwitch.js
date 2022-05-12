@@ -1,4 +1,4 @@
-import React, { useState, Fragment as Fr } from "react";
+import React, { useEffect, useState, Fragment as Fr } from "react";
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 import { BsSun, BsMoonStarsFill } from "react-icons/bs";
 import {
@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../store/userSlice";
 
 const DarkModeSwitch = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -17,6 +20,17 @@ const DarkModeSwitch = () => {
   const address = useAddress();
   const connectWithMetamask = useMetamask();
   const disconnectWallet = useDisconnect();
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (address) {
+      dispatch(fetchUser(address));
+      router.replace("/marketplace");
+    } else {
+      router.replace("/");
+    }
+  }, [address]);
 
   return (
     <Flex w="100%">
