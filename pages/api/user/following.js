@@ -2,31 +2,26 @@ const {User, Follows} = require('../../../db')
 
 export default async function handler(req, res) {
   const {method} = req;
-  const {username, wallet} = req.body.params;
-  console.log('req body', req.body)
+  const {id} = req.query;
+
   switch (method) {
     case 'GET':
-      const user = await User.findOne({
+      const follows = await Follows.findAll({
         where: {
-          username: username
+          followerId: id
         }
-      });
-      res.status(200).json(user)
+      })
+      const following = await Promise.all(follows.map(async (f) => {
+        let person = await User.findOne({
+          where: {
+            id: f.userId
+          },
+          attributes: ["username", "imageUrl"]
+        })
+        return person
+      }))
+      res.status(200).json(following)
       break
-    case 'PUT':
-      const userToFollow = await User.findOne({
-        where: {
-          username: username
-        }
-      })
-      const me = await User.findOne({
-        where: {
-          wallet: wallet
-        }
-      })
-      console.log('user', userToFollow.id)
-      console.log('me', me.id)
-      res.json(await Follows.create({userId: userToFollow.id, followerId: me.id}))
     default:
       res.status(500)
       break

@@ -9,27 +9,11 @@ const initialState = {
 
 export const fetchFollowing = createAsyncThunk(
   'following/fetchFollowing',
-  async (username) => {
+  async (id) => {
     try {
-      const {data: following} = await axios.get('/api/user/following')
+      const {data: following} = await axios.get('/api/user/following', {params: {id}})
       return following
     } catch (err) {
-      console.log(err)
-    }
-  }
-)
-
-// follow / unfollow
-export const followUser = createAsyncThunk(
-  'followers/followUser',
-  async (info) => {
-    const {wallet, username} = info;
-    console.log('wallet is', wallet)
-    console.log('username is', username)
-    try {
-      const {data} = axios.put('/api/user/following', {params: {wallet, username}})
-      return data
-    } catch(err) {
       console.log(err)
     }
   }
@@ -51,16 +35,7 @@ export const followingSlice = createSlice({
       state.status = "rejected";
       state.error = action.payload;
     },
-    [followUser.pending]: (state) => {
-      state.status = "loading";
-    },
-    [followUser.fulfilled]: (state, action) => {
-      state.followers = action.payload;
-      state.status = "success";
-    },
-    [followUser.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-    },
   }
 })
+
+export const followingReducer = followingSlice.reducer

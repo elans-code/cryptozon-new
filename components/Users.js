@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
-import { fetchFollowers } from '../store/followers';
-import { followUser, fetchFollowing } from '../store/following';
+import { fetchFollowers, followUser } from '../store/followers';
+import { fetchFollowing } from '../store/following';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAddress } from '@thirdweb-dev/react';
 
@@ -37,59 +37,17 @@ const nfts = [
     projectName: "BAYC",
     hidden: false,
   },
-  // {
-  //   id: 4,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 5,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 6,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 7,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: true,
-  // },
-  // {
-  //   id: 8,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 9,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: true,
-  // },
 ];
 
 export default function Users({user}) {
   const dispatch = useDispatch();
-  const {username} = user;
+  const {id, username} = user;
   const wallet = useAddress();
-  const state = useSelector(state => state.followers)
-  console.log('followers are', state)
 
+  // might just move this to actual followers pg
   useEffect(() => {
-    dispatch(fetchFollowers(username))
+    dispatch(fetchFollowers(id))
+    dispatch(fetchFollowing(id))
   }, [])
 
   function follow(wallet, username) {
