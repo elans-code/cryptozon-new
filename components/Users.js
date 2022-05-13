@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
+import { fetchFollowers } from '../store/followers';
+import { followUser, fetchFollowing } from '../store/following';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddress } from '@thirdweb-dev/react';
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
@@ -78,6 +82,20 @@ const nfts = [
 ];
 
 export default function Users({user}) {
+  const dispatch = useDispatch();
+  const {username} = user;
+  const wallet = useAddress();
+  const state = useSelector(state => state.followers)
+  console.log('followers are', state)
+
+  useEffect(() => {
+    dispatch(fetchFollowers(username))
+  }, [])
+
+  function follow(wallet, username) {
+    dispatch(followUser({wallet, username}))
+  }
+
   return (
     <>
       <Container>
@@ -103,7 +121,7 @@ export default function Users({user}) {
               </Text>
               <Box>
               <ChatIcon mr={4} _hover={{cursor: 'pointer', opacity: '0.8'}}/>
-              <Button w={100} borderRadius={50}>Follow</Button>
+              <Button w={100} borderRadius={50} onClick={() => follow(wallet, username)}>Follow</Button>
               </Box>
             </Stack>
             <Text mt={5}>{user.bio}</Text>
