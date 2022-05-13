@@ -66,17 +66,18 @@ const DarkModeSwitch = () => {
               Post
             </Button>
           </Link>
-          <Link href="/profile" passHref>
-            <Button
-              as={ChakraLink}
-              variant="ghost"
-              aria-label="Contact"
-              my={5}
-              w="100%"
-            >
-              Profile
-            </Button>
-          </Link>
+            { address ? (
+              <Link href="/profile" passHref><Button
+                as={ChakraLink}
+                variant="ghost"
+                aria-label="Contact"
+                my={5}
+                w="100%"
+              >
+                Profile
+              </Button>
+            </Link>) : null }
+
           <ChakraLink>
             {address ? (
               <Fr>
