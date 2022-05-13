@@ -6,6 +6,7 @@ import CommentModal from './CommentModal';
 import {FcLike, FcApproval} from 'react-icons/fc';
 import { useAddress } from '@thirdweb-dev/react';
 import { fetchUser } from '../store/userSlice';
+import Addpost from './Addpost';
 
 //to be styled later
 //post should be in cronological order
@@ -16,7 +17,6 @@ export const SocialCard = (props) => {
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({});
     const dispatch = useDispatch();
-    console.log(user)
     useEffect(()=>{
         if(status!='success'){
             dispatch(fetchAllPost());
@@ -47,13 +47,26 @@ export const SocialCard = (props) => {
         setOpen(false);
         setData({})
     }
+    let tempPost = []
+    if(!!post){
+        tempPost = [...post]
+    }
     return (
     <Box display='flex' flexDirection='column' align='center'>
-        {!!address ? 'wallet connected':'wallet not connected'}
-        {!!user.username ? 'logged in': 'not logged in'}
+        {!!address ? 'wallet connected ':'wallet not connected '}
+        {!!user.username ? 'logged in ': 'not logged in '}
+        {!!user.username ? <Addpost/> : null}
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
-        {!!post? post.map(singlePostData=>{
+        {!!post? tempPost.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)}).map(singlePostData=>{
+            // console.log(singlePostData)
             const {id,postImage,imageUrl,content,likes,comments, user} = singlePostData
+            let tempComments = [...comments]
+            if(!!tempComments){
+                console.log('presort: ',tempComments);
+                console.log('sorting comments')
+                tempComments.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)});
+                console.log('post sort: ', tempComments)
+            }
             // console.log(singlePostData)
             return (
             <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>
@@ -87,7 +100,7 @@ export const SocialCard = (props) => {
                     <Button onClick={()=>{openModal(singlePostData)}} value={id}>Comment</Button>
                 </Box>
                 <Box>
-                    {comments.map(c =>{
+                    {tempComments.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)}).map(c =>{
                         const {content,likes, user, id} = c;
                         const {username} = user;
                         return(
