@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
 
 const Marketplace = () => {
-  const [nftListings, setNftListings] = useState([]);
+
+  const [nftListings, setNftListings] = useState([]);   // will useSelector once NFT reducer is implemented
   const [isLoading, setIsLoading] = useState(true);
   const address = useAddress();
   const router = useRouter();
@@ -27,9 +28,9 @@ const Marketplace = () => {
 
   const getNftListings = async () => {
     try {
-      if (!address) {
-        return null;
-      }
+      // if (!address) {
+      //   return null;
+      // }
       const nftList = await marketplace.getActiveListings();
       // console.log(nftList);
       setIsLoading(false);
