@@ -7,7 +7,7 @@ const transferNFT = wrapAsync(async (req, res) => {
   const [, id] = req.query.action;
   const [, transferredNFT] = await NFTs.update(
     { owner, listingId: null, buyoutPrice: null, expirationDate: null },
-    { where: { id } }
+    { where: { id }, returning: true }
   );
   return res.status(200).json({ status: "success", data: transferredNFT });
 });
@@ -16,7 +16,7 @@ const sellNFT = wrapAsync(async (req, res) => {
   const [, id] = req.query.action;
   const [, sellingNFT] = await NFTs.update(
     { listingId, buyoutPrice, expirationDate },
-    { where: { id } }
+    { where: { id }, returning: true }
   );
   return res.status(200).json({ status: "success", data: sellingNFT });
 });

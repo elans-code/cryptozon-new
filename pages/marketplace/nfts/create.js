@@ -16,6 +16,7 @@ import {
   useColorModeValue,
   Spinner,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 
 import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
@@ -212,7 +213,20 @@ export default function CreateNFTPage() {
             isReadOnly={true}
           />
         </FormControl>
-        <Box alignSelf={"flex-start"}>Collection Input Soon</Box>
+        {/** this collection input is still for display. once the collection api route is running we could use it */}
+        <FormControl pb={2}>
+          <FormLabel htmlFor="collection">Collection</FormLabel>
+          <Select name="collection" id="collection" defaultValue="default">
+            <option value="default" disabled>
+              Collection
+            </option>
+            <option value="tasty_bones">Tasty Bones</option>
+            <option value="invisible_friends">Invisible Friends</option>
+            <option value="banana_bros">Banana Bros</option>
+            <option value="ether_steak">Ether Steak</option>
+          </Select>
+        </FormControl>
+
         <Button
           colorScheme="cyan"
           color={btnColor}
