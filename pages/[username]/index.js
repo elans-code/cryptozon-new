@@ -1,9 +1,9 @@
 import React from 'react'
 import axios from 'axios'
-import Users from '../components/Users'
+import Users from '../../components/Users'
 import { useAddress } from "@thirdweb-dev/react";
 import { useRouter } from 'next/router';
-import UserProfile from '../components/UserProfile';
+// import UserProfile from '../components/UserProfile';
 
 export default function User({user}) {
   const address = useAddress();

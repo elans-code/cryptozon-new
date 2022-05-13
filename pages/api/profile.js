@@ -2,6 +2,7 @@ import User from "../../db/models/User"
 
 export default async function handler(req, res) {
   const {method} = req;
+  console.log('req.query', req.query)
   let {wallet} = req.query
   switch (method) {
     case 'GET':

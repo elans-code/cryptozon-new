@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack, textDecoration } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
 import { fetchFollowers, followUser } from '../store/followers';
 import { fetchFollowing } from '../store/following';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAddress } from '@thirdweb-dev/react';
+import Link from 'next/link';
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
@@ -83,9 +84,14 @@ export default function Users({user}) {
               </Box>
             </Stack>
             <Text mt={5}>{user.bio}</Text>
-            <Text fontSize={12} mt={10}>
-              Following {user.following} - Followers {user.followers}
-            </Text>
+            <Stack direction='row' fontSize={12} mt={10} spacing={5}>
+              <Link href={`/${username}/following`} style={styles.TextLink}>
+                {'Following ' + user.following}
+              </Link>
+              <Link href={`/${username}/followers`}>
+                {'Followers ' +user.followers}
+              </Link>
+            </Stack>
             <Text fontSize={12}>~ other social accounts ~</Text>
           </Flex>
         </Box>
@@ -139,3 +145,12 @@ export default function Users({user}) {
     </>
   )
 }
+
+
+const styles = ({
+  TextLink: {
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  }
+})

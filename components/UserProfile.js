@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack, Spinner } from "@chakra-ui/react";
 import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
+// import { SP } from 'next/dist/shared/lib/utils';
 
 const nfts = [
   {
@@ -85,6 +86,7 @@ export default function UserProfile() {
   if (!user) {
     return (
       <Text>Loading</Text>
+      // <Spinner size='xl' textAlign='center' />
     )
   }
 

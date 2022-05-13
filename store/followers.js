@@ -1,6 +1,13 @@
 import axios from 'axios'
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 
+/*
+  this state is to keep track of followers for basically every user;
+  go to your own prof -> state updated w only your followers
+  got to someones prof -> state updated w their followers
+  ... same thing for the 'following' state
+*/
+
 const initialState = {
   followers: [],
   status: null,
