@@ -1,5 +1,6 @@
 import { wrapAsync } from "../../../utils";
 import { NFTs } from "../../../db/";
+
 const createNFT = wrapAsync(async (req, res) => {
   const { owner, name, description, tokenId, image, uri } = req.body;
   const newNFT = await NFTs.create({

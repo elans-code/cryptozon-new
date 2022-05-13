@@ -1,9 +1,5 @@
-const { Collections, User } = require("../../../db");
-
-const wrapAsync = (fn) => (req, res) =>
-  fn(req, res).catch((err) => {
-    throw err;
-  });
+import { wrapAsync } from "../../../utils";
+import { Collections, User } from "../../../db";
 
 const createCollection = wrapAsync(async (req, res) => {
   const { name, profileImg, bannerImg, description = "", address } = req.body;
