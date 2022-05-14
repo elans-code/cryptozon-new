@@ -4,7 +4,6 @@ import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
-// import { SP } from 'next/dist/shared/lib/utils';
 
 const nfts = [
   {

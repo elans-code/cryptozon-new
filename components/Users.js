@@ -1,11 +1,15 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Text, Image, Container, Flex, Divider, Stack, textDecoration } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
-import { fetchFollowers, followUser } from '../store/followers';
+import { fetchFollowers } from '../store/followers';
 import { fetchFollowing } from '../store/following';
+import { followUser } from '../store/selectedUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAddress } from '@thirdweb-dev/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { fetchSelectedUser } from '../store/selectedUser';
+import {fetchUser} from '../store/userSlice';
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
@@ -41,19 +45,56 @@ const nfts = [
 ];
 
 export default function Users({user}) {
+  const router = useRouter();
   const dispatch = useDispatch();
-  const {id, username} = user;
+  // const {id, username} = user;
   const wallet = useAddress();
+  const {selectedUser} = useSelector(state => state.selectedUser);
+  const state = useSelector(state => state.user);
+  const {followers} = useSelector(state => state.followers);
+  const [isFollowing, setIsFollowing] = useState('');
+  const signedIn = state.user;
 
   // might just move this to actual followers pg
+  // useEffect(() => {
+  //   dispatch(fetchFollowers(id))
+  //   dispatch(fetchFollowing(id))
+  // }, [])
+  // function checkIfFollowing() {
+  //   for (let f of followers) {
+  //     if (f.username == signedIn.username) {
+  //       setIsFollowing('Unfollow')
+  //     } else {
+  //       setIsFollowing('Follow')
+  //     }
+  //   }
+  // }
+
   useEffect(() => {
-    dispatch(fetchFollowers(id))
-    dispatch(fetchFollowing(id))
+    dispatch(fetchSelectedUser(user.username))
+    // dispatch(fetchUser(wallet))
+    // dispatch(fetchFollowers(user.username))
   }, [])
 
   function follow(wallet, username) {
     dispatch(followUser({wallet, username}))
+    if (isFollowing == 'Follow') {
+      setIsFollowing('Unfollow')
+    } else {
+      setIsFollowing('Follow')
+    }
   }
+
+  if (!selectedUser) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+
+  // if (selectedUser.wallet == wallet) {
+  //   router.push('/profile')
+  //   // return (<UserProfile />)
+  // }
 
   return (
     <>
@@ -70,26 +111,26 @@ export default function Users({user}) {
             w={200}
             h={200}
             borderRadius={100}
-            src={user.imageUrl}
+            src={selectedUser.imageUrl}
             mr={10}
           />
           <Flex direction="column" w={500} mt="15px">
             <Stack direction='row' spacing={220}>
               <Text fontWeight="bold" fontSize={26}>
-                @{user.username}
+                @{selectedUser.username}
               </Text>
               <Box>
               <ChatIcon mr={4} _hover={{cursor: 'pointer', opacity: '0.8'}}/>
-              <Button w={100} borderRadius={50} onClick={() => follow(wallet, username)}>Follow</Button>
+              <Button w={100} borderRadius={50} onClick={() => follow(wallet, selectedUser.username)}>Follow</Button>
               </Box>
             </Stack>
-            <Text mt={5}>{user.bio}</Text>
+            <Text mt={5}>{selectedUser.bio}</Text>
             <Stack direction='row' fontSize={12} mt={10} spacing={5}>
-              <Link href={`/${username}/following`} style={styles.TextLink}>
-                {'Following ' + user.following}
+              <Link href={`/${selectedUser.username}/following`}>
+                {'Following ' + selectedUser.following}
               </Link>
-              <Link href={`/${username}/followers`}>
-                {'Followers ' +user.followers}
+              <Link href={`/${selectedUser.username}/followers`}>
+                {'Followers ' + selectedUser.followers}
               </Link>
             </Stack>
             <Text fontSize={12}>~ other social accounts ~</Text>
@@ -146,11 +187,10 @@ export default function Users({user}) {
   )
 }
 
-
-const styles = ({
-  TextLink: {
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  }
-})
+// const styles = ({
+//   TextLink: {
+//     '&:hover': {
+//       textDecoration: 'underline'
+//     }
+//   }
+// })
