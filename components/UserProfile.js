@@ -4,6 +4,7 @@ import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
+import Link from 'next/link';
 
 const nfts = [
   {
@@ -112,9 +113,14 @@ export default function UserProfile() {
               @{user.username}
             </Text>
             <Text mt={2}>{user.bio}</Text>
-            <Text fontSize={12} mt={10}>
-              Following {user.following} - Followers {user.followers}
-            </Text>
+            <Stack direction='row' fontSize={12} mt={10} spacing={5}>
+              <Link href='/profile/following'>
+                {'Following ' + user.following}
+              </Link>
+              <Link href='/profile/followers'>
+                {'Followers ' + user.followers}
+              </Link>
+            </Stack>
             <Stack direction='row' spacing={200}>
               <Text fontSize={12}>~ other social accounts ~</Text>
               <EditProfile

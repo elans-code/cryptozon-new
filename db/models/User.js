@@ -17,9 +17,9 @@ const User = db.define('user', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgSmojUgwjIB87c4Q0hLCAyl__oiTySWGWJUZtUNHlHjBALLzTsu_vMHYMaEwLts4QEoo&usqp=CAU',
-    validate: {
-      isUrl: true
-    }
+    // validate: {
+    //   isUrl: true
+    // }
   },
   admin: {
     type: Sequelize.BOOLEAN,
@@ -38,3 +38,4 @@ const User = db.define('user', {
 module.exports = User;
 
 // folowing and followers might actually have to be an extra table
+// isUrl validation for imageUrl was messing up the edit profile pg

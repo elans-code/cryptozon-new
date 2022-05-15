@@ -13,6 +13,7 @@ export default function EditProfile({user, wallet}) {
     imageUrl: '',
     bio: ''
   })
+
   const {username, bio, imageUrl} = userInfo;
 
   function handleSubmit(wallet, userInfo) {
@@ -29,6 +30,11 @@ export default function EditProfile({user, wallet}) {
     onOpen()
   }
 
+  function handleFileChange(e) {
+    const fileInput = e.target.files[0];
+    setUserInfo({...userInfo, imageUrl: URL.createObjectURL(fileInput)})
+  }
+
   return (
     <>
       <Button mt={4} onClick={open} w={120} >
@@ -40,8 +46,9 @@ export default function EditProfile({user, wallet}) {
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Image alt="profile" src={imageUrl} w={100} h={100} borderRadius={100} mb={5} />
-            {/* <Input type='file' w={200} onChange={(e) => setUserInfo({...userInfo, imageUrl: e.target.value})}/> */}
+            <Image alt="profile" src={imageUrl} w={100} h={100} borderRadius={100} mb={5} cursor='pointer' onClick={() => document.getElementById('upload').click()}/>
+            {/* <Input type='file' w={200} accept='image/*' onChange={(e) => setUserInfo({...userInfo, imageUrl: e.target.files[0]})}/> */}
+            <Input id='upload' display='none' type='file' accept='image/*' onChange={handleFileChange}/>
             <FormControl>
               <FormLabel>Username</FormLabel>
               <Input value={username} onChange={(e) => setUserInfo({...userInfo, username: e.target.value})}/>

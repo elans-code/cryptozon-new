@@ -3,20 +3,25 @@ import { user } from 'pg/lib/defaults';
 const {User, Follows} = require('../../../db')
 
 export default async function handler(req, res) {
-  // const {method, query: {id}} = req;
-  const {method} = req;
-  // const id = !!req.query.id ? req.query.id : null;
-  // const wallet = !!req.body.params ? req.body.params.wallet : null
-  // const username = !!req.body.params ? req.body.params.username : null
-  const username = !!req.query ? req.query.username : null
+  const {method, query: {info}} = req;
+  let user;
   switch (method) {
     case 'GET':
       try {
-      const user = await User.findOne({
-        where: {
-          username: username
-        }
-      })
+      // adding this bc info can either be a wallet (logged in) or username (other user)
+      if (info.length > 20) {
+        user = await User.findOne({
+          where: {
+            wallet: info
+          }
+        })
+      } else {
+        user = await User.findOne({
+          where: {
+            username: info
+          }
+        })
+      }
       const follows = await Follows.findAll({
         where: {
           userId: user.id

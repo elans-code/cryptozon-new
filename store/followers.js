@@ -16,9 +16,9 @@ const initialState = {
 
 export const fetchFollowers = createAsyncThunk(
   'followers/fetchFollowers',
-  async (username) => {
+  async (info) => {
     try {
-      const {data} = await axios.get(`/api/user/followers`, {params: {username}})
+      const {data} = await axios.get(`/api/user/followers`, {params: {info}})
       return data
     } catch(err) {
       console.log(err)

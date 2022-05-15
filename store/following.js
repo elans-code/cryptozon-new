@@ -9,9 +9,9 @@ const initialState = {
 
 export const fetchFollowing = createAsyncThunk(
   'following/fetchFollowing',
-  async (id) => {
+  async (info) => {
     try {
-      const {data: following} = await axios.get('/api/user/following', {params: {id}})
+      const {data: following} = await axios.get('/api/user/following', {params: {info}})
       return following
     } catch (err) {
       console.log(err)

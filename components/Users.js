@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Text, Image, Container, Flex, Divider, Stack, textDecoration } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
-import { fetchFollowers } from '../store/followers';
-import { fetchFollowing } from '../store/following';
 import { followUser } from '../store/selectedUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAddress } from '@thirdweb-dev/react';
@@ -10,6 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { fetchSelectedUser } from '../store/selectedUser';
 import {fetchUser} from '../store/userSlice';
+import axios from 'axios';
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
@@ -47,54 +46,44 @@ const nfts = [
 export default function Users({user}) {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const {id, username} = user;
   const wallet = useAddress();
   const {selectedUser} = useSelector(state => state.selectedUser);
-  const state = useSelector(state => state.user);
-  const {followers} = useSelector(state => state.followers);
-  const [isFollowing, setIsFollowing] = useState('');
-  const signedIn = state.user;
-
-  // might just move this to actual followers pg
-  // useEffect(() => {
-  //   dispatch(fetchFollowers(id))
-  //   dispatch(fetchFollowing(id))
-  // }, [])
-  // function checkIfFollowing() {
-  //   for (let f of followers) {
-  //     if (f.username == signedIn.username) {
-  //       setIsFollowing('Unfollow')
-  //     } else {
-  //       setIsFollowing('Follow')
-  //     }
-  //   }
-  // }
+  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
     dispatch(fetchSelectedUser(user.username))
-    // dispatch(fetchUser(wallet))
-    // dispatch(fetchFollowers(user.username))
+    checkIfFollowing()
   }, [])
 
+  // functions as both a follow and unfollow (if the current user is already following them)
   function follow(wallet, username) {
     dispatch(followUser({wallet, username}))
-    if (isFollowing == 'Follow') {
-      setIsFollowing('Unfollow')
+    if (isFollowing) {
+      setIsFollowing(false)
     } else {
-      setIsFollowing('Follow')
+      setIsFollowing(true)
     }
   }
+
+  // trying to check initially if signed in user is following this user, and then set state for the button / breaks on refresh currently
+  async function checkIfFollowing() {
+    let info = wallet;
+    const {data} = await axios.get('/api/user/following', {params: {info}})
+    data.forEach(f => {
+      if (f.username == user.username) {
+        setIsFollowing(true)
+      }
+    })
+  }
+
+  const buttonTitle = isFollowing ? 'Unfollow' : 'Follow';
+
 
   if (!selectedUser) {
     return (
       <Text>Loading...</Text>
     )
   }
-
-  // if (selectedUser.wallet == wallet) {
-  //   router.push('/profile')
-  //   // return (<UserProfile />)
-  // }
 
   return (
     <>
@@ -121,7 +110,7 @@ export default function Users({user}) {
               </Text>
               <Box>
               <ChatIcon mr={4} _hover={{cursor: 'pointer', opacity: '0.8'}}/>
-              <Button w={100} borderRadius={50} onClick={() => follow(wallet, selectedUser.username)}>Follow</Button>
+              <Button w={100} borderRadius={50} onClick={() => follow(wallet, selectedUser.username)}>{buttonTitle}</Button>
               </Box>
             </Stack>
             <Text mt={5}>{selectedUser.bio}</Text>
@@ -144,11 +133,6 @@ export default function Users({user}) {
         justifyContent="space-between"
         alignItems="center"
       >
-        {/* <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-          <Button>Owned</Button>
-          <Divider m="5px" />
-          <Button>Hidden</Button>
-        </Box> */}
         <Box
           flex={1}
           display="flex"
@@ -186,11 +170,3 @@ export default function Users({user}) {
     </>
   )
 }
-
-// const styles = ({
-//   TextLink: {
-//     '&:hover': {
-//       textDecoration: 'underline'
-//     }
-//   }
-// })
