@@ -2,7 +2,7 @@ import { Fragment as Fr, useState, useEffect, useCallback } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 import { useDispatch } from "react-redux";
-import { fetchNFT } from "../../store/nfts";
+import { setNFT, } from "../../store/nfts";
 import { useMarketplace } from "@thirdweb-dev/react";
 
 export default function Layout({ children }) {
@@ -24,13 +24,16 @@ export default function Layout({ children }) {
   useEffect(() => {
     // set redux store with all nfts from marketplace contract
     getAllListings();
+
   }, []);
 
   const getAllListings = async () => {
     try {
       const nftList = await marketplace.getAllListings();
       setAllNFTListings(nftList);
-      console.log(nftList);
+      // console.log(nftList);
+      // dispatch/set allNFTListings to redux store
+      dispatch(setNFT(nftList));
     } catch (error) {
       console.log(error);
     }

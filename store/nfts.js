@@ -7,14 +7,13 @@ const initialState = {
   nfts: [],
 }
 
-export const fetchNFT = createAsyncThunk(
-  "nfts/fetchNFT",
-  async () => {
+
+export const setNFT = createAsyncThunk(
+  "nfts/setNFT",
+  async (data) => {
     try {
-      const marketplace = useMarketplace(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS);
-      const { data:nfts } = await marketplace.getAllListings();
-      console.log(nfts)
-      return nfts;
+      console.log(data)
+      return data;
     } catch (error) {
       console.log(error)
     }
@@ -26,17 +25,17 @@ export const nftSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchNFT.pending]: (state) => {
+    [setNFT.pending]: (state) => {
       state.status = "loading";
-  },
-  [fetchNFT.fulfilled]: (state, action) => {
-    state.nfts = action.payload;
-    state.status = "success";
-  },
-  [fetchNFT.rejected]: (state, action) => {
-    state.status = "rejected";
-    state.error = action.payload;
-  }
+    },
+    [setNFT.fulfilled]: (state, action) => {
+      state.nfts = [...state.nfts, action.payload];
+      state.status = "success";
+    },
+    [setNFT.rejected]: (state, action) => {
+      state.status = "rejected";
+      state.error = action.payload;
+    }
   },
 });
 
