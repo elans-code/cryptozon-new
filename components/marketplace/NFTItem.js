@@ -1,12 +1,20 @@
 import React from "react";
-import { Box, Image, Grid, GridItem as Gi, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Grid,
+  GridItem as Gi,
+  Text,
+  Button,
+} from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
 
 const NFTItem = (props) => {
-  console.log("props", props);
-  const {name, description, image, price, id, tokenId } = props;
+  const { name, image, price = "1.99", id, tokenId } = props;
 
-  const marketplace = useMarketplace(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS);
+  const marketplace = useMarketplace(
+    process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
+  );
 
   const buyNFT = async () => {
     try {
@@ -17,15 +25,18 @@ const NFTItem = (props) => {
       console.log(error);
       alert("Error buying NFT");
     }
-  }
+  };
 
   return (
-    <Box boxShadow="lg" borderRadius="10px" overflow="hidden" cursor="pointer">
-      <Image
-        src={image}
-        alt="nft pic"
-        boxSize="300px"
-      />
+    <Box
+      boxShadow="lg"
+      borderRadius="10px"
+      overflow="hidden"
+      cursor="pointer"
+      border="1px solid"
+      borderColor="gray.300"
+    >
+      <Image src={image} alt="nft pic" objectFit="contain" w="100%" />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
           <Text color="gray.500">{name}</Text>
@@ -47,16 +58,13 @@ const NFTItem = (props) => {
             {price}
           </Text>
         </Gi>
-        <Gi>
-          <Button onClick={buyNFT}>Buy Now!</Button>
-        </Gi>
+
         <Gi gridColumn="span 2" justifySelf="end">
           <Text>1 day left</Text>
         </Gi>
       </Grid>
     </Box>
-  )
-}
+  );
+};
 
-
-export default NFTItem
+export default NFTItem;

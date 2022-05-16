@@ -1,4 +1,4 @@
-import User from "../../db/models/User";
+import { User, Collections } from "../../db/";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -9,6 +9,7 @@ export default async function handler(req, res) {
         where: {
           wallet: wallet,
         },
+        include: [{ model: Collections }],
       });
       return res.status(200).send(user);
 
@@ -20,7 +21,6 @@ export default async function handler(req, res) {
       });
       await updateUser.update(req.body);
       return res.status(200).send(updateUser);
-
     default:
       break;
   }

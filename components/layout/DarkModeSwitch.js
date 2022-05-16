@@ -32,7 +32,7 @@ const DarkModeSwitch = () => {
   return (
     <Flex w="100%">
       <Flex align="center" width="100%" justifyContent="flex-end" px="8">
-        <Flex display={["none", "none", "flex"]}>
+        <Flex display={["none", "none", "flex"]} gap="2" mr="2">
           <Link href="/" passHref>
             <Button
               as={ChakraLink}
@@ -44,7 +44,7 @@ const DarkModeSwitch = () => {
               Discovery
             </Button>
           </Link>
-          <Link href="/marketplace" passHref>
+          <Link href="/marketplace/collections" passHref>
             <Button
               as={ChakraLink}
               variant="ghost"
@@ -66,8 +66,9 @@ const DarkModeSwitch = () => {
               Post
             </Button>
           </Link>
-            { address ? (
-              <Link href="/profile" passHref><Button
+          {address ? (
+            <Link href="/profile" passHref>
+              <Button
                 as={ChakraLink}
                 variant="ghost"
                 aria-label="Contact"
@@ -76,7 +77,8 @@ const DarkModeSwitch = () => {
               >
                 Profile
               </Button>
-            </Link>) : null }
+            </Link>
+          ) : null}
 
           <ChakraLink>
             {address ? (
@@ -166,17 +168,19 @@ const DarkModeSwitch = () => {
               Shop
             </Button>
           </Link>
-          { address ? (
-            <Link href="/profile" passHref><Button
-              as={ChakraLink}
-              variant="ghost"
-              aria-label="Contact"
-              my={5}
-              w="100%"
-            >
-              Profile
-            </Button>
-          </Link>) : null }
+          {address ? (
+            <Link href="/profile" passHref>
+              <Button
+                as={ChakraLink}
+                variant="ghost"
+                aria-label="Contact"
+                my={5}
+                w="100%"
+              >
+                Profile
+              </Button>
+            </Link>
+          ) : null}
           <ChakraLink>
             {address ? (
               <Fr>
