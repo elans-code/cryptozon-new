@@ -4,20 +4,24 @@ import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spac
 import { fetchAllPost, likeComment, likePost, commentPost } from '../store/post';
 import CommentModal from './CommentModal';
 import {FcLike, FcApproval} from 'react-icons/fc';
+import { useAddress } from '@thirdweb-dev/react';
+import { fetchUser } from '../store/userSlice';
 
 //to be styled later
 //post should be in cronological order
 export const SocialCard = (props) => {
+    const address = useAddress();
+    const {user} = useSelector(state => state.user);
     const {AllPost:post, status} = useSelector((state)=> state.socialPost);
     const [open, setOpen] = useState(false);
     const [data, setData] = useState({});
     const dispatch = useDispatch();
-
+    console.log(user)
     useEffect(()=>{
         if(status!='success'){
             dispatch(fetchAllPost());
         }
-    },[status])
+    },[status, dispatch])
 
     const lPost = (id) => {
         dispatch(likePost(id))
@@ -45,6 +49,8 @@ export const SocialCard = (props) => {
     }
     return (
     <Box display='flex' flexDirection='column' align='center'>
+        {!!address ? 'wallet connected':'wallet not connected'}
+        {!!user.username ? 'logged in': 'not logged in'}
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
         {!!post? post.map(singlePostData=>{
             const {id,postImage,imageUrl,content,likes,comments, user} = singlePostData
@@ -88,7 +94,7 @@ export const SocialCard = (props) => {
                             <Box key={id}>
                                 <Divider margin='2px' />
                                 <Box display='flex'  >
-                                    <Box align='start' margin='2px'>{username}: {content}</Box>
+                                    <Box align='start' marginLeft='4px' margin='2px'>{username}: {content}</Box>
                                     <Spacer />
                                     <Box display='flex' flexDirection='row' margin='3px'>
                                         <Box marginRight='3px'>{likes} likes</Box>
