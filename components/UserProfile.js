@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react'
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack, Spinner } from "@chakra-ui/react";
 import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
+import Link from 'next/link';
+import axios from 'axios';
 
 const nfts = [
   {
@@ -75,11 +77,35 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const {user} = useSelector(state => state.user);
-  // const [visibility, setVisibility] = useState('all');
+  const [usernames, setUsernames] = useState([]);
 
   useEffect(() => {
+    if (address) {
     dispatch(fetchUser(address))
-  }, [])
+    getAllUsernames()
+    }
+  }, [address])
+
+  // using this to compare usernames when editing and set up error handling
+  async function getAllUsernames() {
+    const res = await axios.get('http://localhost:3000/api/users');
+    const names = res.data.map(u => {
+      if (u.username == user.username) {
+        return ''
+      } else {
+        return u.username
+      }
+    })
+    setUsernames(names)
+  }
+
+  if (!user) {
+    return (
+      <Box display='flex' justifyContent='center' alignItems='center'>
+        <Spinner size='xl' textAlign='center' />
+      </Box>
+    )
+  }
 
   return (
     <>
@@ -104,14 +130,20 @@ export default function UserProfile() {
               @{user.username}
             </Text>
             <Text mt={2}>{user.bio}</Text>
-            <Text fontSize={12} mt={10}>
-              Following 32 - Followers 56
-            </Text>
+            <Stack direction='row' fontSize={12} mt={10} spacing={5}>
+              <Link href='/profile/following'>
+                {'Following ' + user.following}
+              </Link>
+              <Link href='/profile/followers'>
+                {'Followers ' + user.followers}
+              </Link>
+            </Stack>
             <Stack direction='row' spacing={200}>
               <Text fontSize={12}>~ other social accounts ~</Text>
               <EditProfile
                 user={user}
                 wallet={address}
+                usernames={usernames}
               />
             </Stack>
           </Flex>
