@@ -23,10 +23,10 @@ const Marketplace = () => {
 
   // fetch nft listings
   useEffect(() => {
-    getNftListings();
+    getActiveListings();
   }, []);
 
-  const getNftListings = async () => {
+  const getActiveListings = async () => {
     try {
       // if (!address) {
       //   return null;
