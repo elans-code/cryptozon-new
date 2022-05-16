@@ -7,7 +7,6 @@ import { useAddress } from '@thirdweb-dev/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { fetchSelectedUser } from '../store/selectedUser';
-import {fetchUser} from '../store/userSlice';
 import axios from 'axios';
 
 /*
@@ -15,8 +14,6 @@ import axios from 'axios';
   functionality and display are a bit different, you can't edit their pg and you can't view their hidden nfts
 
   when visiting this pg, we'll have to use the username to get their wallet, and from there we can grab their nfts based on their wallet
-
-  do we need to include users in our state?
 */
 
 const nfts = [
@@ -52,8 +49,10 @@ export default function Users({user}) {
 
   useEffect(() => {
     dispatch(fetchSelectedUser(user.username))
+    if (wallet) {
     checkIfFollowing()
-  }, [])
+    }
+  }, [wallet])
 
   // functions as both a follow and unfollow (if the current user is already following them)
   function follow(wallet, username) {
@@ -65,7 +64,7 @@ export default function Users({user}) {
     }
   }
 
-  // trying to check initially if signed in user is following this user, and then set state for the button / breaks on refresh currently
+  // checking initially if signed-in user is following this user, and then set state for the button
   async function checkIfFollowing() {
     let info = wallet;
     const {data} = await axios.get('/api/user/following', {params: {info}})
@@ -77,7 +76,6 @@ export default function Users({user}) {
   }
 
   const buttonTitle = isFollowing ? 'Unfollow' : 'Follow';
-
 
   if (!selectedUser) {
     return (

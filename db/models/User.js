@@ -4,7 +4,7 @@ const db = require('../db');
 const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
-    unique: true // should prob be unique
+    unique: true
   },
   wallet: {
     type: Sequelize.STRING,

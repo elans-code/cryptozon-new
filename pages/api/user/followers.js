@@ -1,5 +1,3 @@
-import { user } from 'pg/lib/defaults';
-
 const {User, Follows} = require('../../../db')
 
 export default async function handler(req, res) {

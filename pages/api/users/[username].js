@@ -2,7 +2,7 @@ const {User, Follows} = require('../../../db')
 
 export default async function handler(req, res) {
   const {method, query: {username}} = req;
-  const wallet = !!req.body.params ? req.body.params.wallet : null
+  const wallet = !!req.body.params ? req.body.params.wallet : null;
 
   switch (method) {
     case 'GET':

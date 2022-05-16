@@ -5,6 +5,7 @@ import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
 import Link from 'next/link';
+import axios from 'axios';
 
 const nfts = [
   {
@@ -76,17 +77,33 @@ export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const {user} = useSelector(state => state.user);
-  // const [visibility, setVisibility] = useState('all');
+  const [usernames, setUsernames] = useState([]);
 
   useEffect(() => {
+    if (address) {
     dispatch(fetchUser(address))
-  }, [])
+    getAllUsernames()
+    }
+  }, [address])
 
-  // make loading icon here
+  // using this to compare usernames when editing and set up error handling
+  async function getAllUsernames() {
+    const res = await axios.get('http://localhost:3000/api/users');
+    const names = res.data.map(u => {
+      if (u.username == user.username) {
+        return ''
+      } else {
+        return u.username
+      }
+    })
+    setUsernames(names)
+  }
+
   if (!user) {
     return (
-      <Text>Loading</Text>
-      // <Spinner size='xl' textAlign='center' />
+      <Box display='flex' justifyContent='center' alignItems='center'>
+        <Spinner size='xl' textAlign='center' />
+      </Box>
     )
   }
 
@@ -126,6 +143,7 @@ export default function UserProfile() {
               <EditProfile
                 user={user}
                 wallet={address}
+                usernames={usernames}
               />
             </Stack>
           </Flex>
