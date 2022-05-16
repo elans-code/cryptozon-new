@@ -4,6 +4,7 @@ import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spac
 import { fetchAllPost, likeComment, likePost, commentPost } from '../store/post';
 import CommentModal from './CommentModal';
 import {FcLike, FcApproval} from 'react-icons/fc';
+import {FaCommentAlt, FaShareAlt} from 'react-icons/fa'
 import { useAddress } from '@thirdweb-dev/react';
 import { fetchUser } from '../store/userSlice';
 import Addpost from './Addpost';
@@ -57,15 +58,12 @@ export const SocialCard = (props) => {
         {!!user.username ? 'logged in ': 'not logged in '}
         {!!user.username ? <Addpost/> : null}
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
-        {!!post? tempPost.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)}).map(singlePostData=>{
+        {!!post? tempPost.map(singlePostData=>{
             // console.log(singlePostData)
             const {id,postImage,imageUrl,content,likes,comments, user} = singlePostData
             let tempComments = [...comments]
             if(!!tempComments){
                 console.log('presort: ',tempComments);
-                console.log('sorting comments')
-                tempComments.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)});
-                console.log('post sort: ', tempComments)
             }
             // console.log(singlePostData)
             return (
@@ -93,11 +91,11 @@ export const SocialCard = (props) => {
                 marginLeft='5px'
                 display='flex'
                 ><Text>{user.username}</Text>: <Text>{content}</Text></Box>
-                <Box>
-                    <Box>likes: {likes}</Box>
-                    <Button onClick={()=>lPost(id)}>like</Button>
-                    <Button>Share</Button>
-                    <Button onClick={()=>{openModal(singlePostData)}} value={id}>Comment</Button>
+                <Box display='flex' >
+                    <Box>{likes} likes</Box>
+                    <FcLike onClick={()=>lPost(id)}/>
+                    <FaShareAlt />
+                    <FaCommentAlt onClick={()=>{openModal(singlePostData)}} value={id} />
                 </Box>
                 <Box>
                     {tempComments.sort((a,b)=>{return new Date(a.createdAt) > new Date(b.createdAt)}).map(c =>{

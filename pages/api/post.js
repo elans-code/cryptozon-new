@@ -1,4 +1,5 @@
 const {User, Post, Comments} = require('../../db')
+const sequelize = require('sequelize');
 export default async function handler(req,res){
     const {method, query:{postInfo}} = req;
     switch (method) {
@@ -6,11 +7,17 @@ export default async function handler(req,res){
             const postFromDB = await Post.findAll(
                 {
                     include:[
-                        User,
+                        {
+                            model:User
+                        },
                         {
                             model:Comments,
-                            include:User
-                        }
+                            include:User,
+                        },
+                    ],
+                    order:[
+                        ['id', 'ASC'],
+                        [Comments, 'id', 'ASC']
                     ]
                 });
             res.status(200).send(postFromDB);
