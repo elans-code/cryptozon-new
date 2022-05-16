@@ -44,7 +44,7 @@ const DarkModeSwitch = () => {
               Discovery
             </Button>
           </Link>
-          <Link href="/marketplace" passHref>
+          <Link href="/marketplace/collections" passHref>
             <Button
               as={ChakraLink}
               variant="ghost"
