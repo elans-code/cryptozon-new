@@ -9,7 +9,7 @@ export default function CollectionList({ collections }) {
       autoRows="minmax(24rem,max-content)"
       justifyContent="center"
     >
-      {collections.length &&
+      {!!collections.length &&
         collections.map((coll) => <CollectionItem key={coll.id} coll={coll} />)}
     </Grid>
   );
