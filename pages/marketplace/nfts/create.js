@@ -18,13 +18,15 @@ import {
   useToast,
   Select,
 } from "@chakra-ui/react";
-
+import { useSelector } from "react-redux";
 import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
 
 export default function CreateNFTPage() {
   const fileRef = useRef();
   const formRef = useRef();
   const toast = useToast();
+
+  const user = useSelector((state) => state.user);
 
   const [image, setImage] = useState();
   const [mintStatus, setMintStatus] = useState("idle");
@@ -77,8 +79,9 @@ export default function CreateNFTPage() {
       file,
       name,
       supply,
+      collection,
     } = Object.fromEntries([...new FormData(formEl)]);
-    if (!(name && file.name && supply))
+    if (!(name && file.name && supply && isFinite(collection)))
       return alert("Please fill in the required Inputs");
 
     if (!address) return alert("No wallet signed in!");
@@ -99,15 +102,15 @@ export default function CreateNFTPage() {
       } = await tx.data();
       // console.log("NFT DATA", nft);
       // console.log("NFT TOKEN ID", tokenId);
-      const newNFT = await axios.post("/api/nfts", {
+      await axios.post("/api/nfts", {
         owner,
         tokenId: tokenId._hex,
         description,
         image,
         name,
         uri,
+        collection,
       });
-
       setMintStatus("success");
       toast({
         title: "Successfully Minted!",
@@ -118,6 +121,7 @@ export default function CreateNFTPage() {
       });
       formEl.elements.description.value = "";
       formEl.elements.name.value = "";
+      formEl.elements.collection.value = "default";
       onClose();
     } catch (e) {
       setMintStatus("idle");
@@ -215,16 +219,25 @@ export default function CreateNFTPage() {
         </FormControl>
         {/** this collection input is still for display. once the collection api route is running we could use it */}
         <FormControl pb={2}>
-          <FormLabel htmlFor="collection">Collection</FormLabel>
-          <Select name="collection" id="collection" defaultValue="default">
-            <option value="default" disabled>
-              Collection
-            </option>
-            <option value="tasty_bones">Tasty Bones</option>
-            <option value="invisible_friends">Invisible Friends</option>
-            <option value="banana_bros">Banana Bros</option>
-            <option value="ether_steak">Ether Steak</option>
-          </Select>
+          {user.user.collections && !!user.user.collections.length ? (
+            <Fr>
+              <FormLabel htmlFor="collection">Collection</FormLabel>
+              <Select name="collection" id="collection" defaultValue="default">
+                <option value="default" disabled>
+                  Collection
+                </option>
+                {user.user.collections.map((el) => (
+                  <option key={el.id} value={el.id}>
+                    {el.name}
+                  </option>
+                ))}
+              </Select>
+            </Fr>
+          ) : (
+            <Fr>
+              <Text>Please create a collection first</Text>
+            </Fr>
+          )}
         </FormControl>
 
         <Button
