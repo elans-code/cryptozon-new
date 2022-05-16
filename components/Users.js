@@ -1,14 +1,19 @@
-import React from 'react';
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack, textDecoration } from "@chakra-ui/react";
 import {ChatIcon} from "@chakra-ui/icons";
+import { followUser } from '../store/selectedUser';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddress } from '@thirdweb-dev/react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { fetchSelectedUser } from '../store/selectedUser';
+import axios from 'axios';
 
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
   functionality and display are a bit different, you can't edit their pg and you can't view their hidden nfts
 
   when visiting this pg, we'll have to use the username to get their wallet, and from there we can grab their nfts based on their wallet
-
-  do we need to include users in our state?
 */
 
 const nfts = [
@@ -33,51 +38,51 @@ const nfts = [
     projectName: "BAYC",
     hidden: false,
   },
-  // {
-  //   id: 4,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 5,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 6,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 7,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: true,
-  // },
-  // {
-  //   id: 8,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: false,
-  // },
-  // {
-  //   id: 9,
-  //   imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-  //   token: 783,
-  //   projectName: "BAYC",
-  //   hidden: true,
-  // },
 ];
 
 export default function Users({user}) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const wallet = useAddress();
+  const {selectedUser} = useSelector(state => state.selectedUser);
+  const [isFollowing, setIsFollowing] = useState(false);
+
+  useEffect(() => {
+    dispatch(fetchSelectedUser(user.username))
+    if (wallet) {
+    checkIfFollowing()
+    }
+  }, [wallet])
+
+  // functions as both a follow and unfollow (if the current user is already following them)
+  function follow(wallet, username) {
+    dispatch(followUser({wallet, username}))
+    if (isFollowing) {
+      setIsFollowing(false)
+    } else {
+      setIsFollowing(true)
+    }
+  }
+
+  // checking initially if signed-in user is following this user, and then set state for the button
+  async function checkIfFollowing() {
+    let info = wallet;
+    const {data} = await axios.get('/api/user/following', {params: {info}})
+    data.forEach(f => {
+      if (f.username == user.username) {
+        setIsFollowing(true)
+      }
+    })
+  }
+
+  const buttonTitle = isFollowing ? 'Unfollow' : 'Follow';
+
+  if (!selectedUser) {
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+
   return (
     <>
       <Container>
@@ -93,23 +98,28 @@ export default function Users({user}) {
             w={200}
             h={200}
             borderRadius={100}
-            src={user.imageUrl}
+            src={selectedUser.imageUrl}
             mr={10}
           />
           <Flex direction="column" w={500} mt="15px">
             <Stack direction='row' spacing={220}>
               <Text fontWeight="bold" fontSize={26}>
-                @{user.username}
+                @{selectedUser.username}
               </Text>
               <Box>
               <ChatIcon mr={4} _hover={{cursor: 'pointer', opacity: '0.8'}}/>
-              <Button w={100} borderRadius={50}>Follow</Button>
+              <Button w={100} borderRadius={50} onClick={() => follow(wallet, selectedUser.username)}>{buttonTitle}</Button>
               </Box>
             </Stack>
-            <Text mt={5}>{user.bio}</Text>
-            <Text fontSize={12} mt={10}>
-              Following 32 - Followers 56
-            </Text>
+            <Text mt={5}>{selectedUser.bio}</Text>
+            <Stack direction='row' fontSize={12} mt={10} spacing={5}>
+              <Link href={`/${selectedUser.username}/following`}>
+                {'Following ' + selectedUser.following}
+              </Link>
+              <Link href={`/${selectedUser.username}/followers`}>
+                {'Followers ' + selectedUser.followers}
+              </Link>
+            </Stack>
             <Text fontSize={12}>~ other social accounts ~</Text>
           </Flex>
         </Box>
@@ -121,11 +131,6 @@ export default function Users({user}) {
         justifyContent="space-between"
         alignItems="center"
       >
-        {/* <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-          <Button>Owned</Button>
-          <Divider m="5px" />
-          <Button>Hidden</Button>
-        </Box> */}
         <Box
           flex={1}
           display="flex"

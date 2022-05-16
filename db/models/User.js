@@ -4,7 +4,7 @@ const db = require('../db');
 const User = db.define('user', {
   username: {
     type: Sequelize.STRING,
-    unique: true // should prob be unique
+    unique: true
   },
   wallet: {
     type: Sequelize.STRING,
@@ -17,16 +17,25 @@ const User = db.define('user', {
   imageUrl: {
     type: Sequelize.STRING,
     defaultValue: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgSmojUgwjIB87c4Q0hLCAyl__oiTySWGWJUZtUNHlHjBALLzTsu_vMHYMaEwLts4QEoo&usqp=CAU',
-    validate: {
-      isUrl: true
-    }
+    // validate: {
+    //   isUrl: true
+    // }
   },
   admin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
+  },
+  followers: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
+  },
+  following: {
+    type: Sequelize.INTEGER,
+    defaultValue: 0
   }
 })
 
 module.exports = User;
 
 // folowing and followers might actually have to be an extra table
+// isUrl validation for imageUrl was messing up the edit profile pg
