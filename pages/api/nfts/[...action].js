@@ -11,6 +11,7 @@ const transferNFT = wrapAsync(async (req, res) => {
   );
   return res.status(200).json({ status: "success", data: transferredNFT });
 });
+
 const sellNFT = wrapAsync(async (req, res) => {
   const { listingId, buyoutPrice, expirationDate } = req.body;
   const [, id] = req.query.action;
