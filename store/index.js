@@ -5,7 +5,9 @@ import { nftReducer } from "./nfts";
 import { followersReducer } from "./followers";
 import { followingReducer } from "./following";
 import { selectedUserReducer } from "./selectedUser";
+import { activeNftReducer } from "./activeNfts";
 import collectionReducer from "./collections";
+
 
 const reducer = {
   user: userReducer,
@@ -14,7 +16,9 @@ const reducer = {
   following: followingReducer,
   selectedUser: selectedUserReducer,
   nfts: nftReducer,
+  activeNfts: activeNftReducer,
   collection: collectionReducer,
+
 };
 
 const store = configureStore({ reducer });

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { useAddress, useMarketplace } from "@thirdweb-dev/react";
+// import { useAddress, useMarketplace } from "@thirdweb-dev/react";
 
 
 const initialState = {
@@ -12,7 +12,7 @@ export const setNFT = createAsyncThunk(
   "nfts/setNFT",
   async (data) => {
     try {
-      console.log(data)
+      // console.log(data)
       return data;
     } catch (error) {
       console.log(error)
