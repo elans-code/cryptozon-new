@@ -4,12 +4,14 @@ import Navbar from "./Navbar";
 import { useDispatch } from "react-redux";
 import { setNFT, } from "../../store/nfts";
 import { useMarketplace } from "@thirdweb-dev/react";
+import { setActiveNft } from "../../store/activeNfts";
 
 export default function Layout({ children }) {
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
   const [allNFTListings, setAllNFTListings] = useState([]);
+  const [allActiveListings, setAllActiveListings] = useState([]);
   const dispatch = useDispatch();
   const [intersected, setIntersected] = useState(false);
   const onScrollDown = useCallback((e) => {
@@ -24,20 +26,30 @@ export default function Layout({ children }) {
   useEffect(() => {
     // set redux store with all nfts from marketplace contract
     getAllListings();
-    // getAllActiveListings();
+    getAllActiveListings();
   }, []);
 
   const getAllListings = async () => {
     try {
       const nftList = await marketplace.getAllListings();
       setAllNFTListings(nftList);
-      // console.log(nftList);
-      // dispatch/set allNFTListings to redux store
       dispatch(setNFT(nftList));
     } catch (error) {
       console.log(error);
     }
   }
+
+  const getAllActiveListings = async () => {
+    try {
+      const nftList = await marketplace.getActiveListings();
+      setAllActiveListings(nftList);
+      dispatch(setActiveNft(nftList));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
 
   return (
