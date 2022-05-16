@@ -1,8 +1,9 @@
 import { wrapAsync } from "../../../utils";
-import { NFTs } from "../../../db/";
+import { NFTs, Collections } from "../../../db/";
 
 const createNFT = wrapAsync(async (req, res) => {
-  const { owner, name, description, tokenId, image, uri } = req.body;
+  const { owner, name, description, tokenId, image, uri, collection } =
+    req.body;
   const newNFT = await NFTs.create({
     owner,
     name,
@@ -11,6 +12,7 @@ const createNFT = wrapAsync(async (req, res) => {
     image,
     uri,
     assetContractAddress: process.env.NFT_COLECTION_CONTRACT_ADDRESS,
+    collectionId: collection,
   });
 
   return res.status(201).json({ status: "success", data: newNFT });
