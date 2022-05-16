@@ -1,6 +1,7 @@
 import React, { useEffect, useState, Fragment as Fr } from "react";
 import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
 import { BsSun, BsMoonStarsFill } from "react-icons/bs";
+import CreateNav from "./CreateNav";
 import {
   Flex,
   Link as ChakraLink,
@@ -32,7 +33,7 @@ const DarkModeSwitch = () => {
   return (
     <Flex w="100%">
       <Flex align="center" width="100%" justifyContent="flex-end" px="8">
-        <Flex display={["none", "none", "flex"]} gap="2" mr="2">
+        <Flex display={["none", "none", "flex"]} gap="3" mr="2" align="center">
           <Link href="/" passHref>
             <Button
               as={ChakraLink}
@@ -40,6 +41,7 @@ const DarkModeSwitch = () => {
               aria-label="Contact"
               my={5}
               w="100%"
+              p={"0.8rem 1.7rem"}
             >
               Discovery
             </Button>
@@ -67,17 +69,20 @@ const DarkModeSwitch = () => {
             </Button>
           </Link>
           {address ? (
-            <Link href="/profile" passHref>
-              <Button
-                as={ChakraLink}
-                variant="ghost"
-                aria-label="Contact"
-                my={5}
-                w="100%"
-              >
-                Profile
-              </Button>
-            </Link>
+            <Fr>
+              <Link href="/profile" passHref>
+                <Button
+                  as={ChakraLink}
+                  variant="ghost"
+                  aria-label="Contact"
+                  my={5}
+                  w="100%"
+                >
+                  Profile
+                </Button>
+              </Link>
+              <CreateNav />
+            </Fr>
           ) : null}
 
           <ChakraLink>
