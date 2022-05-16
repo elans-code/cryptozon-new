@@ -9,7 +9,14 @@ export const fetchAllPost = createAsyncThunk(
   async () => {
       try {
         const {data:postData} = await axios.get('/api/post');
-        return postData;
+        const pDataModified = Promise.all(postData.map(async (e)=>{
+          let temp = {...e}
+          const {data:uri} = await axios.get('/api/img/', {params:temp.content});
+          temp.contentUri = uri
+          return temp;
+        }))
+        console.log(pDataModified)
+        return pDataModified;
       } catch (error) {
         console.log(error)
       }
@@ -55,6 +62,15 @@ export const commentPost = createAsyncThunk(
       }
   }
 )
+
+export const textToImage = async () => {
+      try {
+        const imgUri = await axios.get('/api/img/', {params:text});
+        return imgUri
+      } catch (error) {
+          console.log(error)
+      }
+}
 
 
 export const postSlice = createSlice({
