@@ -34,7 +34,7 @@ const DarkModeSwitch = () => {
     <Flex w="100%">
       <Flex align="center" width="100%" justifyContent="flex-end" px="8">
         <Flex display={["none", "none", "flex"]} gap="3" mr="2" align="center">
-          <Link href="/" passHref>
+          <Link href="/marketplace/nfts" passHref>
             <Button
               as={ChakraLink}
               variant="ghost"
@@ -151,7 +151,7 @@ const DarkModeSwitch = () => {
           />
         </Flex>
         <Flex flexDir="column" align="center">
-          <Link href="/" passHref>
+          <Link href="/marketplace/nfts" passHref>
             <Button
               as={ChakraLink}
               variant="ghost"
@@ -162,7 +162,7 @@ const DarkModeSwitch = () => {
               Discovery
             </Button>
           </Link>
-          <Link href="/" passHref>
+          <Link href="/marketplace/collections" passHref>
             <Button
               as={ChakraLink}
               variant="ghost"
