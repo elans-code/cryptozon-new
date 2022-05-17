@@ -9,8 +9,6 @@ import { useAddress } from '@thirdweb-dev/react';
 import { fetchUser } from '../store/userSlice';
 import Addpost from './Addpost';
 
-//to be styled later
-//post should be in cronological order
 export const SocialCard = (props) => {
     const address = useAddress();
     const {user:walletUser} = useSelector(state => state.user);
@@ -92,14 +90,14 @@ export const SocialCard = (props) => {
                 ><Text>{user.username}</Text>: <Text>{content}</Text></Box>:
                 null}
                 {!!walletUser.username ? 
-                <Box display='flex' >
-                    <Box>{likes} likes</Box>
-                    <FcLike onClick={()=>lPost(id)}/>
-                    <FaShareAlt />
-                    <FaCommentAlt onClick={()=>{openModal(singlePostData)}} value={id} />
+                <Box display='flex' justifyContent='end'>
+                    <Box margin='2px'>{likes} likes</Box>
+                    <FcLike margin='2px' onClick={()=>lPost(id)}/>
+                    <FaShareAlt margin='2px' />
+                    <FaCommentAlt margin='2px' onClick={()=>{openModal(singlePostData)}} value={id} />
                 </Box>
                 :
-                <Box display='flex' >
+                <Box display='flex' justifyContent='end'>
                     <Box>{likes} likes</Box>
                     <FcLike onClick={()=>alertToLogin()}/>
                     <FaShareAlt />
