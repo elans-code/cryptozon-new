@@ -22,8 +22,8 @@ export default function SingleCollectionPage() {
     if (!router.query.slug) return;
     dispatch(fetchCollection(router.query.slug));
   }, [router.query.slug, dispatch]);
-
-  if (!singleCollection.id) return <Text>Loading...</Text>;
+  if (collection.status === "loading") return <Text>Loading...</Text>;
+  if (!singleCollection.id) return <Text>Not found</Text>;
   return (
     <Fr>
       <Grid mt={4} justifyItems="center">
