@@ -43,7 +43,10 @@ export default function SingleCollectionPage() {
         <Heading textAlign="center" mb={6}>
           NFTs
         </Heading>
-        <NFTList nfts={singleCollection.nfts} />
+        <NFTList
+          nfts={singleCollection.nfts}
+          collectionName={singleCollection.name}
+        />
       </Container>
     </Fr>
   );

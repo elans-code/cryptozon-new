@@ -10,8 +10,8 @@ import {
 import { useMarketplace } from "@thirdweb-dev/react";
 
 const NFTItem = (props) => {
-  const { name, image, price = "1.99", id, tokenId } = props;
-
+  const { name, image, id, collName, ...others } = props;
+  console.log(others);
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
@@ -36,31 +36,31 @@ const NFTItem = (props) => {
       border="1px solid"
       borderColor="gray.300"
     >
-      <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px" />
+      <Image src={image} alt="nft pic" objectFit="fill" boxSize="300px" />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
-          <Text color="gray.500">{name}</Text>
+          <Text color="gray.500">{collName}</Text>
         </Gi>
         <Gi justifySelf="end">
-          <Text color="gray.500">Price</Text>
+          <Text color="gray.500">&nbsp;</Text>
         </Gi>
         <Gi>
-          <Text>Bean #8055</Text>
+          <Text>{name}</Text>
         </Gi>
         <Gi justifySelf="end">
           <Text>
-            <Image
+            {/*<Image
               src="https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg"
               alt="test"
               boxSize="12.5px"
               display="inline-block"
             />{" "}
-            {price}
+            price*/}
           </Text>
         </Gi>
 
         <Gi gridColumn="span 2" justifySelf="end">
-          <Text>1 day left</Text>
+          <Text>&nbsp;</Text>
         </Gi>
       </Grid>
     </Box>
