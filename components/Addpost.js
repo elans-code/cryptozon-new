@@ -22,6 +22,7 @@ export default function Addpost() {
     const data = {
       userId: userId,
       content: post,
+      likes: 0,
     }
     if(!!imgUrl){
       data.imageUrl = imgUrl

@@ -3,7 +3,7 @@ import { connect, useDispatch, useSelector } from 'react-redux'
 import { Box, Button, Text, Image, Container, Flex, Boxider, useDisclosure, Spacer, Divider} from "@chakra-ui/react";
 import { fetchAllPost, likeComment, likePost, commentPost, textToImage } from '../store/post';
 import CommentModal from './CommentModal';
-import {FcLike, FcApproval} from 'react-icons/fc';
+import {FcLike,FcLikePlaceholder, FcApproval} from 'react-icons/fc';
 import {FaCommentAlt, FaShareAlt} from 'react-icons/fa'
 import { useAddress } from '@thirdweb-dev/react';
 import { fetchUser } from '../store/userSlice';
@@ -23,8 +23,13 @@ export const SocialCard = (props) => {
         }
     },[status, dispatch])
 
-    const lPost = (id) => {
-        dispatch(likePost(id))
+    const lPost = (id, e) => {
+        e.target.hidden = true
+        const lPostData = {
+            postId: id,
+            userId: walletUser.id,
+        }
+        dispatch(likePost(lPostData))
     }
     const lComment = (id) =>{
         dispatch(likeComment(id))
@@ -61,7 +66,8 @@ export const SocialCard = (props) => {
         {!!walletUser.username ? <Addpost/> : null}
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
         {!!post? tempPost.map(singlePostData=>{
-            const {id,postImage,imageUrl,content,likes,comments, user, contentUri} = singlePostData
+            const {id,postImage,imageUrl,content,likesCount,comments, user, contentUri,likes} = singlePostData
+            console.log('likes data:',likes)
             let tempComments = [...comments]
             return (
             <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>
@@ -87,22 +93,22 @@ export const SocialCard = (props) => {
                 <Box><Image src={contentUri} alt=''/></Box>}
                 {postImage ? 
                 <Box 
-                alignSelf='flex-start' 
+                alignSelf='center' 
                 marginLeft='5px'
                 display='flex'
-                ><Text>{user.username}</Text>: <Text>{content}</Text></Box>:
+                ><Text textAlign='center'>{content}</Text></Box>:
                 null}
                 {!!walletUser.username ? 
                 <Box display='flex' justifyContent='end'>
-                    <Box margin='2px'>{likes} likes</Box>
-                    <FcLike margin='2px' onClick={()=>lPost(id)}/>
+                    <Box margin='2px'>{likes.length} likes</Box>
+                    {likes.filter(like => like.userId === walletUser.id).length > 0 ? <FcLike onClick={()=>{}}/> : <FcLikePlaceholder margin='2px' onClick={(e)=>lPost(id,e)}/>}
                     <FaShareAlt margin='2px' />
                     <FaCommentAlt margin='2px' onClick={()=>{openModal(singlePostData)}} value={id} />
                 </Box>
                 :
                 <Box display='flex' justifyContent='end'>
-                    <Box>{likes} likes</Box>
-                    <FcLike onClick={()=>alertToLogin()}/>
+                    <Box>{likes.length} likes</Box>
+                    {likes.filter(like => like.userId === walletUser.id).length > 0 ? <FcLike onClick={()=>{}}/> : <FcLikePlaceholder margin='2px' onClick={(e)=>lPost(id,e)}/>}
                     <FaShareAlt />
                     <FaCommentAlt onClick={()=>{alertToLogin()}} value={id} />
                 </Box>
@@ -120,12 +126,12 @@ export const SocialCard = (props) => {
                                     {!!walletUser.username ? 
                                     <Box display='flex' flexDirection='row' margin='3px'>
                                         <Box marginRight='3px'>{likes} likes</Box>
-                                        <FcLike onClick={()=>lComment(id)} margin='5px' />
+                                        <FcLikePlaceholder onClick={()=>lComment(id)} margin='5px' />
                                     </Box>
                                     :
                                     <Box display='flex' flexDirection='row' margin='3px'>
                                         <Box marginRight='3px'>{likes} likes</Box>
-                                        <FcLike onClick={()=>alertToLogin()} margin='5px' />
+                                        <FcLikePlaceholder onClick={()=>alertToLogin()} margin='5px' />
                                     </Box>
                                     }
                                 </Box>

@@ -24,11 +24,12 @@ export const fetchAllPost = createAsyncThunk(
 )
 export const likePost = createAsyncThunk(
   'post/likePost',
-  async (postId, {dispatch}) => {
+  async (postInfo, {dispatch}) => {
       try {
-        const {data:prevPostData} = await axios.get(`/api/post/${postId}`);
-        const {data} = await axios.patch(`/api/post/${postId}`, {likes:prevPostData.likes + 1});
+        const {data:prevPostData} = await axios.get(`/api/post/${postInfo.postId}`);
+        const {data} = await axios.patch(`/api/post/${postInfo.postId}`, {likes:prevPostData.likesCount + 1});
         const {data:postData} = await axios.get('/api/post');
+        await axios.put('/api/likes', postInfo )
         dispatch(fetchAllPost());
         return postData;
       } catch (error) {

@@ -1,4 +1,4 @@
-const {User, Post, Comments} = require('../../db')
+const {User, Post, Comments, Likes} = require('../../db')
 export default async function handler(req,res){
     const {method} = req;
     switch (method) {
@@ -13,6 +13,9 @@ export default async function handler(req,res){
                             model:Comments,
                             include:User,
                         },
+                        {
+                            model:Likes
+                        }
                     ],
                     order:[
                         ['id', 'DESC'],
