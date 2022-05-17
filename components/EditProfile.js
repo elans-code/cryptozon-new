@@ -3,8 +3,10 @@ import { Button, Modal, Image, ModalOverlay, ModalFooter, ModalHeader, ModalClos
 import { useDisclosure } from '@chakra-ui/react'
 import { editUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
+import useCloudinary from "../hooks/useCloudinary";
 
 export default function EditProfile({user, wallet, usernames}) {
+  const {data, uploadImage} = useCloudinary();
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const finalRef = useRef();
@@ -39,6 +41,8 @@ export default function EditProfile({user, wallet, usernames}) {
   function handleFileChange(e) {
     const fileInput = e.target.files[0];
     setUserInfo({...userInfo, imageUrl: URL.createObjectURL(fileInput)})
+    // setUserInfo({...userInfo, imageUrl: fileInput})
+
   }
 
   // onChange to check if username exists
