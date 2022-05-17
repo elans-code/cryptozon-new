@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const db = require('../db');
 
-const Likes = db.define('follow', {
+const Like = db.define('likes', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -9,4 +9,4 @@ const Likes = db.define('follow', {
   }
 })
 
-module.exports = Likes
+module.exports = Like
