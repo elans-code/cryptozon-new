@@ -62,6 +62,17 @@ export const commentPost = createAsyncThunk(
       }
   }
 )
+export const newPost = createAsyncThunk(
+  'post/newPost',
+  async (newPost,{dispatch}) => {
+      try {
+        await axios.put('/api/post/', newPost);
+        dispatch(fetchAllPost());
+      } catch (error) {
+          console.log(error)
+      }
+  }
+)
 
 export const textToImage = async () => {
       try {
