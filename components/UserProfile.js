@@ -1,11 +1,25 @@
-import React, {useState, useEffect} from 'react'
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack, Spinner } from "@chakra-ui/react";
-import { fetchUser } from '../store/userSlice';
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Text,
+  Image,
+  Container,
+  Flex,
+  Divider,
+  Stack,
+  Spinner,
+  Alert,
+  AlertIcon,
+  Grid,
+  GridItem as Gi,
+} from "@chakra-ui/react";
+import { fetchUser } from "../store/userSlice";
 import { useAddress } from "@thirdweb-dev/react";
-import { useSelector, useDispatch } from 'react-redux';
-import EditProfile from './EditProfile';
-import Link from 'next/link';
-import axios from 'axios';
+import { useSelector, useDispatch } from "react-redux";
+import EditProfile from "./EditProfile";
+import Link from "next/link";
+import axios from "axios";
 
 const nfts = [
   {
@@ -76,40 +90,46 @@ const nfts = [
 export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
-  const {user} = useSelector(state => state.user);
+  const { user } = useSelector((state) => state.user);
   const [usernames, setUsernames] = useState([]);
 
   useEffect(() => {
     if (address) {
-    dispatch(fetchUser(address))
-    getAllUsernames()
+      dispatch(fetchUser(address));
+      getAllUsernames();
     }
-  }, [address])
+  }, [address]);
 
   // using this to compare usernames when editing and set up error handling
   async function getAllUsernames() {
-    const res = await axios.get('http://localhost:3000/api/users');
-    const names = res.data.map(u => {
+    const res = await axios.get("http://localhost:3000/api/users");
+    const names = res.data.map((u) => {
       if (u.username == user.username) {
-        return ''
+        return "";
       } else {
-        return u.username
+        return u.username;
       }
-    })
-    setUsernames(names)
+    });
+    setUsernames(names);
   }
 
   if (!user) {
     return (
-      <Box display='flex' justifyContent='center' alignItems='center'>
-        <Spinner size='xl' textAlign='center' />
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Spinner size="xl" textAlign="center" />
       </Box>
-    )
+    );
   }
 
   return (
     <>
       <Container>
+        {/* {!user.username &&
+            <Alert transitionDuration='1000' status='info' mb={4} w={275} position='absolute' right={2} isClosable={true}>
+              <AlertIcon />
+              Please set up your profile :)
+            </Alert>
+          } */}
         <Box
           margin={10}
           padding={10}
@@ -127,26 +147,34 @@ export default function UserProfile() {
           />
           <Flex direction="column" w={500} mt="15px">
             <Text fontWeight="bold" fontSize={26}>
-              @{user.username}
+              @{user.username ? user.username : "unnamed"}
             </Text>
             <Text mt={2}>{user.bio}</Text>
-            <Stack direction='row' fontSize={12} mt={10} spacing={5}>
-              <Link href='/profile/following'>
-                {'Following ' + user.following}
+            <Stack direction="row" fontSize={12} mt={10} spacing={5}>
+              <Link href="/profile/following">
+                {"Following " + user.following}
               </Link>
-              <Link href='/profile/followers'>
-                {'Followers ' + user.followers}
+              <Link href="/profile/followers">
+                {"Followers " + user.followers}
               </Link>
             </Stack>
-            <Stack direction='row' spacing={200}>
+            <Stack direction="row" spacing={200}>
               <Text fontSize={12}>~ other social accounts ~</Text>
-              <EditProfile
-                user={user}
-                wallet={address}
-                usernames={usernames}
-              />
+              <EditProfile user={user} wallet={address} usernames={usernames} />
             </Stack>
           </Flex>
+          {!user.username && (
+            <Alert
+              justifySelf="center"
+              status="info"
+              mt={8}
+              w={460}
+              isClosable={true}
+            >
+              <AlertIcon />
+              Please set up your profile :)
+            </Alert>
+          )}
         </Box>
       </Container>
       <Divider />
@@ -156,11 +184,13 @@ export default function UserProfile() {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-          <Button>Owned</Button>
-          <Divider m="5px" />
-          <Button>Hidden</Button>
-        </Box>
+        {user.username ? (
+          <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
+            <Button>Owned</Button>
+            <Divider m="5px" />
+            <Button>Hidden</Button>
+          </Box>
+        ) : null}
         <Box
           flex={1}
           display="flex"
@@ -168,31 +198,33 @@ export default function UserProfile() {
           width={500}
           justifyContent="center"
         >
-          {nfts.map((nft) => (
-            <Box
-              _hover={{ border: "1px solid black" }}
-              key={nft.id}
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              m="10px"
-              maxW="250px"
-            >
-              <Image src={nft.imageUrl} alt="Bored Ape" />
-              <Box p="6">
+          {user.username
+            ? nfts.map((nft) => (
                 <Box
-                  mt="1"
-                  fontWeight="semibold"
-                  as="h4"
-                  lineHeight="tight"
-                  isTruncated
+                  _hover={{ border: "1px solid black" }}
+                  key={nft.id}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  m="10px"
+                  maxW="250px"
                 >
-                  {nft.projectName}#{nft.token}
+                  <Image src={nft.imageUrl} alt="Bored Ape" />
+                  <Box p="6">
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {nft.projectName}#{nft.token}
+                    </Box>
+                    <Box>{nft.projectName}</Box>
+                  </Box>
                 </Box>
-                <Box>{nft.projectName}</Box>
-              </Box>
-            </Box>
-          ))}
+              ))
+            : null}
         </Box>
       </Container>
     </>

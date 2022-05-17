@@ -40,18 +40,6 @@ export const followUser = createAsyncThunk(
   }
 )
 
-// export const unfollowUser = createAsyncThunk(
-//   'followers/unfollowUser',
-//   async (info) => {
-//     const {wallet, username} = info;
-//     try {
-//       const {data: }
-//     } catch(err) {
-//       console.log(err)
-//     }
-//   }
-// )
-
 export const selectedUserSlice = createSlice({
   name: 'selectedUser',
   initialState,

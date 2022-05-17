@@ -3,6 +3,7 @@ import { Button, Modal, Image, ModalOverlay, ModalFooter, ModalHeader, ModalClos
 import { useDisclosure } from '@chakra-ui/react'
 import { editUser } from "../store/userSlice";
 import { useDispatch } from "react-redux";
+import { uploadImage } from "../utils";
 
 export default function EditProfile({user, wallet, usernames}) {
   const dispatch = useDispatch();
@@ -17,24 +18,33 @@ export default function EditProfile({user, wallet, usernames}) {
 
   const {username, bio, imageUrl} = userInfo;
 
-  function handleSubmit(wallet, userInfo) {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    // const picUrl = await uploadImage(userInfo.imageUrl)
+    // setUserInfo({...userInfo, imageUrl: picUrl})
     dispatch(editUser({wallet, userInfo}))
     onClose()
   }
 
   function open() {
+    if (user.username) {
     setUserInfo({
       username: user.username,
       imageUrl: user.imageUrl,
       bio: user.bio
     })
+    } else {
+      setUserInfo({...userInfo, imageUrl: user.imageUrl})
+    }
     setIsError(false)
     onOpen()
   }
 
-  function handleFileChange(e) {
+  // currently uploading img on file change, works fine but ideally would be on the submit
+  async function handleFileChange(e) {
     const fileInput = e.target.files[0];
-    setUserInfo({...userInfo, imageUrl: URL.createObjectURL(fileInput)})
+    const profilePicUrl = await uploadImage(fileInput)
+    setUserInfo({...userInfo, imageUrl: profilePicUrl})
   }
 
   // onChange to check if username exists
@@ -77,8 +87,7 @@ export default function EditProfile({user, wallet, usernames}) {
           </ModalBody>
 
           <ModalFooter>
-            {/* <Button colorScheme='blue' mr={3} onClick={onClose}> */}
-            <Button disabled={isError} colorScheme='blue' mr={3} onClick={() => handleSubmit(wallet, userInfo)}>
+            <Button disabled={isError} colorScheme='blue' mr={3} onClick={handleSubmit}>
               Save
             </Button>
           </ModalFooter>
