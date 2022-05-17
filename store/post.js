@@ -22,30 +22,24 @@ export const fetchAllPost = createAsyncThunk(
       }
   }
 )
-export const likePost = createAsyncThunk(
-  'post/likePost',
-  async (postInfo, {dispatch}) => {
+export const likeItem = createAsyncThunk(
+  'post/likeItem',
+  async (itemInfo, {dispatch}) => {
       try {
-        const {data:prevPostData} = await axios.get(`/api/post/${postInfo.postId}`);
-        const {data} = await axios.patch(`/api/post/${postInfo.postId}`, {likes:prevPostData.likesCount + 1});
-        const {data:postData} = await axios.get('/api/post');
-        await axios.put('/api/likes', postInfo )
+        await axios.put('/api/likes', itemInfo )
         dispatch(fetchAllPost());
-        return postData;
       } catch (error) {
           console.log(error)
       }
   }
 )
-export const likeComment = createAsyncThunk(
-  'comment/likeComment',
-  async (commentId, {dispatch}) => {
+export const unlikeItem = createAsyncThunk(
+  'post/unlikeItem',
+  async (itemInfo, {dispatch}) => {
       try {
-        const {data:prevCommentData} = await axios.get(`/api/comments/${commentId}`);
-        const {data} = await axios.patch(`/api/comments/${commentId}`, {likes:prevCommentData.likes + 1});
-        const {data:postData} = await axios.get('/api/post');
+        console.log('iteminfo unL', itemInfo)
+        await axios.delete('/api/likes', {data:itemInfo} )
         dispatch(fetchAllPost());
-        return postData;
       } catch (error) {
           console.log(error)
       }
