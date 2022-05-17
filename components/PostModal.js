@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import {Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, useDisclosure, Input} from '@chakra-ui/react'
-import { useSelector } from 'react-redux';
 
-export default function CommentModal(props) {
+export default function PostModal(props) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const {data, open, closeFunc, addComment} = props;
+    const {data, open, closeFunc, addPost} = props;
     const [currentInput, setCurrentInput] = useState('');
-    const {user:walletUser} = useSelector(state => state.user);
-
+    const [hasImg, setImg] = useState(false);
     //needs to reference current userID
+    const userId = 1
     useEffect(()=>{
         if(open){
             onOpen()
@@ -18,25 +17,29 @@ export default function CommentModal(props) {
             onClose()
         }
     },[open])
-    const add = (postId, userId, comment) => {
-        addComment(postId,userId,comment)
+    const add = (userId, Post) => {
+        addPost(userId,Post)
         setCurrentInput('')
     }
+    console.log(data)
     return (
         <div>
             <Modal blockScrollOnMount={true} isOpen={isOpen} onClose={closeFunc}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Add a comment</ModalHeader>
+                    <ModalHeader>Add a Post</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <Input onChange={(e)=>setCurrentInput(e.nativeEvent.target.value)} placeholder={"What's on your mind?"} value={currentInput}/>
+                    <ModalBody display='flex' flexDirection='column'>
+                        <Input type='text' onChange={(e)=>setCurrentInput(e.nativeEvent.target.value)} placeholder={"What's on your mind?"} value={currentInput}/>
+                        <Button variant='ghost' value='' onClick={()=>document.getElementById('upload').click()}>Upload Image</Button>
+                        <Input id='upload' display='none' type='file' accept='image/*' onChange={()=>{}}/>
+
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={closeFunc}>
                         Close
                         </Button>
-                        <Button variant='ghost' value='' onClick={()=>add(data.id,walletUser.id,currentInput)}>Submit</Button>
+                        <Button variant='ghost' value='' onClick={()=>add(data.id,currentInput)}>Submit</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

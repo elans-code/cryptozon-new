@@ -5,6 +5,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
   nfts: [],
+  status: null,
+  error: null
 }
 
 
