@@ -9,14 +9,15 @@ const createCollection = wrapAsync(async (req, res) => {
     throw new Error(
       "Could not create collection because the user trying to create the collection was not found."
     );
+
   const newCollection = await Collections.create({
     name,
     profileImg,
     bannerImg,
-    ...(!!description && description),
+    description,
   });
 
-  user.setCollection(newCollection);
+  user.addCollection(newCollection);
 
   return res.status(201).json({ status: "success", data: newCollection });
 });
