@@ -6,7 +6,7 @@ export default function PostModal(props) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {data, open, closeFunc, addPost} = props;
     const [currentInput, setCurrentInput] = useState('');
-
+    const [hasImg, setImg] = useState(false);
     //needs to reference current userID
     const userId = 1
     useEffect(()=>{
@@ -29,9 +29,11 @@ export default function PostModal(props) {
                 <ModalContent>
                     <ModalHeader>Add a Post</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>
-                        <Input onChange={(e)=>setCurrentInput(e.nativeEvent.target.value)} placeholder={"What's on your mind?"} value={currentInput}/>
-                        <Button variant='ghost' value='' onClick={()=>{}}>Upload Image</Button>
+                    <ModalBody display='flex' flexDirection='column'>
+                        <Input type='text' onChange={(e)=>setCurrentInput(e.nativeEvent.target.value)} placeholder={"What's on your mind?"} value={currentInput}/>
+                        <Button variant='ghost' value='' onClick={()=>document.getElementById('upload').click()}>Upload Image</Button>
+                        <Input id='upload' display='none' type='file' accept='image/*' onChange={()=>{}}/>
+
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} onClick={closeFunc}>

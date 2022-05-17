@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import {Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, useDisclosure, Input} from '@chakra-ui/react'
+import { useSelector } from 'react-redux';
 
 export default function CommentModal(props) {
 
     const { isOpen, onOpen, onClose } = useDisclosure()
     const {data, open, closeFunc, addComment} = props;
     const [currentInput, setCurrentInput] = useState('');
+    const {user:walletUser} = useSelector(state => state.user);
 
     //needs to reference current userID
-    const userId = 1
     useEffect(()=>{
         if(open){
             onOpen()
@@ -35,7 +36,7 @@ export default function CommentModal(props) {
                         <Button colorScheme='blue' mr={3} onClick={closeFunc}>
                         Close
                         </Button>
-                        <Button variant='ghost' value='' onClick={()=>add(data.id,userId,currentInput)}>Submit</Button>
+                        <Button variant='ghost' value='' onClick={()=>add(data.id,walletUser.id,currentInput)}>Submit</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

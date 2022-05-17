@@ -1,6 +1,6 @@
 const {User, Post, Comments} = require('../../db')
 export default async function handler(req,res){
-    const {method, query:{postInfo}} = req;
+    const {method} = req;
     switch (method) {
         case 'GET':
             const postFromDB = await Post.findAll(
@@ -15,7 +15,7 @@ export default async function handler(req,res){
                         },
                     ],
                     order:[
-                        ['id', 'ASC'],
+                        ['id', 'DESC'],
                         [Comments, 'id', 'ASC']
                     ]
                 });
@@ -23,7 +23,7 @@ export default async function handler(req,res){
             break;
         case 'PUT':
             //add post to db
-            await Post.create(postInfo);
+            await Post.create(req.body);
             res.status(200).end();
             break;
         default:
