@@ -1,4 +1,5 @@
 import axios from "axios";
+
 export const wrapAsync = (fn) => (req, res) =>
   fn(req, res).catch((err) => {
     throw err;
@@ -6,20 +7,25 @@ export const wrapAsync = (fn) => (req, res) =>
 
 export const sellNFT = async (contract, nft, price) => {
   try {
-  } catch (err) {}
-  const listing = {
-    assetContractAddress: nft.assetContractAddress,
-    tokenId: nft.tokenId,
-    startTimestamp: new Date(),
-    listingDurationInSeconds: 2630000,
-    quantity: 1,
-    currencyContractAddress: NATIVE_TOKEN_ADDRESS,
-    buyoutPricePerToken: price,
-  };
+    if (nft.listingId && Date.now() < nft.expirationDate)
+      throw new Error("Item is already for sale");
+    const listing = {
+      assetContractAddress: nft.assetContractAddress,
+      tokenId: nft.tokenId,
+      startTimestamp: new Date(),
+      listingDurationInSeconds: 2630000,
+      quantity: 1,
+      currencyContractAddress: NATIVE_TOKEN_ADDRESS,
+      buyoutPricePerToken: price,
+    };
 
-  const tx = await contract.direct.createListing(listing);
-  const receipt = tx.receipt; // the transaction receipt
-  const listingId = tx.id; // the id of the newly created listing
+    const tx = await contract.direct.createListing(listing);
+    const receipt = tx.receipt; // the transaction receipt
+    const listingId = tx.id; // the id of the newly created listing
+    console.log("RECEIPT", receipt, "LISTING", listingId);
+  } catch (err) {
+    throw err;
+  }
 };
 
 export const buyNFT = async (contract, listingId) => {
