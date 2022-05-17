@@ -2,7 +2,6 @@ import { useState, useCallback } from "react";
 import axios from "axios";
 export default function useCloudinary() {
   const [data, setData] = useState({ data: null, status: "idle", error: null });
-  //https://api.cloudinary.com/v1_1/demo/image/upload
   const uploadImage = useCallback(async (file) => {
     setData((prev) => ({ ...prev, status: "loading" }));
     try {
