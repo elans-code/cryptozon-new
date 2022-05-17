@@ -3,17 +3,13 @@ import axios from "axios";
 import NextLink from "next/link";
 import {
   Container,
-  Box,
   Heading,
   Input,
-  Image,
   FormControl,
-  FormHelperText,
   Text,
   FormLabel,
   VStack,
   Button,
-  CloseButton,
   useColorModeValue,
   Spinner,
   useToast,
@@ -21,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import ImageInput from "../../../components/ImageInput";
 import { useSelector } from "react-redux";
-import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
+import { useNFTCollection } from "@thirdweb-dev/react";
 
 export default function CreateNFTPage() {
   const [image, setImage] = useState();
@@ -39,7 +35,7 @@ export default function CreateNFTPage() {
       "0xFe1d218b269D5f202961d1C6F72C0101ad10848c"
   );
 
-  const address = useAddress(); // replace with user's state
+  const address = user.user.wallet; // replace with user's state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,9 +49,22 @@ export default function CreateNFTPage() {
       collection,
     } = Object.fromEntries([...new FormData(formEl)]);
     if (!(name && file.name && supply && isFinite(collection)))
-      return alert("Please fill in the required Inputs");
+      return toast({
+        title: "Inputs Missing",
+        description: "Name, collection, and nft picture are required",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
 
-    if (!address) return alert("No wallet signed in!");
+    if (!address)
+      return toast({
+        title: "Not Signed In",
+        description: "Connect to your metamask wallet",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
 
     const metadata = {
       name,
@@ -117,7 +126,7 @@ export default function CreateNFTPage() {
         <ImageInput image={image} setImage={setImage} />
         <FormControl>
           <FormLabel htmlFor="name">Name</FormLabel>
-          <Input name="name" id="name" type="text" isRequired={true} />
+          <Input name="name" id="name" type="text" />
         </FormControl>
         <FormControl>
           <FormLabel htmlFor="description">Description</FormLabel>
