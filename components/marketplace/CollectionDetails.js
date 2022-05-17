@@ -1,6 +1,6 @@
 import React, { Fragment as Fr } from "react";
 import NextLink from "next/link";
-import { GridItem as Gi, Image, Text } from "@chakra-ui/react";
+import { GridItem as Gi, Image, Text, Box } from "@chakra-ui/react";
 export default function CollectionDetails({
   coll,
   bannerImgH,
@@ -13,13 +13,17 @@ export default function CollectionDetails({
   return (
     <Fr>
       <Gi gridRow="1 / 2" gridColumn="1 / -1" justifySelf="stretch">
-        <Image
-          src={coll.bannerImg}
-          alt="cover image"
-          h={bannerImgH}
-          objectFit="cover"
-          w="100%"
-        />
+        {coll.bannerImg ? (
+          <Image
+            src={coll.bannerImg}
+            alt="cover image"
+            h={bannerImgH}
+            objectFit="cover"
+            w="100%"
+          />
+        ) : (
+          <Box w="100%" h="100%" bg="gray.300"></Box>
+        )}
       </Gi>
       <Gi
         gridRow="1 / 2"
