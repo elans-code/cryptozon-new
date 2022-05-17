@@ -1,5 +1,6 @@
 import React, { useState, useRef, Fragment as Fr } from "react";
 import axios from "axios";
+import NextLink from "next/link";
 import {
   Container,
   Box,
@@ -18,21 +19,20 @@ import {
   useToast,
   Select,
 } from "@chakra-ui/react";
+import ImageInput from "../../../components/ImageInput";
 import { useSelector } from "react-redux";
 import { useNFTCollection, useAddress } from "@thirdweb-dev/react";
 
 export default function CreateNFTPage() {
-  const fileRef = useRef();
+  const [image, setImage] = useState();
   const formRef = useRef();
   const toast = useToast();
 
   const user = useSelector((state) => state.user);
 
-  const [image, setImage] = useState();
   const [mintStatus, setMintStatus] = useState("idle");
 
   const btnColor = useColorModeValue("white", "black");
-  const [fileError, setFileError] = useState(false);
 
   const nftCollection = useNFTCollection(
     process.env.NFT_COLECTION_CONTRACT_ADDRESS ||
@@ -40,35 +40,6 @@ export default function CreateNFTPage() {
   );
 
   const address = useAddress(); // replace with user's state
-
-  const handleFileChange = (e) => {
-    const fileInp = e.target.files[0];
-
-    if (
-      !(
-        fileInp.name.endsWith("jpg") ||
-        fileInp.name.endsWith("png") ||
-        fileInp.name.endsWith("gif") ||
-        fileInp.name.endsWith("jpeg")
-      )
-    ) {
-      setFileError(true);
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (reader.readyState === 2) {
-        setImage(reader.result);
-        setFileError(false);
-      }
-    };
-    reader.readAsDataURL(e.target.files[0]);
-  };
-  const onClose = () => {
-    setImage(null);
-    fileRef.current.value = null;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -122,7 +93,8 @@ export default function CreateNFTPage() {
       formEl.elements.description.value = "";
       formEl.elements.name.value = "";
       formEl.elements.collection.value = "default";
-      onClose();
+      formEl.elements.file.value = "";
+      setImage(null);
     } catch (e) {
       setMintStatus("idle");
       let description = "Something went wrong";
@@ -142,63 +114,7 @@ export default function CreateNFTPage() {
     <Container maxW="container.sm">
       <VStack spacing={3} as="form" onSubmit={handleSubmit} ref={formRef}>
         <Heading mb={4}>Create your NFT!</Heading>
-        <FormControl>
-          <FormLabel htmlFor="file">Image, GIFS</FormLabel>
-          {fileError && <Text color="red">Unsupported File Type</Text>}
-          <FormHelperText mb={4}>
-            File types supported: JPG, PNG, GIF
-          </FormHelperText>
-          <Box
-            border="1px solid"
-            borderColor="gray.200"
-            alignSelf="flex-start"
-            boxSize="400"
-            borderRadius="10px"
-            bgSize="cover"
-            bgPos="center"
-            pos="relative"
-            overflow="hidden"
-            bgImg="https://montevista.greatheartsamerica.org/wp-content/uploads/sites/2/2016/11/default-placeholder.png"
-            transition="all 0.2s"
-            _hover={{ borderColor: "gray.400" }}
-          >
-            <Input
-              type="file"
-              id="file"
-              name="file"
-              placeholder="image"
-              onChange={handleFileChange}
-              opacity="0"
-              height="100%"
-              width="100%"
-              cursor="pointer"
-              display={!image ? "block" : "none"}
-              ref={fileRef}
-            />
-            {image && (
-              <Fr>
-                <Image
-                  src={image}
-                  alt="your nft image"
-                  objectFit="contain"
-                  h="100%"
-                  w="100%"
-                />
-                <CloseButton
-                  pos="absolute"
-                  top="10px"
-                  right="10px"
-                  zIndex="10"
-                  bgColor="rgba(0,0,0,0.4)"
-                  _hover={{ bgColor: "rgba(0,0,0,0.3)" }}
-                  color="white"
-                  onClick={onClose}
-                  boxShadow="md"
-                />
-              </Fr>
-            )}
-          </Box>
-        </FormControl>
+        <ImageInput image={image} setImage={setImage} />
         <FormControl>
           <FormLabel htmlFor="name">Name</FormLabel>
           <Input name="name" id="name" type="text" isRequired={true} />
@@ -235,7 +151,17 @@ export default function CreateNFTPage() {
             </Fr>
           ) : (
             <Fr>
-              <Text>Please create a collection first</Text>
+              <NextLink href="/marketplace/collections/create" passHref>
+                <Text
+                  fontSize="lg"
+                  cursor="pointer"
+                  textTransform="uppercase"
+                  color="red"
+                  textDecoration="underline"
+                >
+                  Please create a collection first! Click here.
+                </Text>
+              </NextLink>
             </Fr>
           )}
         </FormControl>
@@ -245,7 +171,10 @@ export default function CreateNFTPage() {
           color={btnColor}
           alignSelf="flex-start"
           type="submit"
-          isDisabled={mintStatus === "loading"}
+          isDisabled={
+            mintStatus === "loading" ||
+            (user.user.collections && !user.user.collections.length)
+          }
         >
           {mintStatus === "loading" ? <Spinner /> : "Create"}
         </Button>

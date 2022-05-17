@@ -36,7 +36,7 @@ const NFTItem = (props) => {
       border="1px solid"
       borderColor="gray.300"
     >
-      <Image src={image} alt="nft pic" objectFit="contain" w="100%" />
+      <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px" />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
           <Text color="gray.500">{name}</Text>
