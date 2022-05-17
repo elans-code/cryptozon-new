@@ -5,41 +5,15 @@ import NFTItem from "../components/marketplace/NFTItem";
 import { useAddress, useMarketplace } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import { Flex } from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
 
 const Marketplace = () => {
-
-  const [nftListings, setNftListings] = useState([]);   // will useSelector once NFT reducer is implemented
+  const { activeNfts } = useSelector((store) => store);
   const [isLoading, setIsLoading] = useState(true);
-  const address = useAddress();
-  const router = useRouter();
-  const marketplace = useMarketplace(
-    process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
-  );
 
-  // redirect to home if no address
   useEffect(() => {
-    // if (!address) router.replace("/");
-  }, [address]);
-
-  // fetch nft listings
-  useEffect(() => {
-    getActiveListings();
-  }, []);
-
-  const getActiveListings = async () => {
-    try {
-      // if (!address) {
-      //   return null;
-      // }
-      const nftList = await marketplace.getActiveListings();
-      // console.log(nftList);
-      setIsLoading(false);
-      setNftListings(nftList);
-    } catch (error) {
-      console.log(error);
-      // alert("Error fetching NFT listings");
-    }
-  };
+    setIsLoading(false);
+  },[]);
 
   return (
     <Box px="12">
@@ -50,8 +24,8 @@ const Marketplace = () => {
         <div>Loading</div>
       ) : (
         <Flex gap="8" wrap="wrap" justifyContent={"center"}>
-          {nftListings.length > 0 ? (
-            nftListings.map((nft) => {
+          {activeNfts.activeNfts.length > 0 ? (
+            activeNfts.activeNfts[0].map((nft) => {
               console.log("nft", nft);
               const { name, description, image } = nft.asset;
               const { id, buyoutPrice, tokenId } = nft;

@@ -150,7 +150,7 @@ const _collections = [
     bannerImg:
       "https://lh3.googleusercontent.com/O0XkiR_Z2--OPa_RA6FhXrR16yBOgIJqSLdHTGA0-LAhyzjSYcb3WEPaCYZHeh19JIUEAUazofVKXcY2qOylWCdoeBN6IfGZLJ3I4A=h600",
     description: "The Azu are king",
-    userId: 4,
+    userId: 2,
   },
 ];
 
