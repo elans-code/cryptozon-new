@@ -8,6 +8,7 @@ import {FaCommentAlt, FaShareAlt} from 'react-icons/fa'
 import { useAddress } from '@thirdweb-dev/react';
 import { fetchUser } from '../store/userSlice';
 import Addpost from './Addpost';
+import Link from 'next/link';
 
 export const SocialCard = (props) => {
     const address = useAddress();
@@ -64,6 +65,7 @@ export const SocialCard = (props) => {
             let tempComments = [...comments]
             return (
             <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>
+                <Link key={user.username} href={`/${user.username}`} passHref>
                 <Box 
                 display='flex' 
                 alignItems='center
@@ -79,6 +81,7 @@ export const SocialCard = (props) => {
                     <Box>{user.username}</Box>
                     <FcApproval/>
                 </Box>
+                </Link>
                 {postImage ?
                 <Box><Image src={imageUrl} alt=''/></Box>:
                 <Box><Image src={contentUri} alt=''/></Box>}
