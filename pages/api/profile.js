@@ -5,12 +5,23 @@ export default async function handler(req, res) {
   let { wallet } = req.query;
   switch (method) {
     case "GET":
-      const user = await User.findOne({
+      if (wallet.length !== 42 || !wallet.startsWith('0x'))
+        throw new Error('Invalid wallet address')
+      // const user = await User.findOne({
+      //   where: {
+      //     wallet: wallet,
+      //   },
+      //   include: [{ model: Collections }],
+      // });
+      const [user] = await User.findOrCreate({
         where: {
-          wallet: wallet,
+          wallet: wallet
         },
-        include: [{ model: Collections }],
-      });
+        defaults: {
+          wallet: wallet
+        },
+        include: [{model: Collections}]
+      })
       return res.status(200).send(user);
 
     case "PUT":

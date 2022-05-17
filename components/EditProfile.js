@@ -23,11 +23,15 @@ export default function EditProfile({user, wallet, usernames}) {
   }
 
   function open() {
+    if (user.username) {
     setUserInfo({
       username: user.username,
       imageUrl: user.imageUrl,
       bio: user.bio
     })
+    } else {
+      setUserInfo({...userInfo, imageUrl: user.imageUrl})
+    }
     setIsError(false)
     onOpen()
   }

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Box, Button, Text, Image, Container, Flex, Divider, Stack, Spinner } from "@chakra-ui/react";
+import { Box, Button, Text, Image, Container, Flex, Divider, Stack, Spinner, Alert, AlertIcon } from "@chakra-ui/react";
 import { fetchUser } from '../store/userSlice';
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from 'react-redux';
@@ -110,6 +110,12 @@ export default function UserProfile() {
   return (
     <>
       <Container>
+        {!user.username &&
+            <Alert on status='info' mb={4} w={275} position='absolute' right={2}>
+              <AlertIcon />
+              Please set up your profile :)
+            </Alert>
+          }
         <Box
           margin={10}
           padding={10}
@@ -127,7 +133,7 @@ export default function UserProfile() {
           />
           <Flex direction="column" w={500} mt="15px">
             <Text fontWeight="bold" fontSize={26}>
-              @{user.username}
+              @{user.username ? user.username : 'unnamed'}
             </Text>
             <Text mt={2}>{user.bio}</Text>
             <Stack direction='row' fontSize={12} mt={10} spacing={5}>
@@ -168,7 +174,8 @@ export default function UserProfile() {
           width={500}
           justifyContent="center"
         >
-          {nfts.map((nft) => (
+
+          {user.username ? nfts.map((nft) => (
             <Box
               _hover={{ border: "1px solid black" }}
               key={nft.id}
@@ -192,7 +199,32 @@ export default function UserProfile() {
                 <Box>{nft.projectName}</Box>
               </Box>
             </Box>
-          ))}
+          )) : null}
+          {/* {nfts.map((nft) => (
+            <Box
+              _hover={{ border: "1px solid black" }}
+              key={nft.id}
+              borderWidth="1px"
+              borderRadius="lg"
+              overflow="hidden"
+              m="10px"
+              maxW="250px"
+            >
+              <Image src={nft.imageUrl} alt="Bored Ape" />
+              <Box p="6">
+                <Box
+                  mt="1"
+                  fontWeight="semibold"
+                  as="h4"
+                  lineHeight="tight"
+                  isTruncated
+                >
+                  {nft.projectName}#{nft.token}
+                </Box>
+                <Box>{nft.projectName}</Box>
+              </Box>
+            </Box>
+          ))} */}
         </Box>
       </Container>
     </>
