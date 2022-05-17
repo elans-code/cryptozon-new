@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   VStack,
   FormControl,
@@ -8,11 +8,22 @@ import {
   Button,
 } from "@chakra-ui/react";
 import ImageInput from "../ImageInput";
+import useCloudinary from "../../hooks/useCloudinary";
 export default function CollectionForm() {
+  const formRef = useRef();
   const [image, setImage] = useState();
   const [image2, setImage2] = useState();
+  const { data, uploadImage } = useCloudinary();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formEl = formRef.current;
+    const { name, profile, banner, description } = Object.fromEntries([
+      ...new FormData(formEl),
+    ]);
+  };
+
   return (
-    <VStack as="form" mt={6} spacing={4}>
+    <VStack as="form" mt={6} spacing={4} onSubmit={handleSubmit} ref={formRef}>
       <ImageInput
         title="Profile Photo"
         name="profile"
