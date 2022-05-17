@@ -6,6 +6,8 @@ import {
   Input,
   Textarea,
   Button,
+  Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import ImageInput from "../ImageInput";
 import { uploadImage } from "../../utils";
@@ -15,7 +17,7 @@ export default function CollectionForm({ address }) {
   const [loadingColl, setLoadingColl] = useState(false);
   const [image, setImage] = useState();
   const [image2, setImage2] = useState();
-
+  const toast = useToast();
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formEl = formRef.current;
@@ -25,17 +27,29 @@ export default function CollectionForm({ address }) {
       banner: bannerImg = "",
       description = "",
     } = Object.fromEntries([...new FormData(formEl)]);
+    if (!address)
+      return toast({
+        title: "Not Signed In",
+        description: "Connect to your metamask wallet",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     if (!name || !profileImg)
-      return alert("name and profile photo must be provided");
+      return toast({
+        title: "Inputs Missing",
+        description: "Name and profile picture are required",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
 
     setLoadingColl(true);
     try {
       const profileUrl = await uploadImage(profileImg);
-      let bannerUrl = "";
-      if (bannerImg) {
+      if (bannerImg.name) {
         bannerUrl = await uploadImage(bannerImg);
       }
-
       await axios.post("/api/collections", {
         name,
         bannerImg: bannerUrl,
@@ -50,10 +64,23 @@ export default function CollectionForm({ address }) {
       formEl.elements.banner.value = "";
       setImage(null);
       setImage2(null);
+      toast({
+        title: "Collection created.",
+        description: "We successfully created your collection",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     } catch (err) {
-      alert("Something went wrong creating your collection");
+      toast({
+        title: "Creation Error",
+        description: "There was an error creating the collection",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
-    setLoading(false);
+    setLoadingColl(false);
   };
 
   return (
@@ -88,7 +115,7 @@ export default function CollectionForm({ address }) {
         type="submit"
         isDisabled={loadingColl}
       >
-        Create
+        {loadingColl ? <Spinner /> : "Create"}
       </Button>
     </VStack>
   );
