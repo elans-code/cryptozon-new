@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import {Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, useDisclosure, Input} from '@chakra-ui/react'
+import {Text, Button, Modal, ModalOverlay, ModalContent, ModalBody, ModalHeader, ModalCloseButton, ModalFooter, useDisclosure, Input} from '@chakra-ui/react'
 import { setConfig } from 'next/config';
+import { uploadImage } from '../utils';
 
 export default function PostModal(props) {
 
@@ -8,7 +9,10 @@ export default function PostModal(props) {
     const {data, open, closeFunc, addPost} = props;
     const [currentInput, setCurrentInput] = useState('');
     const [hasImg, setImg] = useState(false);
-    cons [imgUrl, setImgUrl] = useState('')
+    const [imgUrl, setImgUrl] = useState('')
+    const [hasError, setHasError] = useState(false);
+    const [currentError, setCurrentError] = useState('')
+    const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
     //needs to reference current userID
     const userId = 1
     useEffect(()=>{
@@ -20,14 +24,20 @@ export default function PostModal(props) {
         }
     },[open])
     const add = (userId, Post) => {
-        addPost(userId,Post)
-        setCurrentInput('')
+        if(Post.length<1){
+            setHasError(true);
+            setCurrentError('Please add some text to your post!')
+        }else if(hasImg){
+            setImgUrl(uploadImage(file))
+            addPost(userId, Post, imgUrl)
+            setCurrentInput('')
+        }
     }
     const handleFile = (e)=>{
         const file = e.target.files[0];
-        setImgUrl(uploadImage(file))
         setImg(true);
-
+        setUploadButtonText('Image Uploaded!')
+        console.log(imgUrl)
     }
     console.log(data)
     return (
@@ -39,8 +49,9 @@ export default function PostModal(props) {
                     <ModalCloseButton />
                     <ModalBody display='flex' flexDirection='column'>
                         <Input type='text' onChange={(e)=>setCurrentInput(e.nativeEvent.target.value)} placeholder={"What's on your mind?"} value={currentInput}/>
-                        <Button variant='ghost' value='' onClick={()=>document.getElementById('upload').click()}>Upload Image</Button>
-                        <Input id='upload' display='none' type='file' accept='image/*' onChange={()=>{}}/>
+                        <Button variant='ghost' value='' onClick={()=>document.getElementById('upload').click()}>{uploadButtonText}</Button>
+                        <Input id='upload' display='none' type='file' accept='image/*' onChange={(e)=>handleFile(e)}/>
+                        {!!hasError?<Text>{currentError}</Text>: null}
 
                     </ModalBody>
                     <ModalFooter>
