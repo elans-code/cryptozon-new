@@ -18,10 +18,14 @@ export default function Addpost() {
     setOpen(false);
     setData({})
   }
-  const addPost = (userId,post) =>{
+  const addPost = (userId,post,imgUrl) =>{
     const data = {
       userId: userId,
       content: post,
+    }
+    if(!!imgUrl){
+      data.imageUrl = imgUrl
+      data.postImage = true
     }
     dispatch(newPost(data));
   }

@@ -20,6 +20,8 @@ export default function PostModal(props) {
             onOpen()
         }else{
             setCurrentInput('')
+            setImgUrl('');
+            setUploadButtonText('Upload Image')
             onClose()
         }
     },[open])
@@ -27,17 +29,19 @@ export default function PostModal(props) {
         if(Post.length<1){
             setHasError(true);
             setCurrentError('Please add some text to your post!')
-        }else if(hasImg){
-            setImgUrl(uploadImage(file))
+        }else{
             addPost(userId, Post, imgUrl)
             setCurrentInput('')
+            setImgUrl('');
+            setUploadButtonText('Upload Image')
         }
     }
-    const handleFile = (e)=>{
+    const handleFile = async (e)=>{
         const file = e.target.files[0];
+        const url = await uploadImage(file);
+        setImgUrl(url);
         setImg(true);
         setUploadButtonText('Image Uploaded!')
-        console.log(imgUrl)
     }
     console.log(data)
     return (
