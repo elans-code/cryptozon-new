@@ -15,7 +15,6 @@ export const fetchAllPost = createAsyncThunk(
           temp.contentUri = uri
           return temp;
         }))
-        console.log(pDataModified)
         return pDataModified;
       } catch (error) {
         console.log(error)
@@ -37,7 +36,6 @@ export const unlikeItem = createAsyncThunk(
   'post/unlikeItem',
   async (itemInfo, {dispatch}) => {
       try {
-        console.log('iteminfo unL', itemInfo)
         await axios.delete('/api/likes', {data:itemInfo} )
         dispatch(fetchAllPost());
       } catch (error) {

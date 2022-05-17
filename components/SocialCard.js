@@ -92,7 +92,6 @@ export const SocialCard = (props) => {
         <CommentModal open={open} closeFunc={closeModal} data={data} addComment={addComment} />
         {!!post? tempPost.map(singlePostData=>{
             const {id,postImage,imageUrl,content,comments, user, contentUri,likes_posts} = singlePostData
-            console.log('likes data:',likes_posts)
             let tempComments = [...comments]
             return (
             <Box alignContent='center' border='1px' margin='10px' padding='2px' borderRadius="lg" display='flex' flexDirection='column' maxW='xl' key={id}>

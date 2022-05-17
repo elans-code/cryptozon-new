@@ -43,7 +43,6 @@ export default function PostModal(props) {
         setImg(true);
         setUploadButtonText('Image Uploaded!')
     }
-    console.log(data)
     return (
         <div>
             <Modal blockScrollOnMount={true} isOpen={isOpen} onClose={closeFunc}>
