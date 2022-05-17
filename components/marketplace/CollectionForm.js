@@ -12,6 +12,7 @@ import { uploadImage } from "../../utils";
 import axios from "axios";
 export default function CollectionForm({ address }) {
   const formRef = useRef();
+  const [loadingColl, setLoadingColl] = useState(false);
   const [image, setImage] = useState();
   const [image2, setImage2] = useState();
 
@@ -26,6 +27,8 @@ export default function CollectionForm({ address }) {
     } = Object.fromEntries([...new FormData(formEl)]);
     if (!name || !profileImg)
       return alert("name and profile photo must be provided");
+
+    setLoadingColl(true);
     try {
       const profileUrl = await uploadImage(profileImg);
       let bannerUrl = "";
@@ -48,9 +51,9 @@ export default function CollectionForm({ address }) {
       setImage(null);
       setImage2(null);
     } catch (err) {
-      console.log(err);
-      alert(err.message);
+      alert("Something went wrong creating your collection");
     }
+    setLoading(false);
   };
 
   return (
@@ -78,7 +81,13 @@ export default function CollectionForm({ address }) {
         <FormLabel htmlFor="description">Description</FormLabel>
         <Textarea id="description" name="description" />
       </FormControl>
-      <Button colorScheme="cyan" alignSelf="start" color="white" type="submit">
+      <Button
+        colorScheme="cyan"
+        alignSelf="start"
+        color="white"
+        type="submit"
+        isDisabled={loadingColl}
+      >
         Create
       </Button>
     </VStack>
