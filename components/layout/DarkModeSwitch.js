@@ -30,6 +30,13 @@ const DarkModeSwitch = () => {
     }
   }, [address, dispatch]);
 
+  const disconnect = () => {
+    disconnectWallet();
+    if (router.pathname == '/profile') {
+      router.push('/')
+    }
+  }
+
   return (
     <Flex w="100%">
       <Flex align="center" width="100%" justifyContent="flex-end" px="8">
@@ -93,7 +100,7 @@ const DarkModeSwitch = () => {
                   aria-label="Contact"
                   my={5}
                   w="100%"
-                  onClick={disconnectWallet}
+                  onClick={disconnect}
                 >
                   Disconnect Wallet
                 </Button>
