@@ -15,6 +15,7 @@ export const setNFT = createAsyncThunk(
   async (data) => {
     try {
       // console.log(data)
+      // will use data object to update database on api route
       return data;
     } catch (error) {
       console.log(error)
