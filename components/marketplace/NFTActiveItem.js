@@ -38,9 +38,6 @@ const NFTActiveItem = (props) => {
         cursor="pointer"
         border="1px solid"
         borderColor="gray.300"
-        onClick={(e) => {
-          console.log(tokenId);
-        }}
       >
         <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px"/>
         <Grid templateColumns="repeat(2,1fr)" p="4">
