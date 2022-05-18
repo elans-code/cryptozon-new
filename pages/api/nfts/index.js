@@ -23,7 +23,7 @@ const getOwnerNFTs = wrapAsync(async (req, res) => {
     throw new Error("Invalid wallet address");
 
   const ownerNFTs = await NFTs.findAll({ where: { owner: req.query.owner } });
-  if (!ownerNFTs.length) throw new Error("Owner has no NFTs");
+  // if (!ownerNFTs.length) throw new Error("Owner has no NFTs");
   return res.status(200).json({ status: "success", data: ownerNFTs });
 });
 

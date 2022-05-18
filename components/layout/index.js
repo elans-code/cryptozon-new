@@ -2,7 +2,7 @@ import { Fragment as Fr, useState, useEffect, useCallback } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 import { useDispatch } from "react-redux";
-import { setNFT, } from "../../store/nfts";
+// import { setNFT, } from "../../store/nfts";
 import { useMarketplace } from "@thirdweb-dev/react";
 import { setActiveNft } from "../../store/activeNfts";
 
@@ -33,7 +33,7 @@ export default function Layout({ children }) {
     try {
       const nftList = await marketplace.getAllListings();
       setAllNFTListings(nftList);
-      dispatch(setNFT(nftList));
+      // dispatch(setNFT(nftList));
     } catch (error) {
       console.log(error);
     }
