@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
 
-const NFTItem = (props) => {
+const NFTActiveItem = (props) => {
   const { name, image, price, id, tokenId } = props;
 
   const marketplace = useMarketplace(
@@ -67,4 +67,4 @@ const NFTItem = (props) => {
   );
 };
 
-export default NFTItem;
+export default NFTActiveItem;
