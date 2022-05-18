@@ -25,8 +25,8 @@ export default function Layout({ children }) {
 
   useEffect(() => {
     // set redux store with all nfts from marketplace contract
-    getAllListings();
-    getAllActiveListings();
+    getAllActiveListings();getAllListings();
+
   }, []);
 
   const getAllListings = async () => {

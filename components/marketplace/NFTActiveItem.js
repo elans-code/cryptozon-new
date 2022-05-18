@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 
 const NFTActiveItem = (props) => {
@@ -17,12 +18,12 @@ const NFTActiveItem = (props) => {
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
-
+  const router = useRouter();
   const buyNFT = async () => {
     try {
       await marketplace.buyoutListing(id, 1);
       alert("NFT purchased");
-      window.location.reload();
+      router.push("/marketplace/nfts");
     } catch (error) {
       console.log(error);
       alert("Error buying NFT");
@@ -30,7 +31,7 @@ const NFTActiveItem = (props) => {
   };
 
   return (
-    <Link key={tokenId} href={`nfts/${tokenId}`} passHref>
+
       <Box
         boxShadow="lg"
         borderRadius="10px"
@@ -39,7 +40,9 @@ const NFTActiveItem = (props) => {
         border="1px solid"
         borderColor="gray.300"
       >
-        <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px"/>
+        <Link key={tokenId} href={`nfts/${tokenId}`} passHref>
+          <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px"/>
+        </Link>
         <Grid templateColumns="repeat(2,1fr)" p="4">
           <Gi>
             <Text color="gray.500">{name}</Text>
@@ -69,7 +72,7 @@ const NFTActiveItem = (props) => {
           </Gi>
         </Grid>
       </Box>
-    </Link>
+
   );
 };
 

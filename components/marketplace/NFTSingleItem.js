@@ -9,18 +9,20 @@ import {
 } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const NFTSingleItem = (props) => {
   const { name, image, price, id, tokenId } = props;
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
-
+  const router = useRouter();
+    console.log(router.query)
   const buyNFT = async () => {
     try {
       await marketplace.buyoutListing(id, 1);
       alert("NFT purchased");
-      window.location.reload();
+      router.push("/marketplace/nfts");
     } catch (error) {
       console.log(error);
       alert("Error buying NFT");
