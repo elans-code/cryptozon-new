@@ -2,6 +2,7 @@ import React, { useEffect, useState, Fragment as Fr } from "react";
 import { Box, Heading, Flex } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
 import NFTActiveItem from "../../../components/marketplace/NFTActiveItem";
+import Link from "next/link";
 
 const Marketplace = () => {
   const { activeNfts } = useSelector((store) => store);
@@ -22,20 +23,21 @@ const Marketplace = () => {
         <Flex gap="8" wrap="wrap" justifyContent={"center"}>
           {activeNfts.activeNfts.length > 0 ? (
             activeNfts.activeNfts[0].map((nft) => {
-              // console.log("nft", nft);
               const { name, description, image } = nft.asset;
               const { id, buyoutPrice, tokenId } = nft;
               const price = buyoutPrice / 1e18;
+              // console.log("nft", tokenId);
 
               return (
-                <NFTActiveItem
-                  key={tokenId}
-                  name={name}
-                  description={description}
-                  image={image}
-                  price={price}
-                  id={id}
-                />
+                  <NFTActiveItem
+                    key={tokenId}
+                    name={name}
+                    description={description}
+                    image={image}
+                    price={price}
+                    id={id}
+                    tokenId={tokenId}
+                  />
               );
             })
           ) : (

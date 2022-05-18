@@ -10,28 +10,14 @@ import {
 import { useMarketplace } from "@thirdweb-dev/react";
 import Link from "next/link";
 
-
-const NFTActiveItem = (props) => {
+const NFTSingleItem = (props) => {
   const { name, image, price, id, tokenId } = props;
-
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
 
-  const buyNFT = async () => {
-    try {
-      await marketplace.buyoutListing(id, 1);
-      alert("NFT purchased");
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-      alert("Error buying NFT");
-    }
-  };
-
   return (
-    <Link key={tokenId} href={`nfts/${tokenId}`} passHref>
-      <Box
+    <Box
         boxShadow="lg"
         borderRadius="10px"
         overflow="hidden"
@@ -67,8 +53,7 @@ const NFTActiveItem = (props) => {
           </Gi>
         </Grid>
       </Box>
-    </Link>
-  );
+  )
 };
 
-export default NFTActiveItem;
+export default NFTSingleItem;
