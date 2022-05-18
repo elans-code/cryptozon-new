@@ -27,6 +27,7 @@ const Marketplace = () => {
               const { id, buyoutPrice, tokenId } = nft;
               const price = buyoutPrice / 1e18;
 
+
               return (
                 <NFTActiveItem
                   key={tokenId}
