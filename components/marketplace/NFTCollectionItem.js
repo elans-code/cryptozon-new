@@ -8,15 +8,20 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
+import SellButton from "./SellButton";
 
 const NFTItem = (props) => {
   const { nft, collName, user } = props;
-  console.log(nft);
+  const { user: signedUser } = user;
+
   const isExpired = Date.now() > new Date(nft.expirationDate);
+  const isOwner = nft.owner === signedUser.wallet;
+  const couldSell = isOwner && (isExpired || !nft.listingId);
+  const couldBuy = signedUser.wallet && !isOwner && !isExpired && nft.listingId;
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
-  const { user: signedUser } = user;
+
   const buyNFT = async () => {
     try {
       await marketplace.buyoutListing(id, 1);
@@ -37,10 +42,10 @@ const NFTItem = (props) => {
       border="1px solid"
       borderColor="gray.300"
     >
-      <Image src={nft.image} alt="nft pic" objectFit="fill" boxSize="300px" />
+      <Image src={nft.image} alt="nft pic" objectFit="cover" w="100%" />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
-          <Text color="gray.500">{collName}</Text>
+          <Text color="gray.500">{collName || "NFT"}</Text>
         </Gi>
         <Gi justifySelf="end">
           <Text color="gray.500">&nbsp;</Text>
@@ -59,12 +64,17 @@ const NFTItem = (props) => {
             price*/}
           </Text>
         </Gi>
-
         <Gi gridColumn="span 2" justifySelf="end">
           <Text></Text>
         </Gi>
         <Gi gridColumn="span 2" justifySelf="end">
-          <Button>Wassup</Button>
+          {couldBuy ? (
+            <Button>Buy</Button>
+          ) : couldSell ? (
+            <SellButton marketplace={marketplace} nft={nft} />
+          ) : (
+            ""
+          )}
         </Gi>
       </Grid>
     </Box>

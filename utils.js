@@ -1,3 +1,4 @@
+import { NATIVE_TOKEN_ADDRESS } from "@thirdweb-dev/sdk";
 import axios from "axios";
 
 export const wrapAsync = (fn) => (req, res) =>
@@ -9,6 +10,8 @@ export const sellNFT = async (contract, nft, price) => {
   try {
     if (nft.listingId && Date.now() < nft.expirationDate)
       throw new Error("Item is already for sale");
+    console.log(contract, nft, price);
+    console.log(NATIVE_TOKEN_ADDRESS);
     const listing = {
       assetContractAddress: nft.assetContractAddress,
       tokenId: nft.tokenId,
@@ -16,7 +19,7 @@ export const sellNFT = async (contract, nft, price) => {
       listingDurationInSeconds: 2630000,
       quantity: 1,
       currencyContractAddress: NATIVE_TOKEN_ADDRESS,
-      buyoutPricePerToken: price,
+      buyoutPricePerToken: `${price}`,
     };
 
     const tx = await contract.direct.createListing(listing);
@@ -24,6 +27,7 @@ export const sellNFT = async (contract, nft, price) => {
     const listingId = tx.id; // the id of the newly created listing
     console.log("RECEIPT", receipt, "LISTING", listingId);
   } catch (err) {
+    console.log(err.message);
     throw err;
   }
 };
