@@ -78,7 +78,7 @@ export default function CreateNFTPage() {
       const tokenId = tx.id;
       const {
         owner,
-        metadata: { description, image, name, uri },
+        metadata: { description = "", image, name, uri },
       } = await tx.data();
       // console.log("NFT DATA", nft);
       // console.log("NFT TOKEN ID", tokenId);
@@ -106,6 +106,7 @@ export default function CreateNFTPage() {
       setImage(null);
     } catch (e) {
       setMintStatus("idle");
+      console.log(e.message);
       let description = "Something went wrong";
       if (e.message.includes("denied"))
         description = "You denied the transaction request.";

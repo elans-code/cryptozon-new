@@ -11,8 +11,11 @@ import {
 } from "@chakra-ui/react";
 import ImageInput from "../ImageInput";
 import { uploadImage } from "../../utils";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "../../store/userSlice";
 import axios from "axios";
 export default function CollectionForm({ address }) {
+  const dispatch = useDispatch();
   const formRef = useRef();
   const [loadingColl, setLoadingColl] = useState(false);
   const [image, setImage] = useState();
@@ -65,6 +68,7 @@ export default function CollectionForm({ address }) {
       formEl.elements.banner.value = "";
       setImage(null);
       setImage2(null);
+      dispatch(fetchUser(address));
       toast({
         title: "Collection created.",
         description: "We successfully created your collection",
