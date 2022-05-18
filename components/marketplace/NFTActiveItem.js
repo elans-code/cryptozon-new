@@ -61,7 +61,9 @@ const NFTActiveItem = (props) => {
               {price}
             </Text>
           </Gi>
-
+          <Gi>
+            <Button onClick={buyNFT}>Buy</Button>
+          </Gi>
           <Gi gridColumn="span 2" justifySelf="end">
             <Text>1 day left</Text>
           </Gi>
