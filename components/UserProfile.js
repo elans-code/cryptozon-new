@@ -15,88 +15,92 @@ import {
   GridItem as Gi,
 } from "@chakra-ui/react";
 import { fetchUser } from "../store/userSlice";
+import { fetchNfts, toggleHidden } from "../store/nfts";
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from "react-redux";
 import EditProfile from "./EditProfile";
 import Link from "next/link";
 import axios from "axios";
 
-const nfts = [
-  {
-    id: 1,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 69,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 2,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 420,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 3,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 4,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 5,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 6,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 7,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
-  {
-    id: 8,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 9,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
-];
+// const nfts = [
+//   {
+//     id: 1,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 69,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 2,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 420,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 3,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 4,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 5,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 6,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 7,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: true,
+//   },
+//   {
+//     id: 8,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: false,
+//   },
+//   {
+//     id: 9,
+//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
+//     token: 783,
+//     projectName: "BAYC",
+//     hidden: true,
+//   },
+// ];
 
 export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const { user } = useSelector((state) => state.user);
   const [usernames, setUsernames] = useState([]);
+  const {nfts} = useSelector(state => state.nfts);
+  const [hidden, setHidden] = useState(false) // (not hidden)
 
   useEffect(() => {
     if (address) {
       dispatch(fetchUser(address));
       getAllUsernames();
+      dispatch(fetchNfts(address));
     }
   }, [address]);
 
@@ -111,6 +115,14 @@ export default function UserProfile() {
       }
     });
     setUsernames(names);
+  }
+
+  function toggle(n) {
+    if (n.hidden == false) {
+      dispatch(toggleHidden({...n, hidden: true}))
+    } else {
+      dispatch(toggleHidden({...n, hidden: false}))
+    }
   }
 
   if (!user) {
@@ -169,7 +181,6 @@ export default function UserProfile() {
               status="info"
               mt={8}
               w={460}
-              isClosable={true}
             >
               <AlertIcon />
               Please set up your profile :)
@@ -186,9 +197,9 @@ export default function UserProfile() {
       >
         {user.username ? (
           <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-            <Button>Owned</Button>
+            <Button onClick={() => setHidden(false)}>Owned</Button>
             <Divider m="5px" />
-            <Button>Hidden</Button>
+            <Button onClick={() => setHidden(true)}>Hidden</Button>
           </Box>
         ) : null}
         <Box
@@ -198,7 +209,12 @@ export default function UserProfile() {
           width={500}
           justifyContent="center"
         >
-          {user.username
+          {/* {!!nfts.data ?
+          nfts.data.map(n => (
+            <Image key={n.id} alt='nft' src={n.image} h={200} w={200}/>
+          )) : null
+        } */}
+          {/* {user.username
             ? nfts.map((nft) => (
                 <Box
                   _hover={{ border: "1px solid black" }}
@@ -221,6 +237,34 @@ export default function UserProfile() {
                       {nft.projectName}#{nft.token}
                     </Box>
                     <Box>{nft.projectName}</Box>
+                  </Box>
+                </Box>
+              ))
+            : null} */}
+            {!!nfts.data ?
+            nfts.data.filter(n => n.hidden === hidden).map((nft) => (
+                <Box
+                  _hover={{ border: "1px solid black" }}
+                  key={nft.id}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  m="10px"
+                  maxW="250px"
+                >
+                  <Image src={nft.image} alt={nft.name} w='250px' h='250px'/>
+                  <Box p="6">
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      isTruncated
+                    >
+                      {nft.name}#{nft.tokenId}
+                    </Box>
+                    <Box>{nft.description}</Box>
+                    <Button fontSize={10} h='15px' w='40px' mt={1} onClick={() => toggle(nft)}>toggle</Button>
                   </Box>
                 </Box>
               ))
