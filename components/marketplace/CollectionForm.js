@@ -47,6 +47,7 @@ export default function CollectionForm({ address }) {
     setLoadingColl(true);
     try {
       const profileUrl = await uploadImage(profileImg);
+      let bannerUrl = "";
       if (bannerImg.name) {
         bannerUrl = await uploadImage(bannerImg);
       }
@@ -72,6 +73,7 @@ export default function CollectionForm({ address }) {
         isClosable: true,
       });
     } catch (err) {
+      console.log(err.message);
       toast({
         title: "Creation Error",
         description: "There was an error creating the collection",
