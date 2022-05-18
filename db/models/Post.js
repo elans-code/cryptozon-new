@@ -6,8 +6,9 @@ const Post = db.define('post', {
     type: Sequelize.TEXT,
     allowNull: false
   },
-  likes: {
-    type: Sequelize.INTEGER
+  likesCount: {
+    type: Sequelize.INTEGER,
+    defaultValue:0
   },
   postImage: {
     type: Sequelize.BOOLEAN,

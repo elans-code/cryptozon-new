@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Fragment as Fr } from "react";
-import { useAddress, useDisconnect, useMetamask } from "@thirdweb-dev/react";
+import { useAddress, useMetamask } from "@thirdweb-dev/react";
 import { BsSun, BsMoonStarsFill } from "react-icons/bs";
 import CreateNav from "./CreateNav";
 import {
@@ -20,7 +20,6 @@ const DarkModeSwitch = () => {
   const [display, changeDisplay] = useState("none");
   const address = useAddress();
   const connectWithMetamask = useMetamask();
-  const disconnectWallet = useDisconnect();
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -30,12 +29,6 @@ const DarkModeSwitch = () => {
     }
   }, [address, dispatch]);
 
-  const disconnect = () => {
-    disconnectWallet();
-    if (router.pathname == '/profile') {
-      router.push('/')
-    }
-  }
 
   return (
     <Flex w="100%">
@@ -93,31 +86,21 @@ const DarkModeSwitch = () => {
           ) : null}
 
           <ChakraLink>
-            {address ? (
-              <Fr>
-                <Button
-                  variant="ghost"
-                  aria-label="Contact"
-                  my={5}
-                  w="100%"
-                  onClick={disconnect}
-                >
-                  Disconnect Wallet
-                </Button>
-              </Fr>
-            ) : (
-              <Fr>
-                <Button
-                  variant="ghost"
-                  aria-label="Contact"
-                  my={5}
-                  w="100%"
-                  onClick={connectWithMetamask}
-                >
-                  Connect with Metamask
-                </Button>
-              </Fr>
-            )}
+          {!address ? (
+            <Fr>
+              <Button
+                variant="ghost"
+                aria-label="Contact"
+                my={5}
+                w="100%"
+                onClick={connectWithMetamask}
+              >
+                Connect with Metamask
+              </Button>
+            </Fr>
+          ) : (
+            null
+          )}
           </ChakraLink>
         </Flex>
         <IconButton
@@ -194,19 +177,7 @@ const DarkModeSwitch = () => {
             </Link>
           ) : null}
           <ChakraLink>
-            {address ? (
-              <Fr>
-                <Button
-                  variant="ghost"
-                  aria-label="Contact"
-                  my={5}
-                  w="100%"
-                  onClick={disconnectWallet}
-                >
-                  Disconnect Wallet
-                </Button>
-              </Fr>
-            ) : (
+            {!address ? (
               <Fr>
                 <Button
                   variant="ghost"
@@ -218,6 +189,8 @@ const DarkModeSwitch = () => {
                   Connect with Metamask
                 </Button>
               </Fr>
+            ) : (
+              null
             )}
           </ChakraLink>
         </Flex>
