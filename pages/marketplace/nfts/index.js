@@ -22,11 +22,10 @@ const Marketplace = () => {
         <Flex gap="8" wrap="wrap" justifyContent={"center"}>
           {activeNfts.activeNfts.length > 0 ? (
             activeNfts.activeNfts[0].map((nft) => {
-              // console.log("nft", nft);
               const { name, description, image } = nft.asset;
               const { id, buyoutPrice, tokenId } = nft;
               const price = buyoutPrice / 1e18;
-
+              // console.log("nft", tokenId);
 
               return (
                 <NFTActiveItem
@@ -36,6 +35,7 @@ const Marketplace = () => {
                   image={image}
                   price={price}
                   id={id}
+                  tokenId={tokenId}
                 />
               );
             })
