@@ -23,26 +23,31 @@ const _users = [
     wallet: "0x1362C69834d5B19ECbfBC6a643375394a4228D32",
     bio: "i am satoshi",
   },
+  {
+    username: "2france2",
+    wallet: "0x58659CdB229968c76BF7C7e749A6cdDb5660Fe25",
+    bio: "i am not satoshi",
+  },
 ];
 const _post = [
   {
     content: "this is some quality content",
     likes: 54,
     userId: 1,
-    createdAt: "2022-05-12T16:20:11.065Z"
+    createdAt: "2022-05-12T16:20:11.065Z",
   },
   {
     content: "this is not some quality content",
     likes: 3,
     userId: 1,
-    createdAt: "2022-05-12T16:20:12.065Z"
+    createdAt: "2022-05-12T16:20:12.065Z",
   },
   {
     content: "this quality content should have the default image",
     likes: 987,
     postImage: true,
     userId: 1,
-    createdAt: "2022-05-12T16:20:13.065Z"
+    createdAt: "2022-05-12T16:20:13.065Z",
   },
   {
     content: "this quality content should have a custom image",
@@ -50,7 +55,7 @@ const _post = [
     postImage: true,
     imageUrl: "/assets/test_monke.png",
     userId: 1,
-    createdAt: "2022-05-12T16:20:14.065Z"
+    createdAt: "2022-05-12T16:20:14.065Z",
   },
 ];
 
@@ -60,49 +65,49 @@ const _comments = [
     likes: 2,
     userId: 1,
     postId: 1,
-    createdAt: "2022-05-12T16:20:11.065Z"
+    createdAt: "2022-05-12T16:20:11.065Z",
   },
   {
     content: "YO THIS IS GOING TO THE MOON!",
     likes: 541,
     userId: 1,
     postId: 1,
-    createdAt: "2022-05-12T16:20:12.065Z"
+    createdAt: "2022-05-12T16:20:12.065Z",
   },
   {
     content: "This is trash..",
     likes: 60,
     userId: 1,
     postId: 1,
-    createdAt: "2022-05-12T16:20:13.065Z"
+    createdAt: "2022-05-12T16:20:13.065Z",
   },
   {
     content: "BUY THE DIP!",
     likes: 9,
     userId: 1,
     postId: 2,
-    createdAt: "2022-05-12T16:20:14.065Z"
+    createdAt: "2022-05-12T16:20:14.065Z",
   },
   {
     content: "First!",
     likes: 46581,
     userId: 1,
     postId: 2,
-    createdAt: "2022-05-12T16:20:15.065Z"
+    createdAt: "2022-05-12T16:20:15.065Z",
   },
   {
     content: "Reminder that its just money",
     likes: -5,
     userId: 1,
     postId: 2,
-    createdAt: "2022-05-12T16:20:16.065Z"
+    createdAt: "2022-05-12T16:20:16.065Z",
   },
   {
     content: "Seems legit",
     likes: 0,
     userId: 1,
     postId: 3,
-    createdAt: "2022-05-12T16:20:16.065Z"
+    createdAt: "2022-05-12T16:20:16.065Z",
   },
   {
     content:
@@ -110,14 +115,14 @@ const _comments = [
     likes: 12,
     userId: 1,
     postId: 3,
-    createdAt: "2022-05-12T16:20:17.065Z"
+    createdAt: "2022-05-12T16:20:17.065Z",
   },
   {
     content: "I drained my mom's credit card to buy this NFT ^.^",
     likes: 9000,
     userId: 1,
     postId: 3,
-    createdAt: "2022-05-12T16:20:18.065Z"
+    createdAt: "2022-05-12T16:20:18.065Z",
   },
 ];
 

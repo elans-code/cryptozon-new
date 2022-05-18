@@ -38,7 +38,24 @@ const collectionInitState = {
 const collectionSlice = createSlice({
   name: "collection",
   initialState: collectionInitState,
-  reducers: {},
+  reducers: {
+    changeNFTListing(
+      state,
+      { payload: { id, listingId, expirationDate, buyoutPrice } }
+    ) {
+      const index = state.singleCollection.nfts.findIndex((el) => el.id === id);
+      state.singleCollection.nfts[index].listingId = listingId;
+      state.singleCollection.nfts[index].expirationDate = expirationDate;
+      state.singleCollection.nfts[index].buyoutPrice = buyoutPrice;
+    },
+    changeNFTOwner(state, { payload: { id, wallet } }) {
+      const index = state.singleCollection.nfts.findIndex((el) => el.id === id);
+      state.singleCollection.nfts[index].owner = wallet;
+      state.singleCollection.nfts[index].listingId = null;
+      state.singleCollection.nfts[index].expirationDate = null;
+      state.singleCollection.nfts[index].buyoutPrice = null;
+    },
+  },
   extraReducers: {
     [fetchAllCollections.pending]: (state) => {
       state.status = "loading";
@@ -62,5 +79,7 @@ const collectionSlice = createSlice({
     },
   },
 });
+
+export const collectionActions = collectionSlice.actions;
 
 export default collectionSlice.reducer;

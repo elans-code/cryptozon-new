@@ -15,6 +15,7 @@ const transferNFT = wrapAsync(async (req, res) => {
 const sellNFT = wrapAsync(async (req, res) => {
   const { listingId, buyoutPrice, expirationDate } = req.body;
   const [, id] = req.query.action;
+
   const [, sellingNFT] = await NFTs.update(
     { listingId, buyoutPrice, expirationDate },
     { where: { id }, returning: true }
@@ -23,6 +24,7 @@ const sellNFT = wrapAsync(async (req, res) => {
 });
 
 export default async function handler(req, res) {
+  console.log("hi");
   try {
     switch (req.method) {
       case "PATCH":
