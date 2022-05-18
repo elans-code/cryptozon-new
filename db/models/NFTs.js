@@ -15,7 +15,7 @@ const NFT = db.define("nft", {
   uri: strOp(false),
   assetContractAddress: strOp(false),
   listingId: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
   },
   buyoutPrice: {
     type: Sequelize.FLOAT,
@@ -25,8 +25,8 @@ const NFT = db.define("nft", {
       },
     },
   },
-  expiratonDate: {
-    type: Sequelize.DATEONLY,
+  expirationDate: {
+    type: Sequelize.DATE,
   },
   hidden: {
     type: Sequelize.BOOLEAN,

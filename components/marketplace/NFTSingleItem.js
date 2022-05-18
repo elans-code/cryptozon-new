@@ -11,14 +11,13 @@ import { useMarketplace } from "@thirdweb-dev/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-
-const NFTActiveItem = (props) => {
+const NFTSingleItem = (props) => {
   const { name, image, price, id, tokenId } = props;
-
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
   const router = useRouter();
+    console.log(router.query)
   const buyNFT = async () => {
     try {
       await marketplace.buyoutListing(id, 1);
@@ -31,8 +30,7 @@ const NFTActiveItem = (props) => {
   };
 
   return (
-
-      <Box
+    <Box
         boxShadow="lg"
         borderRadius="10px"
         overflow="hidden"
@@ -40,9 +38,7 @@ const NFTActiveItem = (props) => {
         border="1px solid"
         borderColor="gray.300"
       >
-        <Link key={tokenId} href={`nfts/${tokenId}`} passHref>
-          <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px"/>
-        </Link>
+        <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px"/>
         <Grid templateColumns="repeat(2,1fr)" p="4">
           <Gi>
             <Text color="gray.500">{name}</Text>
@@ -72,8 +68,7 @@ const NFTActiveItem = (props) => {
           </Gi>
         </Grid>
       </Box>
-
-  );
+  )
 };
 
-export default NFTActiveItem;
+export default NFTSingleItem;

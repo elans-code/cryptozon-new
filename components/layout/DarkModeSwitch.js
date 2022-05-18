@@ -43,7 +43,7 @@ const DarkModeSwitch = () => {
               w="100%"
               p={"0.8rem 1.7rem"}
             >
-              Discovery
+              Shop
             </Button>
           </Link>
           <Link href="/marketplace/collections" passHref>
@@ -54,7 +54,7 @@ const DarkModeSwitch = () => {
               my={5}
               w="100%"
             >
-              Shop
+            Discovery
             </Button>
           </Link>
           <Link href="/post" passHref>
@@ -149,7 +149,7 @@ const DarkModeSwitch = () => {
               my={5}
               w="100%"
             >
-              Discovery
+              Shop
             </Button>
           </Link>
           <Link href="/marketplace/collections" passHref>
@@ -160,7 +160,7 @@ const DarkModeSwitch = () => {
               my={5}
               w="100%"
             >
-              Shop
+            Discovery
             </Button>
           </Link>
           {address ? (
