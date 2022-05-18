@@ -16,6 +16,17 @@ const NFTSingleItem = (props) => {
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
 
+  const buyNFT = async () => {
+    try {
+      await marketplace.buyoutListing(id, 1);
+      alert("NFT purchased");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      alert("Error buying NFT");
+    }
+  };
+
   return (
     <Box
         boxShadow="lg"
@@ -47,7 +58,9 @@ const NFTSingleItem = (props) => {
               {price}
             </Text>
           </Gi>
-
+          <Gi>
+            <Button onClick={buyNFT}>Buy</Button>
+          </Gi>
           <Gi gridColumn="span 2" justifySelf="end">
             <Text>1 day left</Text>
           </Gi>
