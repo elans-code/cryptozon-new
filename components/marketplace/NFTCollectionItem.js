@@ -8,10 +8,16 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useMarketplace } from "@thirdweb-dev/react";
+import SellButton from "./SellButton";
 
 const NFTItem = (props) => {
-  const { name, image, price = "1.99", id, tokenId } = props;
+  const { nft, collName, user } = props;
+  const { user: signedUser } = user;
 
+  const isExpired = Date.now() > new Date(nft.expirationDate);
+  const isOwner = nft.owner === signedUser.wallet;
+  const couldSell = isOwner && (isExpired || !nft.listingId);
+  const couldBuy = signedUser.wallet && !isOwner && !isExpired && nft.listingId;
   const marketplace = useMarketplace(
     process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT_ADDRESS
   );
@@ -36,35 +42,43 @@ const NFTItem = (props) => {
       border="1px solid"
       borderColor="gray.300"
     >
-      <Image src={image} alt="nft pic" objectFit="contain" boxSize="350px" />
+      <Image src={nft.image} alt="nft pic" objectFit="cover" w="100%" />
       <Grid templateColumns="repeat(2,1fr)" p="4">
         <Gi>
-          <Text color="gray.500">{name}</Text>
+          <Text color="gray.500">{collName || "NFT"}</Text>
         </Gi>
         <Gi justifySelf="end">
-          <Text color="gray.500">Price</Text>
+          <Text color="gray.500">&nbsp;</Text>
         </Gi>
         <Gi>
-          <Text>Bean #8055</Text>
+          <Text>{nft.name}</Text>
         </Gi>
         <Gi justifySelf="end">
           <Text>
-            <Image
+            {/*<Image
               src="https://openseauserdata.com/files/6f8e2979d428180222796ff4a33ab929.svg"
-              alt="test"
+              alt="eth"
               boxSize="12.5px"
               display="inline-block"
             />{" "}
-            {price}
+            price*/}
           </Text>
         </Gi>
-
         <Gi gridColumn="span 2" justifySelf="end">
-          <Text>1 day left</Text>
+          <Text></Text>
+        </Gi>
+        <Gi gridColumn="span 2" justifySelf="end">
+          {couldBuy ? (
+            <Button>Buy</Button>
+          ) : couldSell ? (
+            <SellButton marketplace={marketplace} nft={nft} />
+          ) : (
+            ""
+          )}
         </Gi>
       </Grid>
     </Box>
   );
 };
 
-export default NFTItem;
+export default React.memo(NFTItem);

@@ -1,7 +1,9 @@
 import React from "react";
-import NFTItem from "./NFTItem";
+import NFTItem from "./NFTCollectionItem";
 import { Grid, Text } from "@chakra-ui/react";
-export default function NFTList({ nfts }) {
+import { useSelector } from "react-redux";
+export default function NFTList({ nfts, collectionName }) {
+  const user = useSelector((state) => state.user);
   return (
     <Grid
       columnGap="1.3rem"
@@ -9,9 +11,12 @@ export default function NFTList({ nfts }) {
       templateColumns="repeat(auto-fill, minmax(18rem,1fr))"
       justifyItems={"stretch"}
       justifyContent="center"
+      alignItems="start"
     >
       {nfts.length ? (
-        nfts.map((el) => <NFTItem key={el.id} {...el} />)
+        nfts.map((el) => (
+          <NFTItem key={el.id} nft={el} collName={collectionName} user={user} />
+        ))
       ) : (
         <Text>No NFT</Text>
       )}
