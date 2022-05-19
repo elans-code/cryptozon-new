@@ -18,7 +18,7 @@ export default function ProfilePosts({posts, user}) {
             <Text fontSize={16} mt={5}>{user.username}</Text>
             <FcApproval />
           </Stack>
-          <Image src={p.imageUrl} alt='post' w={400} h={300}/>
+          {p.imageUrl !== '/assets/question.png' ? <Image src={p.imageUrl} alt='post' w={400} h={300}/> : null}
           <Text ml={3} p={5}>{p.content}</Text>
         </Box>
       ))
