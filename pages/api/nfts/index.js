@@ -23,9 +23,20 @@ const getOwnerNFTs = wrapAsync(async (req, res) => {
     throw new Error("Invalid wallet address");
 
   const ownerNFTs = await NFTs.findAll({ where: { owner: req.query.owner } });
-  if (!ownerNFTs.length) throw new Error("Owner has no NFTs");
+  // if (!ownerNFTs.length) throw new Error("Owner has no NFTs");
   return res.status(200).json({ status: "success", data: ownerNFTs });
 });
+
+// adding toggle here for hidden display
+const toggleHidden = wrapAsync(async (req, res) => {
+  const nft = await NFTs.findOne({
+    where: {
+      id: req.body.id
+    }
+  })
+  const updatedNft = await nft.update(req.body)
+  return res.status(200).json({ status: "success", data: updatedNft})
+})
 
 export default async function handler(req, res) {
   try {
@@ -36,6 +47,8 @@ export default async function handler(req, res) {
         if (req.query.owner) {
           return await getOwnerNFTs(req, res);
         }
+      case "PUT":
+        return await toggleHidden(req, res)
       default:
         throw new Error("Not a route.");
     }

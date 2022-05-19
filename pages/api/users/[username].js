@@ -1,4 +1,4 @@
-const {User, Follows} = require('../../../db')
+const {User, Follows, Post} = require('../../../db')
 
 export default async function handler(req, res) {
   const {method, query: {username}} = req;
@@ -9,7 +9,8 @@ export default async function handler(req, res) {
       const user = await User.findOne({
         where: {
           username: username
-        }
+        },
+        include: {model: Post}
       });
       res.status(200).json(user)
       break
@@ -18,7 +19,7 @@ export default async function handler(req, res) {
       const userToFollow = await User.findOne({
         where: {
           username: username
-        }
+        },
       })
       const me = await User.findOne({
         where: {

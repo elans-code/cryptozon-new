@@ -1,10 +1,10 @@
 import React from 'react'
 import axios from 'axios'
 import Users from '../../components/Users'
-import { useAddress } from "@thirdweb-dev/react";
-import { useRouter } from 'next/router';
+import { useAddress } from "@thirdweb-dev/react"
+import { useRouter } from 'next/router'
 
-export default function User({user}) {
+export default function User({user, nfts}) {
   const address = useAddress();
   const router = useRouter();
   if (user.wallet == address) {
@@ -12,25 +12,30 @@ export default function User({user}) {
   }
   return (
     <>
-      <Users user={user} />
+      <Users user={user} nfts={nfts} />
     </>
   )
 }
 
 export async function getStaticProps({params}) {
   const username = params.username
-  const res = await axios.get(`http://localhost:3000/api/users/${username}`)
-  const user = await res.data
+  const userRes = await axios.get(`http://localhost:3000/api/users/${username}`)
+  const user = userRes.data
+
+  const nftRes = await axios.get(`http://localhost:3000/api/nfts?owner=${user.wallet}`)
+  const nfts = nftRes.data.data
+
   return {
-    props: {user}
+    props: {
+      user,
+      nfts
+    }
   }
 }
 
 export async function getStaticPaths() {
   const res = await axios.get('http://localhost:3000/api/users')
   const users = res.data
-  // const usernames = users.map(user => user.username)
-  // const paths = usernames.map(name => ({params: {username: name.toString()}}))
 
   const paths = users.map(user => ({params: {username: user.username.toString()}}))
 

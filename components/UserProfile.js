@@ -15,88 +15,31 @@ import {
   GridItem as Gi,
 } from "@chakra-ui/react";
 import { fetchUser } from "../store/userSlice";
+import { fetchNfts, toggleHidden } from "../store/nfts";
 import { useAddress } from "@thirdweb-dev/react";
 import { useSelector, useDispatch } from "react-redux";
 import EditProfile from "./EditProfile";
 import Link from "next/link";
 import axios from "axios";
-
-const nfts = [
-  {
-    id: 1,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 69,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 2,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 420,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 3,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 4,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 5,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 6,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 7,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
-  {
-    id: 8,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: false,
-  },
-  {
-    id: 9,
-    imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-    token: 783,
-    projectName: "BAYC",
-    hidden: true,
-  },
-];
+import ProfileNfts from "./ProfileNfts";
+import ProfilePosts from "./ProfilePosts";
 
 export default function UserProfile() {
   const dispatch = useDispatch();
   const address = useAddress();
   const { user } = useSelector((state) => state.user);
   const [usernames, setUsernames] = useState([]);
+  const { nfts } = useSelector((state) => state.nfts);
+  const [hidden, setHidden] = useState(false);
+  const [display, setDisplay] = useState("NFT"); // switch bw post and nft
+
+  console.log("nftssss", nfts);
 
   useEffect(() => {
     if (address) {
       dispatch(fetchUser(address));
       getAllUsernames();
+      dispatch(fetchNfts(address));
     }
   }, [address]);
 
@@ -113,6 +56,14 @@ export default function UserProfile() {
     setUsernames(names);
   }
 
+  function toggle(n) {
+    if (n.hidden == false) {
+      dispatch(toggleHidden({ ...n, hidden: true }));
+    } else {
+      dispatch(toggleHidden({ ...n, hidden: false }));
+    }
+  }
+
   if (!user) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
@@ -124,12 +75,6 @@ export default function UserProfile() {
   return (
     <>
       <Container>
-        {/* {!user.username &&
-            <Alert transitionDuration='1000' status='info' mb={4} w={275} position='absolute' right={2} isClosable={true}>
-              <AlertIcon />
-              Please set up your profile :)
-            </Alert>
-          } */}
         <Box
           margin={10}
           padding={10}
@@ -164,69 +109,30 @@ export default function UserProfile() {
             </Stack>
           </Flex>
           {!user.username && (
-            <Alert
-              justifySelf="center"
-              status="info"
-              mt={8}
-              w={460}
-              isClosable={true}
-            >
+            <Alert justifySelf="center" status="info" mt={8} w={460}>
               <AlertIcon />
               Please set up your profile :)
             </Alert>
           )}
         </Box>
       </Container>
-      <Divider />
-      <Container
-        maxW={1000}
+      <Stack
+        direction="row"
+        textAlign="center"
+        spacing={10}
         display="flex"
-        justifyContent="space-between"
-        alignItems="center"
+        justifyContent="center"
+        mb={2}
       >
-        {user.username ? (
-          <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-            <Button>Owned</Button>
-            <Divider m="5px" />
-            <Button>Hidden</Button>
-          </Box>
-        ) : null}
-        <Box
-          flex={1}
-          display="flex"
-          flexWrap="wrap"
-          width={500}
-          justifyContent="center"
-        >
-          {user.username
-            ? nfts.map((nft) => (
-                <Box
-                  _hover={{ border: "1px solid black" }}
-                  key={nft.id}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  m="10px"
-                  maxW="250px"
-                >
-                  <Image src={nft.imageUrl} alt="Bored Ape" />
-                  <Box p="6">
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {nft.projectName}#{nft.token}
-                    </Box>
-                    <Box>{nft.projectName}</Box>
-                  </Box>
-                </Box>
-              ))
-            : null}
-        </Box>
-      </Container>
+        <Button variant="ghost" onClick={() => setDisplay("NFT")}>
+          NFTs
+        </Button>
+        <Button variant="ghost" onClick={() => setDisplay("POST")}>
+          Posts
+        </Button>
+      </Stack>
+      <Divider />
+      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : <ProfilePosts posts={user.posts} user={user} />}
     </>
   );
 }

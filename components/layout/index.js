@@ -2,7 +2,7 @@ import { Fragment as Fr, useState, useEffect, useCallback } from "react";
 import { Box, Heading } from "@chakra-ui/react";
 import Navbar from "./Navbar";
 import { useDispatch } from "react-redux";
-import { setNFT, } from "../../store/nfts";
+// import { setNFT, } from "../../store/nfts";
 import { useMarketplace } from "@thirdweb-dev/react";
 import { setActiveNft } from "../../store/activeNfts";
 
@@ -24,7 +24,7 @@ export default function Layout({ children }) {
   }, [onScrollDown]);
 
   useEffect(() => {
-    // set redux store with all nfts from marketplace contract
+    // // set redux store with all nfts from marketplace contract
     getAllActiveListings();
     getAllListings();
   }, []);
@@ -32,8 +32,14 @@ export default function Layout({ children }) {
   const getAllListings = async () => {
     try {
       const nftList = await marketplace.getAllListings();
+      // nftList.reduce((acc, curr) => {
+      //   const price = curr.buyoutPrice / 1e18;
+      //   JSON.stringify(price);
+      //   // console.log(price);
+      //   return [...acc,
+      // }, [])
       setAllNFTListings(nftList);
-      dispatch(setNFT(nftList));
+      // dispatch(setNFT(nftList));
     } catch (error) {
       console.log(error);
     }
@@ -42,6 +48,7 @@ export default function Layout({ children }) {
   const getAllActiveListings = async () => {
     try {
       const nftList = await marketplace.getActiveListings();
+      console.log(nftList);
       setAllActiveListings(nftList);
       dispatch(setActiveNft(nftList));
     } catch (error) {
