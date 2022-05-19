@@ -22,8 +22,7 @@ import EditProfile from "./EditProfile";
 import Link from "next/link";
 import axios from "axios";
 import ProfileNfts from "./ProfileNfts";
-
-import { HamburgerIcon } from "@chakra-ui/icons";
+import ProfilePosts from "./ProfilePosts";
 
 // const nfts = [
 //   {
@@ -199,7 +198,7 @@ export default function UserProfile() {
         </Button>
       </Stack>
       <Divider />
-      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : null}
+      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : <ProfilePosts posts={user.posts} user={user} />}
       {/* <Container
         maxW={1000}
         display="flex"

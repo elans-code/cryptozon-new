@@ -76,7 +76,7 @@ export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
           </Box>
         </Container>
       ) : (
-        <Text>No nfts to display</Text>
+        <Text>~ no nfts to display ~</Text>
       )}
     </>
   );
