@@ -44,6 +44,7 @@ export const nftSlice = createSlice({
       state.status = "loading";
     },
     [fetchNfts.fulfilled]: (state, action) => {
+      console.log('payloaddd', action.payload)
       state.nfts = action.payload;
       state.status = "success";
     },

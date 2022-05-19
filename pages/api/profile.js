@@ -1,4 +1,4 @@
-import { User, Collections } from "../../db/";
+import { User, Collections, Post } from "../../db/";
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -7,12 +7,6 @@ export default async function handler(req, res) {
     case "GET":
       if (wallet.length !== 42 || !wallet.startsWith('0x'))
         throw new Error('Invalid wallet address')
-      // const user = await User.findOne({
-      //   where: {
-      //     wallet: wallet,
-      //   },
-      //   include: [{ model: Collections }],
-      // });
       const [user] = await User.findOrCreate({
         where: {
           wallet: wallet
@@ -20,7 +14,7 @@ export default async function handler(req, res) {
         defaults: {
           wallet: wallet
         },
-        include: [{model: Collections}]
+        include: [{model: Collections}, {model: Post}]
       })
       return res.status(200).send(user);
 

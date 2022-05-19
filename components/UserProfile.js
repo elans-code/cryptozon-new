@@ -22,6 +22,8 @@ import EditProfile from "./EditProfile";
 import Link from "next/link";
 import axios from "axios";
 
+import { HamburgerIcon } from "@chakra-ui/icons";
+
 // const nfts = [
 //   {
 //     id: 1,
@@ -93,8 +95,11 @@ export default function UserProfile() {
   const address = useAddress();
   const { user } = useSelector((state) => state.user);
   const [usernames, setUsernames] = useState([]);
-  const {nfts} = useSelector(state => state.nfts);
-  const [hidden, setHidden] = useState(false) // (not hidden)
+  const { nfts } = useSelector((state) => state.nfts);
+  const [hidden, setHidden] = useState(false);
+  const [display, setDisplay] = useState("NFT"); // switch bw post and nft
+
+  console.log("nftssss", nfts);
 
   useEffect(() => {
     if (address) {
@@ -119,9 +124,9 @@ export default function UserProfile() {
 
   function toggle(n) {
     if (n.hidden == false) {
-      dispatch(toggleHidden({...n, hidden: true}))
+      dispatch(toggleHidden({ ...n, hidden: true }));
     } else {
-      dispatch(toggleHidden({...n, hidden: false}))
+      dispatch(toggleHidden({ ...n, hidden: false }));
     }
   }
 
@@ -136,12 +141,6 @@ export default function UserProfile() {
   return (
     <>
       <Container>
-        {/* {!user.username &&
-            <Alert transitionDuration='1000' status='info' mb={4} w={275} position='absolute' right={2} isClosable={true}>
-              <AlertIcon />
-              Please set up your profile :)
-            </Alert>
-          } */}
         <Box
           margin={10}
           padding={10}
@@ -176,18 +175,28 @@ export default function UserProfile() {
             </Stack>
           </Flex>
           {!user.username && (
-            <Alert
-              justifySelf="center"
-              status="info"
-              mt={8}
-              w={460}
-            >
+            <Alert justifySelf="center" status="info" mt={8} w={460}>
               <AlertIcon />
               Please set up your profile :)
             </Alert>
           )}
         </Box>
       </Container>
+      <Stack
+        direction="row"
+        textAlign="center"
+        spacing={10}
+        display="flex"
+        justifyContent="center"
+        mb={2}
+      >
+        <Button variant="ghost" onClick={() => setDisplay("NFT")}>
+          NFTs
+        </Button>
+        <Button variant="ghost" onClick={() => setDisplay("POST")}>
+          Posts
+        </Button>
+      </Stack>
       <Divider />
       <Container
         maxW={1000}
@@ -195,11 +204,21 @@ export default function UserProfile() {
         justifyContent="space-between"
         alignItems="center"
       >
-        {user.username ? (
-          <Box w={100} textAlign="center" alignSelf="flex-start" mt="20px">
-            <Button onClick={() => setHidden(false)}>Owned</Button>
+        {display === "NFT" && user.username ? (
+          <Box
+            w={100}
+            textAlign="center"
+            alignSelf="flex-start"
+            mt="20px"
+            mr="15px"
+          >
+            <Button variant="ghost" onClick={() => setHidden(false)}>
+              Owned
+            </Button>
             <Divider m="5px" />
-            <Button onClick={() => setHidden(true)}>Hidden</Button>
+            <Button variant="ghost" onClick={() => setHidden(true)}>
+              Hidden
+            </Button>
           </Box>
         ) : null}
         <Box
@@ -207,67 +226,46 @@ export default function UserProfile() {
           display="flex"
           flexWrap="wrap"
           width={500}
-          justifyContent="center"
+          justifyContent="flex-start"
         >
-          {/* {!!nfts.data ?
-          nfts.data.map(n => (
-            <Image key={n.id} alt='nft' src={n.image} h={200} w={200}/>
-          )) : null
-        } */}
-          {/* {user.username
-            ? nfts.map((nft) => (
-                <Box
-                  _hover={{ border: "1px solid black" }}
-                  key={nft.id}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  m="10px"
-                  maxW="250px"
-                >
-                  <Image src={nft.imageUrl} alt="Bored Ape" />
-                  <Box p="6">
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {nft.projectName}#{nft.token}
+          {!!nfts.data
+            ? nfts.data
+                .filter((n) => n.hidden === hidden)
+                .map((nft) => (
+                  <Box
+                    _hover={{ border: "1px solid black" }}
+                    key={nft.id}
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    m="10px"
+                    maxW="250px"
+                  >
+                    <Image src={nft.image} alt={nft.name} w="250px" h="250px" />
+                    <Box p="6">
+                      <Box
+                        mt="1"
+                        fontWeight="semibold"
+                        as="h4"
+                        lineHeight="tight"
+                        isTruncated
+                      >
+                        {nft.name}#{nft.tokenId}
+                      </Box>
+                      <Box>{nft.description}</Box>
+                      <Button
+                        fontSize={10}
+                        h="15px"
+                        w="40px"
+                        mt={1}
+                        onClick={() => toggle(nft)}
+                      >
+                        toggle
+                      </Button>
+                      <HamburgerIcon ml="120px" />
                     </Box>
-                    <Box>{nft.projectName}</Box>
                   </Box>
-                </Box>
-              ))
-            : null} */}
-            {!!nfts.data ?
-            nfts.data.filter(n => n.hidden === hidden).map((nft) => (
-                <Box
-                  _hover={{ border: "1px solid black" }}
-                  key={nft.id}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  m="10px"
-                  maxW="250px"
-                >
-                  <Image src={nft.image} alt={nft.name} w='250px' h='250px'/>
-                  <Box p="6">
-                    <Box
-                      mt="1"
-                      fontWeight="semibold"
-                      as="h4"
-                      lineHeight="tight"
-                      isTruncated
-                    >
-                      {nft.name}#{nft.tokenId}
-                    </Box>
-                    <Box>{nft.description}</Box>
-                    <Button fontSize={10} h='15px' w='40px' mt={1} onClick={() => toggle(nft)}>toggle</Button>
-                  </Box>
-                </Box>
-              ))
+                ))
             : null}
         </Box>
       </Container>
