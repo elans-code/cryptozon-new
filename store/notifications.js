@@ -2,22 +2,33 @@ import axios from 'axios'
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 
 const initialState = {
-  globalNotifications: [],
+  notifications: [],
   status: null,
   error: null
 }
 
 export const fetchNotifications = createAsyncThunk(
   'notifications/fetchNotifications',
-  async (user) => {
+  async (userId) => {
     try {
-      const {data: notifications} = await axios.get('/api/notifications/', user)
+      console.log('trying to get notifs for: ',userId)
+      const {data: notifications} = await axios.get('/api/notifications/', {params:{id:userId}})
       return notifications
     } catch (err) {
       console.log(err)
     }
   }
 )
+export const cleanNotifications = createAsyncThunk(
+    'notifications/fetchNotifications',
+    async () => {
+      try {
+        await axios.delete('/api/notifications/')
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  )
 
 export const notificationsSlice = createSlice({
   name: 'notifications',
