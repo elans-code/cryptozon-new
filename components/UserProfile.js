@@ -21,6 +21,7 @@ import { useSelector, useDispatch } from "react-redux";
 import EditProfile from "./EditProfile";
 import Link from "next/link";
 import axios from "axios";
+import ProfileNfts from "./ProfileNfts";
 
 import { HamburgerIcon } from "@chakra-ui/icons";
 
@@ -198,13 +199,14 @@ export default function UserProfile() {
         </Button>
       </Stack>
       <Divider />
-      <Container
+      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : null}
+      {/* <Container
         maxW={1000}
         display="flex"
         justifyContent="space-between"
         alignItems="center"
       >
-        {display === "NFT" && user.username ? (
+         {display === "NFT" && user.username ? (
           <Box
             w={100}
             textAlign="center"
@@ -267,8 +269,22 @@ export default function UserProfile() {
                   </Box>
                 ))
             : null}
+
         </Box>
-      </Container>
+        {display === "POST" && user.posts.length ?
+        <Container>
+          {user.posts.map(p => (
+            <Box key={p.id}>
+              <Image src={p.imageUrl} alt="post"/>
+              <Text>{p.content}</Text>
+            </Box>
+          ))}
+        </Container> :
+        display === "POST" && user.post.length === 0 ?
+        <Text>You have no posts!</Text> :
+        null
+      }
+      </Container> */}
     </>
   );
 }
