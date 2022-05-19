@@ -3,7 +3,7 @@ import { Container, Box, Divider, Image, Button, Text } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
-  const isEmpty = nfts.data.length === 0;
+  const isEmpty = nfts.length === 0;
 
   return (
     <>
