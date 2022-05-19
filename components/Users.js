@@ -8,7 +8,6 @@ import {
   Flex,
   Divider,
   Stack,
-  textDecoration,
 } from "@chakra-ui/react";
 import { ChatIcon } from "@chakra-ui/icons";
 import { followUser } from "../store/selectedUser";
@@ -19,36 +18,13 @@ import { useRouter } from "next/router";
 import { fetchSelectedUser } from "../store/selectedUser";
 import axios from "axios";
 import { FcApproval } from "react-icons/fc";
+
 /*
   this pg is nearly identical to the profile pg, but this is specifically for other users when you visit their profile;
   functionality and display are a bit different, you can't edit their pg and you can't view their hidden nfts
 
   when visiting this pg, we'll have to use the username to get their wallet, and from there we can grab their nfts based on their wallet
 */
-
-// const NFTS = [
-//   {
-//     id: 1,
-//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-//     token: 69,
-//     projectName: "BAYC",
-//     hidden: false,
-//   },
-//   {
-//     id: 2,
-//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-//     token: 420,
-//     projectName: "BAYC",
-//     hidden: false,
-//   },
-//   {
-//     id: 3,
-//     imageUrl: "https://miro.medium.com/max/1400/1*cdn3L9ehKspSxiRJfRYSyw.png",
-//     token: 783,
-//     projectName: "BAYC",
-//     hidden: false,
-//   },
-// ];
 
 export default function Users({ user, nfts }) {
   const router = useRouter();
@@ -187,7 +163,7 @@ export default function Users({ user, nfts }) {
                   m="10px"
                   maxW="250px"
                 >
-                  <Image src={nft.imageUrl} alt="Bored Ape" />
+                  <Image src={nft.image} alt="Bored Ape" />
                   <Box p="6">
                     <Box
                       mt="1"
@@ -196,9 +172,9 @@ export default function Users({ user, nfts }) {
                       lineHeight="tight"
                       isTruncated
                     >
-                      {nft.projectName}#{nft.token}
+                      {nft.name}
                     </Box>
-                    <Box>{nft.projectName}</Box>
+                    <Box>{nft.description}</Box>
                   </Box>
                 </Box>
               ))}
@@ -208,64 +184,38 @@ export default function Users({ user, nfts }) {
         <Text textAlign="center">~ no nfts to display ~</Text>
       )}
       {!!user.posts && user.posts.length && display === "POST" ? (
-        <Container display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          {user.posts.map(p => (
+        <Container
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems="center"
+        >
+          {user.posts.map((p) => (
             <Box key={p.id} w={400} borderWidth={1} mt={5}>
-            <Stack direction='row' display='flex' alignItems='center'>
-              <Image src={user.imageUrl} h='50px' w='50px' borderRadius={100} m={2}/>
-              <Text fontSize={16} mt={5}>{user.username}</Text>
-              <FcApproval />
-            </Stack>
-            <Image src={p.imageUrl} alt='post' w={400} h={300}/>
-            <Text ml={3} p={5}>{p.content}</Text>
-          </Box>
+              <Stack direction="row" display="flex" alignItems="center">
+                <Image
+                  src={user.imageUrl}
+                  h="50px"
+                  w="50px"
+                  borderRadius={100}
+                  m={2}
+                  alt='post'
+                />
+                <Text fontSize={16} mt={5}>
+                  {user.username}
+                </Text>
+                <FcApproval />
+              </Stack>
+              <Image src={p.imageUrl} alt="post" w={400} h={300} />
+              <Text ml={3} p={5}>
+                {p.content}
+              </Text>
+            </Box>
           ))}
         </Container>
-      ) : display === "NFT" ? null : <Text textAlign='center'>~ no posts to display ~</Text>}
-      {/* <Container
-        maxW={1000}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Box
-          flex={1}
-          display="flex"
-          flexWrap="wrap"
-          width={500}
-          justifyContent="center"
-        >
-          {!!nfts && nfts.length ? (
-            nfts.map((nft) => (
-              <Box
-                _hover={{ border: "1px solid black" }}
-                key={nft.id}
-                borderWidth="1px"
-                borderRadius="lg"
-                overflow="hidden"
-                m="10px"
-                maxW="250px"
-              >
-                <Image src={nft.imageUrl} alt="Bored Ape" />
-                <Box p="6">
-                  <Box
-                    mt="1"
-                    fontWeight="semibold"
-                    as="h4"
-                    lineHeight="tight"
-                    isTruncated
-                  >
-                    {nft.projectName}#{nft.token}
-                  </Box>
-                  <Box>{nft.projectName}</Box>
-                </Box>
-              </Box>
-            ))
-          ) : (
-            <Text>~ no nft's to display :/ ~</Text>
-          )}
-        </Box>
-      </Container> */}
+      ) : display === "NFT" ? null : (
+        <Text textAlign="center">~ no posts to display ~</Text>
+      )}
     </>
   );
 }

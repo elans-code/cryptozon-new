@@ -3,13 +3,13 @@ import { Container, Box, Divider, Image, Button, Text } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
-  const isEmpty = nfts.length === 0;
+  const isEmpty = nfts.data.length === 0;
 
   return (
     <>
       {!isEmpty ? (
         <Container
-          maxW={1000}
+          maxW={1100}
           display="flex"
           justifyContent="space-between"
           alignItems="center"
@@ -46,9 +46,9 @@ export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
                   borderRadius="lg"
                   overflow="hidden"
                   m="10px"
-                  maxW="250px"
+                  maxW="290px"
                 >
-                  <Image src={nft.image} alt={nft.name} w="250px" h="250px" />
+                  <Image src={nft.image} alt={nft.name} w="290px" h="250px" />
                   <Box p="6">
                     <Box
                       mt="1"
@@ -57,7 +57,7 @@ export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
                       lineHeight="tight"
                       isTruncated
                     >
-                      {nft.name}#{nft.tokenId}
+                      {nft.name}
                     </Box>
                     <Box>{nft.description}</Box>
                     <Button
