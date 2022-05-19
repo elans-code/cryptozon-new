@@ -1,11 +1,10 @@
 import React from 'react'
 import axios from 'axios'
 import Users from '../../components/Users'
-import { useAddress } from "@thirdweb-dev/react";
-import { useRouter } from 'next/router';
+import { useAddress } from "@thirdweb-dev/react"
+import { useRouter } from 'next/router'
 
-export default function User({user}) {
-  // console.log('walllllettt', user.wallet)
+export default function User({user, nfts}) {
   const address = useAddress();
   const router = useRouter();
   if (user.wallet == address) {
@@ -13,7 +12,7 @@ export default function User({user}) {
   }
   return (
     <>
-      <Users user={user} />
+      <Users user={user} nfts={nfts} />
     </>
   )
 }
@@ -23,13 +22,13 @@ export async function getStaticProps({params}) {
   const userRes = await axios.get(`http://localhost:3000/api/users/${username}`)
   const user = userRes.data
 
-  // const nftRes = await axios.get(`http://localhost:3000/api/nfts?owner=${user.wallet}`)
-  // const nfts = nftRes.data
+  const nftRes = await axios.get(`http://localhost:3000/api/nfts?owner=${user.wallet}`)
+  const nfts = nftRes.data.data
 
   return {
     props: {
       user,
-
+      nfts
     }
   }
 }
