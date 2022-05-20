@@ -22,6 +22,13 @@ export default async function handler(req,res){
             })
             res.status(200).end()
             break;
+        case 'PATCH':
+            console.log('patch id',body)
+            await Notifications.update({delivered: true}, {where:{
+                id: body.id
+            }})
+            res.status(200).end();
+            break;
         default:
             res.status(500).end();
             break;

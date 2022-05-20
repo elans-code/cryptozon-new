@@ -19,16 +19,28 @@ export const fetchNotifications = createAsyncThunk(
     }
   }
 )
+
 export const cleanNotifications = createAsyncThunk(
-    'notifications/fetchNotifications',
-    async () => {
-      try {
-        await axios.delete('/api/notifications/')
-      } catch (err) {
-        console.log(err)
-      }
+  'notifications/fetchNotifications',
+  async () => {
+    try {
+      await axios.delete('/api/notifications/')
+    } catch (err) {
+      console.log(err)
     }
-  )
+  }
+)
+export const markDelivered = createAsyncThunk(
+  'notifications/markDelivered',
+  async (id, {dispatch}) => {
+    try {
+      await axios.patch('/api/notifications/', {id:id})
+      dispatch(cleanNotifications())
+    } catch (err) {
+      console.log(err)
+    }
+  }
+)
 
 export const notificationsSlice = createSlice({
   name: 'notifications',

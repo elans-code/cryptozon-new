@@ -2,7 +2,7 @@ import {Wrap, Button, useToast, WrapItem} from '@chakra-ui/react'
 import { useAddress } from '@thirdweb-dev/react'
 import {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchNotifications } from '../../store/notifications'
+import { fetchNotifications, markDelivered, cleanNotifications } from '../../store/notifications'
 export const Notifications = () => {
     const address = useAddress()
     const {user:walletUser} = useSelector(state => state.user);
@@ -19,15 +19,29 @@ export const Notifications = () => {
     ]
     useEffect(()=>{
         //check for notifications and show them as they're updated
-        if(!!walletUser.username && Notifications.status!=='success'){
+        const interval = setInterval(() => {
+            if(!!walletUser.username){
+                dispatch(fetchNotifications(walletUser.id));
+                console.log('refetching notifications')
+            }
+        }, 10000);
+        if(!!walletUser.username && Notifications.status!=='success' && Notifications.status!=='loading'){
             dispatch(fetchNotifications(walletUser.id));
         }
-        if(Notifications.notifications.length>0){
-            Notifications.notifications.map(notif=>{
-                const {content, id} = notif
-                showNotification(id, content)
-            })
+        if(!!Notifications.notifications){
+            if(Notifications.notifications.length>0){
+                Notifications.notifications.map(notif=>{
+                    const {content, id} = notif
+                    showNotification(id, content)
+                })
+            }
         }
+        return () =>{
+            if(!!walletUser.username){
+                clearInterval(interval);
+            }
+        }
+        
     },[dispatch, Notifications, walletUser])
     console.log('notifications:' ,Notifications)
     const showNotification = (id, content) =>{
@@ -39,9 +53,14 @@ export const Notifications = () => {
                 position: 'top-right',
                 duration: 5000,
                 isClosable: true,
+                onCloseComplete: ()=>makeDelivered(id),
             })
         }     
-}
+    }
+    const makeDelivered = (id) => {
+        console.log('closing: ',id)
+        dispatch(markDelivered(id))
+    }
     return (
       <>
       </>
