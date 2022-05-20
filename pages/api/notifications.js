@@ -3,7 +3,7 @@ export default async function handler(req,res){
     const {method, body, query} = req;
     switch (method) {
         case 'PUT':
-            await Notifications.create(body);
+            await Notifications.create(body.notificationData);
             res.status(200).end();
             break;
         case 'GET':

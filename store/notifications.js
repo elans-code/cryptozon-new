@@ -44,7 +44,6 @@ export const addNotification = createAsyncThunk(
   'notifications/addNotification',
   async (notificationData, {dispatch}) => {
     try {
-      console.log(notificationData)
       await axios.put('/api/notifications/', {notificationData})
       dispatch(cleanNotifications())
     } catch (err) {
