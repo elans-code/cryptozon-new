@@ -50,7 +50,7 @@ export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
                   maxW="290px"
                   shadow='md'
                 >
-                  <Image src={nft.image} alt={nft.name} w="290px" h="250px" />
+                  <Image src={nft.image} alt={nft.name} w="290px" h="260px" />
                   <Box p="6">
                     <Box
                       mt="1"
@@ -72,7 +72,7 @@ export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
           </Box>
         </Container>
       ) : (
-        <Text>~ no nfts to display ~</Text>
+        <Text textAlign='center'>~ no nfts to display ~</Text>
       )}
     </>
   );
