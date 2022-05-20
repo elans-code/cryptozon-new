@@ -11,7 +11,6 @@ export const fetchNotifications = createAsyncThunk(
   'notifications/fetchNotifications',
   async (userId) => {
     try {
-      console.log('trying to get notifs for: ',userId)
       const {data: notifications} = await axios.get('/api/notifications/', {params:{id:userId}})
       return notifications
     } catch (err) {

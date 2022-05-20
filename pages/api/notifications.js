@@ -7,7 +7,6 @@ export default async function handler(req,res){
             res.status(200).end();
             break;
         case 'GET':
-            console.log('notification id', query.id)
             const currentNotifications = await Notifications.findAll({
                 where:{
                     userId: query.id
@@ -23,7 +22,6 @@ export default async function handler(req,res){
             res.status(200).end()
             break;
         case 'PATCH':
-            console.log('patch id',body)
             await Notifications.update({delivered: true}, {where:{
                 id: body.id
             }})

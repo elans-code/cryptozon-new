@@ -22,7 +22,6 @@ export const Notifications = () => {
         const interval = setInterval(() => {
             if(!!walletUser.username){
                 dispatch(fetchNotifications(walletUser.id));
-                console.log('refetching notifications')
             }
         }, 10000);
         if(!!walletUser.username && Notifications.status!=='success' && Notifications.status!=='loading'){
@@ -31,8 +30,8 @@ export const Notifications = () => {
         if(!!Notifications.notifications){
             if(Notifications.notifications.length>0){
                 Notifications.notifications.map(notif=>{
-                    const {content, id} = notif
-                    showNotification(id, content)
+                    const {content, id, title} = notif
+                    showNotification(id, title, content)
                 })
             }
         }
@@ -43,23 +42,22 @@ export const Notifications = () => {
         }
         
     },[dispatch, Notifications, walletUser])
-    console.log('notifications:' ,Notifications)
-    const showNotification = (id, content) =>{
+    const showNotification = (id, title,content) =>{
         if(!toast.isActive(id)){
             toast({
                 id,
-                title: `info`,
+                title: title,
                 description: content,
-                position: 'top-right',
-                duration: 5000,
+                position: 'bottom-right',
                 isClosable: true,
                 onCloseComplete: ()=>makeDelivered(id),
             })
         }     
     }
     const makeDelivered = (id) => {
-        console.log('closing: ',id)
         dispatch(markDelivered(id))
+        dispatch(cleanNotifications())
+        toast.close(id)
     }
     return (
       <>
