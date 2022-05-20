@@ -14,6 +14,7 @@ const Navbar = ({ intersects }) => {
       zIndex="50"
       boxShadow={intersects ? "base" : "none"}
     >
+      Hi
       <DarkModeSwitch />
     </Flex>
   );
