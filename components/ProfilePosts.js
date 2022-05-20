@@ -6,9 +6,7 @@ export default function ProfilePosts({posts, user}) {
   const hasPosts = posts.length > 0;
   // ordering posts
   let postList = posts.slice()
-  console.log('postsssss', posts)
   postList.reverse()
-  console.log('post listttt', postList)
 
   return (
     <Container display='flex' flexDirection='column' justifyContent='center' alignItems='center'>
@@ -25,14 +23,14 @@ export default function ProfilePosts({posts, user}) {
           <Divider />
           {p.comments.length ?
           p.comments.map(c => (
-            <>
-            <Stack key={c.id} m={2} direction='row'>
-              <Image src={c.user.imageUrl} alt={c.user.username} h='20px' w='20px' borderRadius={100}/>
-              <Text fontWeight='bold'>{c.user.username}</Text>
-              <Text>{c.content}</Text>
-            </Stack>
-            <Divider />
-            </>
+            <React.Fragment key={c.id}>
+              <Stack m={2} direction='row'>
+                <Image src={c.user.imageUrl} alt={c.user.username} h='20px' w='20px' borderRadius={100}/>
+                <Text fontWeight='bold'>{c.user.username}</Text>
+                <Text>{c.content}</Text>
+              </Stack>
+              <Divider />
+            </React.Fragment>
           )) : null
         }
         </Box>

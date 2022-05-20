@@ -3,8 +3,9 @@ import { Container, Box, Divider, Image, Button, Text, Tooltip } from "@chakra-u
 import { HamburgerIcon } from "@chakra-ui/icons";
 
 export default function ProfileNfts({ nfts, hidden, toggle, setHidden }) {
-  const isEmpty = nfts.length === 0;
+  const isEmpty = nfts.length === 0 ? true : false
   const iconHover = hidden === true ? 'Display NFT' : 'Hide NFT';
+  console.log('dataaa',nfts.data)
 
   return (
     <>
