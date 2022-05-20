@@ -1,5 +1,7 @@
 import axios from "axios";
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
+import { addNotification } from "./notifications";
+import { User } from "../db";
 
 const initialState = {
     post:[],
@@ -51,6 +53,26 @@ export const commentPost = createAsyncThunk(
         const {postId, userId} = newComment
         await axios.put('/api/comments/', newComment);
         await axios.patch('/api/post',{postId:postId,userId:userId})
+        const subscribedUsers = await Post.findAll({
+          where:{
+            id: postId
+          }})[0].subscribedUsers
+        subscribedUsers.forEach(user => {
+          const userInfo = User.findAll({
+            where:{
+              id: user
+            }
+          })
+          const payload = {
+            title:`New Comment From ${userInfo[0].username}`,
+            content: newComment,
+            userId: user
+          }
+          if(user!==userId){
+            dispatch(addNotification(payload))
+          }
+        });
+
         dispatch(fetchAllPost());
       } catch (error) {
           console.log(error)
