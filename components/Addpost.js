@@ -19,10 +19,11 @@ export default function Addpost() {
     setData({})
   }
   const addPost = (userId,post,imgUrl) =>{
+    const initialSubs = [userId]
     const data = {
       userId: userId,
       content: post,
-      likes: 0,
+      subscribedUsers: initialSubs
     }
     if(!!imgUrl){
       data.imageUrl = imgUrl

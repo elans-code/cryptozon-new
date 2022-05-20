@@ -48,7 +48,9 @@ export const commentPost = createAsyncThunk(
   'comment/commentPost',
   async (newComment,{dispatch}) => {
       try {
+        const {postId, userId} = newComment
         await axios.put('/api/comments/', newComment);
+        await axios.patch('/api/post',{postId:postId,userId:userId})
         dispatch(fetchAllPost());
       } catch (error) {
           console.log(error)
