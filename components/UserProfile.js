@@ -134,9 +134,16 @@ export default function UserProfile() {
         <Button variant="ghost" onClick={() => setDisplay("COLLECTION")}>Collections</Button>
       </Stack>
       <Divider mb={7}/>
-      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : display === "POST" ? <ProfilePosts posts={user.posts} user={user} /> :
+      {/* {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : display === "POST" ? <ProfilePosts posts={user.posts} user={user} /> :
         <CollectionList collections={user.collections} />
-      }
+      } */}
+      {display === "NFT" ? <ProfileNfts nfts={nfts} hidden={hidden} toggle={toggle} setHidden={setHidden}/> : display === "POST" ? <ProfilePosts posts={user.posts} user={user} /> : null}
+      {display === "COLLECTION" && user.collections.length ?
+      <CollectionList collections={user.collections} /> :
+      display === "COLLECTION" && user.collections.length === 0 ?
+      <Text textAlign='center'>~ no collections to display ~</Text>
+      : null
+    }
     </>
   );
 }
