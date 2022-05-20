@@ -23,7 +23,7 @@ import {
   textToImage,
 } from "../store/post";
 import CommentModal from "./CommentModal";
-import { FcApproval } from "react-icons/fc";
+import { MdVerified } from "react-icons/md";
 import SocialPostComments from "./SocialPostComments";
 import {
   FaRegComment,
@@ -166,7 +166,7 @@ export const SocialCard = (props) => {
                       src={user.imageUrl}
                     />
                     <Box>{user.username}</Box>
-                    <FcApproval />
+                    <Icon fill="cyan.500" as={MdVerified} />
                   </Box>
                 </Link>
                 {postImage ? (
