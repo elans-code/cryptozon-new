@@ -18,7 +18,7 @@ const Navbar = ({ intersects }) => {
     >
       <NextLink href="/post" passHref>
         <Heading
-          fontSize="3.1rem"
+          fontSize="2.9rem"
           fontFamily="Saira Stencil One, cursive"
           textTransform="uppercase"
           alignSelf={"center"}
