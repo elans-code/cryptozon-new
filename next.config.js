@@ -10,11 +10,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/',
-        destination: '/post',
+        source: "/",
+        destination: "/post",
         permanent: true,
       },
-    ]
+    ];
   },
 };
 module.exports = nextConfig;
