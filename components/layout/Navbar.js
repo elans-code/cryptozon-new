@@ -22,10 +22,14 @@ const Navbar = ({ intersects }) => {
           fontFamily="Saira Stencil One, cursive"
           textTransform="uppercase"
           alignSelf={"center"}
-          px={8}
-          color="cyan.500"
+          ml={8}
+          bg="cyan.500"
+          color="white"
+          p="5px 10px"
+          borderRadius="8px"
+          boxShadow="lg"
           cursor="pointer"
-          textShadow="2px 5px 3.5px rgba(0, 0, 0, 0.18)"
+          textShadow="2px 5.1px 3.5px rgba(0, 0, 0, 0.165)"
         >
           Cryptozon
         </Heading>
