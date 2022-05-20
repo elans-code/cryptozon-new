@@ -2,17 +2,10 @@ import React, { useEffect, useState, Fragment as Fr } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
 import {
   Box,
-  Button,
   Text,
   Image,
-  Container,
-  Flex,
-  Boxider,
-  useDisclosure,
-  Grid,
+  useColorModeValue,
   GridItem as Gi,
-  Spacer,
-  Divider,
   Icon,
 } from "@chakra-ui/react";
 import {
@@ -44,6 +37,7 @@ export const SocialCard = (props) => {
   const [data, setData] = useState({});
   const [viewComment, setViewComment] = useState(false);
   const dispatch = useDispatch();
+  const borderClr = useColorModeValue("gray.300", "gray.600");
   useEffect(() => {
     if (status != "success") {
       dispatch(fetchAllPost());
@@ -145,9 +139,9 @@ export const SocialCard = (props) => {
                 flexDirection="column"
                 maxW="xl"
                 key={id}
-                boxShadow="md"
+                boxShadow={"md"}
                 border="1px solid"
-                borderColor="gray.200"
+                borderColor={borderClr}
               >
                 <Link key={user.username} href={`/${user.username}`} passHref>
                   <Box
@@ -175,13 +169,13 @@ export const SocialCard = (props) => {
                   </Box>
                 ) : (
                   <Box>
-                    <Image src={contentUri} alt="" />
+                    <Image src={contentUri} bg="white" alt="" />
                   </Box>
                 )}
 
                 {!!walletUser.username ? (
                   <Fr>
-                    <Box display="flex" px="4" gap="0.75rem" mt="3" mb="1">
+                    <Box display="flex" px="4" gap="0.85rem" mt="3" mb="2">
                       {likes_posts.filter(
                         (like) => like.userId === walletUser.id
                       ).length > 0 ? (
@@ -236,7 +230,7 @@ export const SocialCard = (props) => {
                   </Fr>
                 ) : (
                   <Fr>
-                    <Box display="flex" px="4" gap="0.75rem" mt="3" mb="1">
+                    <Box display="flex" px="4" gap="0.85rem" mt="3" mb="2">
                       <Icon
                         as={FaRegHeart}
                         h={6}

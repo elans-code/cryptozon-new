@@ -1,5 +1,12 @@
 import React, { useState, Fragment as Fr } from "react";
-import { Box, Text, Grid, Divider, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Grid,
+  Divider,
+  Icon,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 export default function SocialSinglePost({
   tempComments,
@@ -9,13 +16,14 @@ export default function SocialSinglePost({
   alertToLogin,
 }) {
   const [viewComment, setViewComment] = useState(false);
+  const viewColor = useColorModeValue("blackAlpha.600", "gray.500");
   return (
     <Fr>
       <Text
         textAlign="left"
         px={4}
         pb={tempComments.length ? (viewComment ? "1" : "3") : "2"}
-        color="blackAlpha.600"
+        color={viewColor}
         cursor={tempComments.length && "pointer"}
         onClick={() => {
           if (!tempComments.length) return;
